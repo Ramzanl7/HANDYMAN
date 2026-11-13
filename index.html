@@ -123,7 +123,9 @@ section{position:relative}
 .about-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(32px,6vw,90px);align-items:center}
 .portrait{aspect-ratio:4/5;border-radius:36px;background:linear-gradient(160deg,#1f1f22,#0a0a0b);border:1px solid var(--line);position:relative;overflow:hidden;display:grid;place-items:center}
 .portrait .mono{font-size:clamp(140px,22vw,300px);font-weight:900;letter-spacing:-.08em;line-height:1;background:linear-gradient(180deg,var(--accent),rgba(255,199,44,.05));-webkit-background-clip:text;background-clip:text;color:transparent}
-.portrait .badge{position:absolute;left:20px;bottom:20px;right:20px;padding:16px 18px;border-radius:20px;background:rgba(0,0,0,.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.portrait .pimg{position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;will-change:transform}
+.portrait::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.55))}
+.portrait .badge{z-index:2;position:absolute;left:20px;bottom:20px;right:20px;padding:16px 18px;border-radius:20px;background:rgba(0,0,0,.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:14px}
 .portrait .badge b{font-size:17px}
 .facts{display:grid;gap:14px;margin-top:36px}
 .fact{display:flex;gap:16px;align-items:flex-start;padding:18px 20px;border-radius:20px;background:var(--card);border:1px solid var(--line)}
@@ -336,8 +338,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <section class="about" id="about">
   <div class="wrap about-grid">
     <div class="portrait rv" id="portrait">
-      <!-- Сюда вставим фото Рамзана: <img src="img/ramzan.jpg" alt="Рамзан" style="width:100%;height:100%;object-fit:cover"> -->
-      <div class="mono">Р</div>
+      <img src="img/ramzan.webp" alt="Рамзан вешает хрустальную люстру" class="pimg" loading="lazy">
       <div class="badge"><div><b>Рамзан</b><br><span style="color:var(--muted)">Мастер · 21 год</span></div><a href="tel:+79635993601" class="btn btn-sm">Позвонить</a></div>
     </div>
     <div>
@@ -382,18 +383,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     <p class="lead rv d2" style="margin-top:20px">Потяните шторку на фото, чтобы сравнить.</p>
     <div class="case-stack">
       <article class="case" style="--i:0">
+        <div class="ba" data-ba><img src="img/crystal-after.webp" alt="Хрустальная люстра после монтажа" loading="lazy"><img src="img/crystal-before.webp" alt="Провода в потолке" class="b" loading="lazy"><span class="ba-l">До</span><span class="ba-r">После</span><i class="ba-h"></i></div>
+        <div class="case-txt"><span class="chip">Электрика</span><h3>Хрустальная люстра</h3><p>Из потолка торчали только провода. Собрал тяжёлую хрустальную люстру, надёжно закрепил и подключил — сразу засияла.</p></div>
+      </article>
+      <article class="case" style="--i:1">
         <div class="ba" data-ba><img src="img/bed-after.webp" alt="Кровать после ремонта" loading="lazy"><img src="img/bed-before.webp" alt="Сломанная кровать" class="b" loading="lazy"><span class="ba-l">До</span><span class="ba-r">После</span><i class="ba-h"></i></div>
         <div class="case-txt"><span class="chip">Ремонт мебели</span><h3>Кровать</h3><p>Каркас разошёлся, царга треснула. Восстановил крепления и собрал заново — стоит крепче, чем из магазина.</p></div>
       </article>
-      <article class="case" style="--i:1">
+      <article class="case" style="--i:2">
         <div class="ba" data-ba><img src="img/chest-after.webp" alt="Комод после ремонта" loading="lazy"><img src="img/chest-before.webp" alt="Комод с выпавшими ящиками" class="b" loading="lazy"><span class="ba-l">До</span><span class="ba-r">После</span><i class="ba-h"></i></div>
         <div class="case-txt"><span class="chip">Ремонт мебели</span><h3>Комод</h3><p>Ящики выпадали, направляющие разболтались. Переставил направляющие, отрегулировал фасады — ящики ходят мягко и ровно.</p></div>
       </article>
-      <article class="case" style="--i:2">
+      <article class="case" style="--i:3">
         <div class="ba" data-ba><img src="img/light-after.webp" alt="Новая LED-люстра" loading="lazy"><img src="img/light-before.webp" alt="Старая люстра со сгоревшей платой" class="b" loading="lazy"><span class="ba-l">До</span><span class="ba-r">После</span><i class="ba-h"></i></div>
         <div class="case-txt"><span class="chip">Электрика</span><h3>Люстра</h3><p>Плата управления сгорела. Снял старую люстру, повесил и подключил новую LED-люстру, проверил всё под нагрузкой.</p></div>
       </article>
-      <article class="case" style="--i:3">
+      <article class="case" style="--i:4">
         <div class="ba" data-ba><img src="img/tv-after.webp" alt="Телевизор на стене" loading="lazy"><img src="img/tv-before.webp" alt="Кронштейн для телевизора" class="b" loading="lazy"><span class="ba-l">Монтаж</span><span class="ba-r">Готово</span><i class="ba-h"></i></div>
         <div class="case-txt"><span class="chip">Монтаж</span><h3>Телевизор на стену</h3><p>Наклонный кронштейн в стену, телевизор — строго по уровню. Висит надёжно, смотреть удобно с кровати.</p></div>
       </article>
@@ -404,16 +409,18 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <!-- FURNITURE GALLERY -->
 <section class="gallery" id="gallery">
   <div class="wrap">
-    <div class="eyebrow rv">Сборка мебели</div>
-    <h2 class="h2 rv d1">Собрано руками.<br><span class="grad">До последнего винта.</span></h2>
+    <div class="eyebrow rv">Работы</div>
+    <h2 class="h2 rv d1">Сделано руками.<br><span class="grad">До последнего винта.</span></h2>
   </div>
   <div class="masonry" id="masonry">
     <div class="col" data-speed="-0.08">
       <figure class="g"><img src="img/kitchen.webp" alt="Кухонный гарнитур" loading="lazy"><figcaption>Кухонный гарнитур</figcaption></figure>
       <figure class="g"><img src="img/wardrobe-gold.webp" alt="Шкаф с золотой фурнитурой" loading="lazy"><figcaption>Шкаф во всю стену</figcaption></figure>
+      <figure class="g"><img src="img/office-door.webp" alt="Офис: дверь, кабель-канал, вешалка" loading="lazy"><figcaption>Офис: двери и кабель</figcaption></figure>
     </div>
     <div class="col" data-speed="0.12">
       <figure class="g"><img src="img/wardrobe-arch.webp" alt="Шкаф с арочными зеркалами" loading="lazy"><figcaption>Шкаф с арочными зеркалами</figcaption></figure>
+      <figure class="g"><img src="img/showroom.webp" alt="Шоурум: LED-подсветка и монтаж" loading="lazy"><figcaption>Шоурум: подсветка и монтаж</figcaption></figure>
       <figure class="g"><img src="img/desk.webp" alt="Туалетный столик" loading="lazy"><figcaption>Туалетный столик</figcaption></figure>
     </div>
     <div class="col" data-speed="-0.03">
@@ -574,7 +581,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     if (!reduce) {
       const r = portrait.getBoundingClientRect();
       const pp = clamp(1 - (r.top + r.height) / (innerHeight + r.height));
-      portrait.querySelector('.mono').style.transform = `translateY(${(pp - .5) * -60}px) scale(${1 + pp * .08})`;
+      portrait.querySelector('.pimg').style.transform = `translateY(${(pp - .5) * -60}px) scale(${1 + pp * .08})`;
     }
 
     // TRANSFORM: circle reveal before -> after
