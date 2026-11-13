@@ -26,7 +26,7 @@ const sha = async (t: string) => hex(await crypto.subtle.digest("SHA-256", new T
 const rnd = (n: number) => hex(crypto.getRandomValues(new Uint8Array(n)));
 const digits6 = () => String(crypto.getRandomValues(new Uint32Array(1))[0] % 1_000_000).padStart(6, "0");
 const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
-const must = <T>(r: { data: T; error: { message: string } | null }) => { if (r.error) fail(r.error.message, 500); return r.data; };
+const must = <T>(r: { data: T; error: { message: string } | null }) => { if (r.error) { console.error(r.error); fail("Ошибка сервера, попробуйте ещё раз", 500); } return r.data; };
 
 async function tg(method: string, body: Record<string, unknown>) {
   if (!BOT) fail("Бот не настроен: добавьте TELEGRAM_BOT_TOKEN в секреты Supabase", 500);
@@ -39,6 +39,13 @@ async function tg(method: string, body: Record<string, unknown>) {
 }
 const getAdmin = async () => must(await sb.from("hm_admin").select("*").eq("id", 1).single()) as Record<string, any>;
 const setAdmin = async (patch: Record<string, unknown>) => must(await sb.from("hm_admin").update(patch).eq("id", 1));
+
+const clientIp = (req: Request) => {
+  const h = req.headers;
+  const xff = (h.get("x-forwarded-for") || "").split(",").map((x) => x.trim()).filter(Boolean);
+  return h.get("cf-connecting-ip") || h.get("x-real-ip") || xff[xff.length - 1] || "";
+};
+const locked = (a: Record<string, any>) => a.lock_until && new Date(a.lock_until) > new Date();
 
 // ---------- table whitelists for admin CRUD ----------
 const TABLES: Record<string, { name: string; cols: string[]; order: [string, boolean]; key?: string }> = {
@@ -58,7 +65,14 @@ async function requireSession(req: Request) {
 }
 
 // ---------- public ----------
+let contentCache: { at: number; data: unknown } | null = null;
 async function content() {
+  if (contentCache && Date.now() - contentCache.at < 30_000) return contentCache.data;
+  const data = await loadContent();
+  contentCache = { at: Date.now(), data };
+  return data;
+}
+async function loadContent() {
   const [t, s, c, g] = await Promise.all([
     sb.from("hm_texts").select("key,value"),
     sb.from("hm_services").select("id,cat,cat_title,name,price_from,sort").eq("active", true).order("sort"),
@@ -80,7 +94,12 @@ async function order(body: any, req: Request) {
     total_from: items.reduce((a: number, i: any) => a + (i.price_from || 0), 0) || null,
   };
   if (!items.length && !row.note) fail("Пустая заявка");
-  const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim();
+  // bots: hidden field filled or form sent faster than a human can
+  if (str(body.website, 200) || (Number.isFinite(+body.t) && +body.t < 2500)) return { ok: true, id: 0 };
+  const recent = new Date(Date.now() - 10 * 60_000).toISOString();
+  const { count: total } = await sb.from("hm_orders").select("id", { count: "exact", head: true }).gte("created_at", recent);
+  if ((total ?? 0) >= 30) fail("Сейчас слишком много заявок, позвоните или напишите в WhatsApp", 429);
+  const ip = clientIp(req);
   const ip_hash = ip ? (await sha("hm:" + ip)).slice(0, 24) : null;
   if (ip_hash) {
     const since = new Date(Date.now() - 10 * 60_000).toISOString();
@@ -141,11 +160,15 @@ async function pairFinish() {
 async function loginRequest() {
   const a = await getAdmin();
   if (!a.chat_id) fail("Сначала привяжите Telegram");
+  if (locked(a)) fail("Вход временно заблокирован из-за неверных кодов. Попробуйте через час", 429);
   if (a.last_code_at && Date.now() - new Date(a.last_code_at).getTime() < 45_000) fail("Код уже отправлен. Новый можно запросить через минуту");
+  const inWindow = a.req_window && Date.now() - new Date(a.req_window).getTime() < 3600_000;
+  if (inWindow && a.req_count >= 6) fail("Слишком много запросов кода. Попробуйте через час", 429);
   const code = digits6();
   await setAdmin({
     code_hash: await sha(code), code_expires: new Date(Date.now() + 5 * 60_000).toISOString(),
     code_attempts: 0, last_code_at: new Date().toISOString(),
+    req_count: inWindow ? a.req_count + 1 : 1, req_window: inWindow ? a.req_window : new Date().toISOString(),
   });
   await tg("sendMessage", { chat_id: a.chat_id, text: `Код для входа в админку: ${code}\n\nДействует 5 минут. Если это не вы — ничего не делайте, без кода никто не войдёт.` });
   return { ok: true };
@@ -153,14 +176,21 @@ async function loginRequest() {
 
 async function loginVerify(body: any) {
   const a = await getAdmin();
+  if (locked(a)) fail("Вход временно заблокирован из-за неверных кодов. Попробуйте через час", 429);
   const code = str(body.code, 10).replace(/\D/g, "");
   if (!a.code_hash || !a.code_expires || new Date(a.code_expires) < new Date()) fail("Код истёк, запросите новый");
   if (a.code_attempts >= 5) fail("Слишком много попыток, запросите новый код");
   if ((await sha(code)) !== a.code_hash) {
-    await setAdmin({ code_attempts: a.code_attempts + 1 });
+    const fails = (a.fail_count || 0) + 1;
+    if (fails >= 10) {
+      await setAdmin({ code_attempts: a.code_attempts + 1, fail_count: 0, code_hash: null, lock_until: new Date(Date.now() + 3600_000).toISOString() });
+      try { await tg("sendMessage", { chat_id: a.chat_id, text: "⚠️ 10 неверных кодов подряд. Вход в админку заблокирован на час. Если это были не вы — кто-то пытается подобрать код, ничего делать не нужно." }); } catch (_) { /* ignore */ }
+      fail("Слишком много ошибок. Вход заблокирован на час", 429);
+    }
+    await setAdmin({ code_attempts: a.code_attempts + 1, fail_count: fails });
     fail("Неверный код");
   }
-  await setAdmin({ code_hash: null, code_expires: null, code_attempts: 0 });
+  await setAdmin({ code_hash: null, code_expires: null, code_attempts: 0, fail_count: 0, lock_until: null });
   const token = rnd(32);
   must(await sb.from("hm_admin_sessions").insert({ token_hash: await sha(token), expires_at: new Date(Date.now() + 30 * 86400_000).toISOString() }));
   await sb.from("hm_admin_sessions").delete().lt("expires_at", new Date().toISOString());
@@ -211,6 +241,11 @@ async function uploadUrl(body: any) {
   return { signedUrl: d.signedUrl, publicUrl: sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl };
 }
 
+async function logoutAll() {
+  await sb.from("hm_admin_sessions").delete().neq("token_hash", "");
+  return { ok: true };
+}
+
 async function logout(token: string) {
   await sb.from("hm_admin_sessions").delete().eq("token_hash", await sha(token));
   return { ok: true };
@@ -221,7 +256,7 @@ Deno.serve(async (req) => {
   try {
     const url = new URL(req.url);
     if (req.method === "GET") {
-      if (url.searchParams.get("action") === "content") return json(await content(), 200, { "Cache-Control": "public, max-age=30" });
+      if (url.searchParams.get("action") === "content") return json(await content(), 200, { "Cache-Control": "public, max-age=30, s-maxage=60, stale-while-revalidate=600", "CDN-Cache-Control": "public, max-age=60, stale-while-revalidate=600" });
       return json({ ok: true });
     }
     const raw = await req.text();
@@ -241,6 +276,7 @@ Deno.serve(async (req) => {
     switch (body.action) {
       case "me": return json({ ok: true });
       case "logout": return json(await logout(token));
+      case "logout_all": return json(await logoutAll());
       case "list": return json(await list(body));
       case "save": return json(await save(body));
       case "delete": return json(await remove(body));
@@ -249,7 +285,8 @@ Deno.serve(async (req) => {
     }
     fail("Неизвестное действие");
   } catch (e) {
-    const s = e instanceof HttpError ? e.status : 500;
-    return json({ error: e instanceof Error ? e.message : "Ошибка" }, s);
+    if (e instanceof HttpError) return json({ error: e.message }, e.status);
+    console.error(e);
+    return json({ error: "Ошибка сервера, попробуйте ещё раз" }, 500);
   }
 });

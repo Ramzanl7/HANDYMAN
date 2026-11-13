@@ -288,6 +288,7 @@ section{position:relative}
 .inp input,.inp select,.inp textarea{border:0;border-bottom:2px solid var(--ink);background:transparent;padding:6px 2px;font-family:var(--sans);font-size:16px;letter-spacing:0;text-transform:none;color:var(--ink);border-radius:0;outline:none}
 .inp input:focus,.inp select:focus,.inp textarea:focus{border-color:var(--red)}
 .inp textarea{resize:vertical;min-height:44px}
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
 .slip .btn{width:100%;justify-content:center;margin-top:18px}
 .slip .alt{display:block;text-align:center;margin-top:12px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:900px){.og{grid-template-columns:1fr}.slip{position:relative;top:0}}
@@ -595,6 +596,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
           <label>Телефон<input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="8 9__ ___-__-__"></label>
           <label>Район / адрес<input id="fArea" placeholder="Например, Ахматовский район"></label>
           <label>Когда удобно<select id="fWhen"><option>Как можно скорее</option><option>Сегодня</option><option>Завтра</option><option>На этой неделе</option><option>Не срочно</option></select></label>
+          <input id="fWeb" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
           <label>Комментарий<textarea id="fNote" rows="2" placeholder="Что сломалось, сколько штук и т.д."></textarea></label>
         </div>
         <a class="btn btn-wa" id="send" href="https://wa.me/79635993601" target="_blank" rel="noopener">Отправить в WhatsApp</a>
@@ -775,7 +777,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     if (!API) return;
     const items = [...sel].map(([name, price_from]) => ({ name, price_from: price_from || null }));
     if (!items.length && !v('#fNote')) return;
-    const payload = { action: 'order', num, items, name: v('#fName'), phone: v('#fPhone'), area: v('#fArea'), when: $('#fWhen').value, note: v('#fNote') };
+    const payload = { action: 'order', num, items, name: v('#fName'), phone: v('#fPhone'), area: v('#fArea'), when: $('#fWhen').value, note: v('#fNote'), website: $('#fWeb').value, t: Math.round(performance.now()) };
     const key = JSON.stringify(payload); if (key === sentKey) return; sentKey = key;
     try { fetch(API, { method: 'POST', keepalive: true, headers: { 'content-type': 'text/plain;charset=UTF-8' }, body: key }); } catch (_) {}
   });
@@ -822,7 +824,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       render();
     }
   };
-  if (API) fetch(API + '?action=content').then(r => r.ok ? r.json() : null).then(d => { if (d && !d.error) applyContent(d); }).catch(() => {});
+  const getJSON = u => fetch(u).then(r => r.ok ? r.json() : Promise.reject());
+  if (API) getJSON('/api/content').catch(() => getJSON(API + '?action=content')).then(d => { if (d && !d.error) applyContent(d); }).catch(() => {});
 
   /* scroll-driven */
   const tagB = $('#tagB'), tagA = $('#tagA'), bpImg = $('.bp img');
