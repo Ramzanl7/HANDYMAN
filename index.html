@@ -172,6 +172,8 @@ section{position:relative}
 .row .add:hover{background:var(--yellow)}
 .row .add.ok{background:var(--ink);color:var(--yellow)}
 .row:hover h3{color:var(--red)}
+.row h3 a{text-decoration:none}
+.svc-links{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px}.svc-links a{text-decoration:underline;text-underline-offset:2px}
 @media(max-width:760px){.row{grid-template-columns:44px 1fr;gap:6px 12px;padding:18px 0}.row p,.row .add{grid-column:2}.row .add{justify-self:start;margin-top:8px}}
 
 /* ---------- TRANSFORM ---------- */
@@ -453,14 +455,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <p class="lead rv d2" data-edit="spec_lead">Список длинный, потому что дома ломается всё подряд. Если вашей задачи тут нет — всё равно спросите.</p>
     </div>
     <div class="rows">
-      <div class="row" data-cat="el" data-img="img/light-after.webp"><span class="n">01</span><h3>Электрика</h3><p>Розетки и выключатели, люстры и светильники, прокладка кабеля, электромонтаж</p><button class="add" type="button">+ в наряд</button></div>
-      <div class="row" data-cat="pl"><span class="n">02</span><h3>Сантехника</h3><p>Смесители и краны, сифоны, унитазы, подключение стиральной машины, протечки</p><button class="add" type="button">+ в наряд</button></div>
-      <div class="row" data-cat="mb" data-img="img/wardrobe-arch.webp"><span class="n">03</span><h3>Сборка мебели</h3><p>Шкафы, кровати, комоды, кухни, столы, стеллажи. Разборка и перестановка</p><button class="add" type="button">+ в наряд</button></div>
-      <div class="row" data-cat="fl" data-img="img/room-after.webp"><span class="n">04</span><h3>Полы</h3><p>Укладка ламината и линолеума, установка плинтусов</p><button class="add" type="button">+ в наряд</button></div>
-      <div class="row" data-cat="dr" data-img="img/office-door.webp"><span class="n">05</span><h3>Двери</h3><p>Замена ручек, петель и замков, регулировка дверей</p><button class="add" type="button">+ в наряд</button></div>
-      <div class="row" data-cat="lv" data-img="img/showroom.webp"><span class="n">06</span><h3>Слаботочка</h3><p>Интернет-кабель, роутеры и Wi‑Fi, ТВ и спутник, кабели и разъёмы</p><button class="add" type="button">+ в наряд</button></div>
-      <div class="row" data-cat="sm" data-img="img/tv-after.webp"><span class="n">07</span><h3>Мелкий ремонт</h3><p>Повесить телевизор, полку, карниз, зеркало. То, что откладывается месяцами</p><button class="add" type="button">+ в наряд</button></div>
-      <div class="row" data-cat="ot" data-img="img/kitchen.webp"><span class="n">08</span><h3>Другое</h3><p>Подключить технику, что-то снять или переставить. Опишите — разберёмся</p><button class="add" type="button">+ в наряд</button></div>
+      <div class="row" data-cat="el" data-img="img/light-after.webp"><span class="n">01</span><h3><a href="/uslugi/elektrik-grozny.html">Электрика</a></h3><p>Розетки и выключатели, люстры и светильники, прокладка кабеля, электромонтаж</p><button class="add" type="button">+ в наряд</button></div>
+      <div class="row" data-cat="pl"><span class="n">02</span><h3><a href="/uslugi/santehnik-grozny.html">Сантехника</a></h3><p>Смесители и краны, сифоны, унитазы, подключение стиральной машины, протечки</p><button class="add" type="button">+ в наряд</button></div>
+      <div class="row" data-cat="mb" data-img="img/wardrobe-arch.webp"><span class="n">03</span><h3><a href="/uslugi/sborka-mebeli-grozny.html">Сборка мебели</a></h3><p>Шкафы, кровати, комоды, кухни, столы, стеллажи. Разборка и перестановка</p><button class="add" type="button">+ в наряд</button></div>
+      <div class="row" data-cat="fl" data-img="img/room-after.webp"><span class="n">04</span><h3><a href="/uslugi/ukladka-laminata-grozny.html">Полы</a></h3><p>Укладка ламината и линолеума, установка плинтусов</p><button class="add" type="button">+ в наряд</button></div>
+      <div class="row" data-cat="dr" data-img="img/office-door.webp"><span class="n">05</span><h3><a href="/uslugi/dveri-grozny.html">Двери</a></h3><p>Замена ручек, петель и замков, регулировка дверей</p><button class="add" type="button">+ в наряд</button></div>
+      <div class="row" data-cat="lv" data-img="img/showroom.webp"><span class="n">06</span><h3><a href="/uslugi/internet-kabel-grozny.html">Слаботочка</a></h3><p>Интернет-кабель, роутеры и Wi‑Fi, ТВ и спутник, кабели и разъёмы</p><button class="add" type="button">+ в наряд</button></div>
+      <div class="row" data-cat="sm" data-img="img/tv-after.webp"><span class="n">07</span><h3><a href="/uslugi/muzh-na-chas-grozny.html">Мелкий ремонт</a></h3><p>Повесить телевизор, полку, карниз, зеркало. То, что откладывается месяцами</p><button class="add" type="button">+ в наряд</button></div>
+      <div class="row" data-cat="ot" data-img="img/kitchen.webp"><span class="n">08</span><h3><a href="/uslugi/ustanovka-tehniki-grozny.html">Другое</a></h3><p>Подключить технику, что-то снять или переставить. Опишите — разберёмся</p><button class="add" type="button">+ в наряд</button></div>
     </div>
   </div>
 </section>
@@ -730,7 +732,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   </div>
 </section>
 
-<footer><div class="wrap"><span>© <span id="yr"></span> Handyman Грозный · мастер Рамзан · <a href="/privacy.html" style="text-decoration:underline">Политика конфиденциальности</a></span><a href="tel:+79635993601" data-phone>8 963 599‑36‑01</a></div></footer>
+<footer><div class="wrap" style="display:block"><nav class="svc-links" aria-label="Услуги"><a href="/uslugi/">Все услуги:</a><a href="/uslugi/elektrik-grozny.html">Электрик</a><a href="/uslugi/santehnik-grozny.html">Сантехник</a><a href="/uslugi/sborka-mebeli-grozny.html">Сборка мебели</a><a href="/uslugi/ukladka-laminata-grozny.html">Ламинат и линолеум</a><a href="/uslugi/dveri-grozny.html">Двери</a><a href="/uslugi/internet-kabel-grozny.html">Интернет и ТВ кабель</a><a href="/uslugi/muzh-na-chas-grozny.html">Муж на час</a><a href="/uslugi/ustanovka-tehniki-grozny.html">Установка техники</a></nav></div><div class="wrap" style="margin-top:12px"><span>© <span id="yr"></span> Handyman Грозный · мастер Рамзан · <a href="/privacy.html" style="text-decoration:underline">Политика конфиденциальности</a></span><a href="tel:+79635993601" data-phone>8 963 599‑36‑01</a></div></footer>
 <a href="#order" class="fab" id="fab">✎ Написать задачу</a>
 
 <script src="/config.js"></script>

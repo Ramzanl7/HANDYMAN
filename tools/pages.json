@@ -1,0 +1,42 @@
+[
+ {
+  "cat": "el",
+  "slug": "elektrik-grozny",
+  "short": "Электрик"
+ },
+ {
+  "cat": "pl",
+  "slug": "santehnik-grozny",
+  "short": "Сантехник"
+ },
+ {
+  "cat": "mb",
+  "slug": "sborka-mebeli-grozny",
+  "short": "Сборка мебели"
+ },
+ {
+  "cat": "fl",
+  "slug": "ukladka-laminata-grozny",
+  "short": "Ламинат и линолеум"
+ },
+ {
+  "cat": "dr",
+  "slug": "dveri-grozny",
+  "short": "Двери"
+ },
+ {
+  "cat": "lv",
+  "slug": "internet-kabel-grozny",
+  "short": "Интернет и ТВ кабель"
+ },
+ {
+  "cat": "sm",
+  "slug": "muzh-na-chas-grozny",
+  "short": "Муж на час"
+ },
+ {
+  "cat": "ot",
+  "slug": "ustanovka-tehniki-grozny",
+  "short": "Установка техники"
+ }
+]
