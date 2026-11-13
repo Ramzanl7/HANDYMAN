@@ -825,7 +825,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     }
   };
   const getJSON = u => fetch(u).then(r => r.ok ? r.json() : Promise.reject());
-  if (API) getJSON('/api/content').catch(() => getJSON(API + '?action=content')).then(d => { if (d && !d.error) applyContent(d); }).catch(() => {});
+  if (window.HM_CONTENT) getJSON(window.HM_CONTENT).catch(() => getJSON(API + '?action=content')).then(d => { if (d && !d.error) applyContent(d); }).catch(() => {});
 
   /* scroll-driven */
   const tagB = $('#tagB'), tagA = $('#tagA'), bpImg = $('.bp img');

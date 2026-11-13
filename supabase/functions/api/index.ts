@@ -65,12 +65,25 @@ async function requireSession(req: Request) {
 }
 
 // ---------- public ----------
+// Visitors read a static snapshot (Storage CDN), so page views never hit this function.
+const SNAPSHOT = "content.json";
 let contentCache: { at: number; data: unknown } | null = null;
+async function writeSnapshot(data: unknown) {
+  const { error } = await sb.storage.from(BUCKET).upload(SNAPSHOT, new Blob([JSON.stringify(data)], { type: "application/json" }), {
+    upsert: true, contentType: "application/json", cacheControl: "60",
+  });
+  if (error) console.error("snapshot", error);
+}
 async function content() {
   if (contentCache && Date.now() - contentCache.at < 30_000) return contentCache.data;
   const data = await loadContent();
   contentCache = { at: Date.now(), data };
+  await writeSnapshot(data);
   return data;
+}
+async function republish() {
+  contentCache = null;
+  await content();
 }
 async function loadContent() {
   const [t, s, c, g] = await Promise.all([
@@ -278,9 +291,10 @@ Deno.serve(async (req) => {
       case "logout": return json(await logout(token));
       case "logout_all": return json(await logoutAll());
       case "list": return json(await list(body));
-      case "save": return json(await save(body));
-      case "delete": return json(await remove(body));
-      case "reorder": return json(await reorder(body));
+      case "save": { const r = await save(body); if (body.table !== "orders") await republish(); return json(r); }
+      case "delete": { const r = await remove(body); if (body.table !== "orders") await republish(); return json(r); }
+      case "reorder": { const r = await reorder(body); await republish(); return json(r); }
+      case "publish": await republish(); return json({ ok: true });
       case "upload_url": return json(await uploadUrl(body));
     }
     fail("Неизвестное действие");
