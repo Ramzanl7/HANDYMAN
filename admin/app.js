@@ -69,6 +69,8 @@
   function showPanel() {
     $('#login').hidden = true; $('#panel').hidden = false; $('#logout').hidden = false; $('#logoutAll').hidden = false;
     go(location.hash.slice(1) || 'orders');
+    try { if (!sessionStorage.getItem('hm_bot')) call('bot_setup').then(() => sessionStorage.setItem('hm_bot', '1')).catch(() => {}); } catch {}
+    call('list', { table: 'reviews' }).then(r => { reviews = r.rows; setRBadge(); }).catch(() => {});
   }
   function go(t) {
     if (!VIEWS[t]) t = 'orders';
@@ -93,9 +95,27 @@
     const list = orders.filter(F[oFilter]);
     const cnt = k => orders.filter(F[k]).length;
     $('#view').innerHTML = `<h1>Заявки</h1><p class="sub">Каждый наряд с сайта сохраняется здесь и приходит вам в Telegram.</p>
+      ${statsHTML()}
       <div class="filters">${[['active', 'Активные'], ['new', 'Новые'], ['done', 'Готово'], ['all', 'Все']].map(([k, t]) => `<button data-f="${k}" class="${k === oFilter ? 'on' : ''}">${t} · ${cnt(k)}</button>`).join('')}</div>
       ${list.length ? list.map(orderCard).join('') : '<div class="empty">Пока пусто. Как только кто-то отправит наряд с сайта — он появится здесь.</div>'}`;
     $('.filters').onclick = e => { const b = e.target.closest('button'); if (b) { oFilter = b.dataset.f; renderOrders(); } };
+    $('#backupNow').onclick = e => busy(e.currentTarget, async () => { try { await call('backup_now'); toast('Файл отправлен в Telegram'); } catch (err) { toast(err.message, 1); } });
+  }
+  function statsHTML() {
+    const now = new Date(), m0 = new Date(now.getFullYear(), now.getMonth(), 1);
+    const doneAt = o => new Date(o.done_at || o.created_at);
+    const months = [...Array(6)].map((_, i) => { const d = new Date(now.getFullYear(), now.getMonth() - 5 + i, 1); return { d, sum: 0, n: 0 }; });
+    orders.filter(o => o.status === 'done').forEach(o => { const t = doneAt(o); const m = months.find(x => x.d.getFullYear() === t.getFullYear() && x.d.getMonth() === t.getMonth()); if (m) { m.sum += o.amount || 0; m.n++; } });
+    const cur = months[5], inMonth = orders.filter(o => new Date(o.created_at) >= m0).length;
+    const paid = orders.filter(o => o.status === 'done' && o.amount && doneAt(o) >= m0);
+    const avg = paid.length ? Math.round(paid.reduce((a, o) => a + o.amount, 0) / paid.length) : 0;
+    const max = Math.max(1, ...months.map(m => m.sum));
+    const total = orders.filter(o => o.status === 'done').reduce((a, o) => a + (o.amount || 0), 0);
+    return `<section class="stats card">
+      <div class="sgrid"><div><small>Заявок в этом месяце</small><b>${inMonth}</b></div><div><small>Выполнено</small><b>${cur.n}</b></div><div><small>Заработано</small><b>${rub(cur.sum)}</b></div><div><small>Средний чек</small><b>${avg ? rub(avg) : '—'}</b></div></div>
+      <div class="bars">${months.map(m => `<div title="${rub(m.sum)}"><i style="height:${Math.round(m.sum / max * 100)}%"></i><span>${m.d.toLocaleDateString('ru-RU', { month: 'short' }).replace('.', '')}</span></div>`).join('')}</div>
+      <div class="sfoot"><span>Всего через сайт: <b>${rub(total)}</b></span><button class="btn sm" id="backupNow">💾 Копия в Telegram</button></div>
+    </section>`;
   }
   function orderCard(o) {
     const ph = (o.phone || '').replace(/[^\d+]/g, '');
@@ -107,17 +127,21 @@
         ${o.total_from ? `<dt>Примерно</dt><dd><b>от ${rub(o.total_from)}</b></dd>` : ''}
         ${o.name ? `<dt>Имя</dt><dd>${esc(o.name)}</dd>` : ''}
         ${o.phone ? `<dt>Телефон</dt><dd><a href="tel:${esc(ph)}">${esc(o.phone)}</a></dd>` : ''}
-        ${o.area ? `<dt>Район</dt><dd>${esc(o.area)}</dd>` : ''}
+        ${o.area ? `<dt>Адрес</dt><dd>${esc(o.area)}</dd>` : ''}
+        ${o.lat != null ? `<dt>Точка</dt><dd><a href="https://yandex.ru/maps/?pt=${o.lon},${o.lat}&z=17&l=map" target="_blank" rel="noopener">📍 Открыть в Яндекс Картах</a></dd>` : ''}
         ${o.when_text ? `<dt>Когда</dt><dd>${esc(o.when_text)}</dd>` : ''}
         ${o.note ? `<dt>Коммент.</dt><dd>${esc(o.note)}</dd>` : ''}
         ${o.consent_at ? `<dt>Согласие</dt><dd><small>✓ ${fmtDate(o.consent_at)}</small></dd>` : ''}
       </dl>
+      ${o.status === 'done' ? `<label class="amt">Сколько взяли<input inputmode="numeric" class="amount" value="${o.amount ?? ''}" placeholder="—"><span>₽</span></label>` : ''}
       <textarea class="note" placeholder="Заметка для себя: адрес, цена, договорились на…">${esc(o.admin_note)}</textarea>
       <div class="acts">
         ${ph ? `<a class="btn sm" href="tel:${esc(ph)}">☎ Позвонить</a><a class="btn sm" href="${wa}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
         ${o.status !== 'work' ? `<button class="btn sm" data-s="work">В работу</button>` : ''}
         ${o.status !== 'done' ? `<button class="btn sm y" data-s="done">✓ Готово</button>` : ''}
         ${o.status !== 'cancel' ? `<button class="btn sm" data-s="cancel">Отмена</button>` : `<button class="btn sm" data-s="new">Вернуть</button>`}
+        ${o.status === 'done' && ph ? `<button class="btn sm" data-review>⭐ Попросить отзыв</button>` : ''}
+        ${o.status === 'done' ? `<button class="btn sm" data-warranty>📄 Гарантийный талон</button>` : ''}
       </div></article>`;
   }
   document.addEventListener('click', async e => {
@@ -127,6 +151,35 @@
       try { await call('save', { table: 'orders', row: { id, status: s } }); const o = orders.find(x => x.id === id); o.status = s; setBadge(); renderOrders(); toast(ST[s]); }
       catch (err) { toast(err.message, 1); }
     });
+  });
+  document.addEventListener('change', async e => {
+    if (!e.target.matches('.order .amount')) return;
+    const id = +e.target.closest('.order').dataset.id, v = e.target.value.replace(/\D/g, ''); e.target.value = v;
+    try { await call('save', { table: 'orders', row: { id, amount: v ? +v : null } }); orders.find(x => x.id === id).amount = v ? +v : null; toast('Сумма сохранена'); } catch (err) { toast(err.message, 1); }
+  });
+  const waOf = phone => { const d = (phone || '').replace(/\D/g, ''); return d.length === 11 && d[0] === '8' ? '7' + d.slice(1) : d; };
+  document.addEventListener('click', async e => {
+    const b = e.target.closest('.order [data-review]'); if (!b) return;
+    const o = orders.find(x => x.id === +b.closest('.order').dataset.id);
+    const w = window.open('', '_blank');
+    try { const { text } = await call('review_request_text', { name: (o.name || '').split(' ')[0] }); const url = `https://wa.me/${waOf(o.phone)}?text=${encodeURIComponent(text)}`; if (w) w.location = url; else location.href = url; }
+    catch (err) { if (w) w.close(); toast(err.message, 1); }
+  });
+  document.addEventListener('click', e => {
+    const b = e.target.closest('.order [data-warranty]'); if (!b) return;
+    const o = orders.find(x => x.id === +b.closest('.order').dataset.id);
+    const works = (o.items || []).map(i => i.name).join('\n') || o.note || '';
+    openDlg(`<h2>Гарантийный талон</h2>
+      <p class="sub" style="margin:0">Клиент получит ссылку на красивый талон с вашими контактами. Его можно открыть с телефона или распечатать.</p>
+      <div class="f"><label>Клиент</label><input name="client_name" value="${esc(o.name || '')}"></div>
+      <div class="f"><label>Что сделано</label><textarea name="works" rows="4" required>${esc(works)}</textarea></div>
+      <div class="two"><div class="f"><label>Гарантия, месяцев</label><input name="months" inputmode="numeric" value="6"></div><div class="f"><label>Примечание</label><input name="note" placeholder="необязательно"></div></div>`,
+      async d => {
+        const r = await call('warranty_create', { order_id: o.id, client_name: d.client_name, works: d.works, months: +d.months || 6, note: d.note });
+        const msg = `${(d.client_name || '').split(' ')[0] || 'Здравствуйте'}, это гарантийный талон на работу: ${r.url}\nСохраните ссылку — если что-то пойдёт не так, просто напишите мне.`;
+        setTimeout(() => openDlg(`<h2>Талон готов ✓</h2><p class="sub" style="margin:0">Ссылка: <a href="${r.url}" target="_blank" rel="noopener">${r.url.replace('https://', '')}</a></p>
+          <p style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn ink" href="https://wa.me/${waOf(o.phone)}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">Отправить в WhatsApp</a><a class="btn" href="${r.url}" target="_blank" rel="noopener">Открыть</a></p>`, async () => {}), 50);
+      });
   });
   document.addEventListener('change', async e => {
     if (!e.target.matches('.order .note')) return;
@@ -296,7 +349,33 @@
     }));
   }
 
-  const VIEWS = { orders: vOrders, cases: vCases, gallery: vGallery, services: vServices, texts: vTexts };
+  /* ---------- reviews ---------- */
+  let reviews = [], rFilter = 'pending';
+  const RS = { pending: 'На проверке', approved: 'Опубликован', hidden: 'Скрыт' };
+  const setRBadge = () => { const n = reviews.filter(r => r.status === 'pending').length; $('#rbadge').hidden = !n; $('#rbadge').textContent = n; };
+  async function vReviews() { reviews = (await call('list', { table: 'reviews' })).rows; setRBadge(); renderReviews(); }
+  function renderReviews() {
+    const list = reviews.filter(r => rFilter === 'all' || r.status === rFilter);
+    const approved = reviews.filter(r => r.status === 'approved');
+    const avg = approved.length ? (approved.reduce((a, r) => a + r.rating, 0) / approved.length).toFixed(1) : '—';
+    $('#view').innerHTML = `<h1>Отзывы</h1><p class="sub">Отзыв появляется на сайте только после вашего «Опубликовать». Средняя оценка на сайте: <b>${avg}</b> (${approved.length}).</p>
+      <div class="filters">${[['pending', 'На проверке'], ['approved', 'Опубликованы'], ['hidden', 'Скрыты'], ['all', 'Все']].map(([k, t]) => `<button data-f="${k}" class="${k === rFilter ? 'on' : ''}">${t} · ${k === 'all' ? reviews.length : reviews.filter(r => r.status === k).length}</button>`).join('')}</div>
+      ${list.length ? list.map(r => `<article class="card order rev" data-id="${r.id}">
+        <div class="hd"><b>${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)} · ${esc(r.name)}</b><span>${fmtDate(r.created_at)}</span><span class="st ${r.status === 'approved' ? 'done' : r.status === 'hidden' ? 'cancel' : 'new'}">${RS[r.status]}</span></div>
+        <p style="white-space:pre-wrap">${esc(r.text)}</p>
+        <textarea class="note reply" placeholder="Ваш ответ на отзыв (будет виден на сайте)">${esc(r.reply)}</textarea>
+        <div class="acts">${r.status !== 'approved' ? '<button class="btn sm y" data-rs="approved">✓ Опубликовать</button>' : ''}${r.status !== 'hidden' ? '<button class="btn sm" data-rs="hidden">Скрыть</button>' : ''}<button class="btn sm del" data-rdel>Удалить</button></div>
+      </article>`).join('') : '<div class="empty">Здесь пока пусто</div>'}`;
+    $('.filters').onclick = e => { const b = e.target.closest('button'); if (b) { rFilter = b.dataset.f; renderReviews(); } };
+    $$('#view .rev').forEach(card => {
+      const id = +card.dataset.id, r = reviews.find(x => x.id === id);
+      card.querySelectorAll('[data-rs]').forEach(b => b.onclick = () => busy(b, async () => { try { await call('save', { table: 'reviews', row: { id, status: b.dataset.rs } }); r.status = b.dataset.rs; setRBadge(); renderReviews(); toast(RS[r.status]); } catch (e) { toast(e.message, 1); } }));
+      card.querySelector('[data-rdel]').onclick = async () => { if (!confirm('Удалить отзыв навсегда?')) return; try { await call('delete', { table: 'reviews', id }); reviews = reviews.filter(x => x.id !== id); setRBadge(); renderReviews(); } catch (e) { toast(e.message, 1); } };
+      card.querySelector('.reply').onchange = async ev => { try { await call('save', { table: 'reviews', row: { id, reply: ev.target.value } }); r.reply = ev.target.value; toast('Ответ сохранён'); } catch (e) { toast(e.message, 1); } };
+    });
+  }
+
+  const VIEWS = { orders: vOrders, reviews: vReviews, cases: vCases, gallery: vGallery, services: vServices, texts: vTexts };
 
   /* ---------- start ---------- */
   if (!API) { document.body.innerHTML = '<div class="wrap"><h1>Не настроено</h1><p>В config.js нет адреса API.</p></div>'; return; }

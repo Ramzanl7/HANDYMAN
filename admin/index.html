@@ -52,13 +52,13 @@ h1{font-family:var(--head);text-transform:uppercase;font-size:clamp(30px,6vw,44p
 .msg{font-family:var(--mono);font-size:13px;margin-top:12px;min-height:18px}
 .msg.err{color:var(--red)}
 /* tabs */
-.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);background:var(--ink);padding-bottom:env(safe-area-inset-bottom)}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(6,1fr);background:var(--ink);padding-bottom:env(safe-area-inset-bottom)}
 .tabs button{background:none;border:0;color:#aab3c7;font-family:var(--mono);font-size:11px;letter-spacing:.04em;padding:10px 2px 12px;cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;gap:3px}
 .tabs button i{font-style:normal;font-size:20px;line-height:1}
 .tabs button.on{color:var(--yellow)}
 .tabs button.on::before{content:"";position:absolute;top:0;left:20%;right:20%;height:3px;background:var(--yellow)}
 .badge{position:absolute;top:5px;right:calc(50% - 22px);background:var(--red);color:#fff;font-size:10px;border-radius:9px;padding:1px 6px;font-weight:600}
-@media(min-width:900px){.tabs{top:56px;bottom:auto;left:50%;transform:translateX(-50%);width:min(980px,100%);grid-template-columns:repeat(5,auto);justify-content:start;gap:4px;background:transparent;padding:0 16px}
+@media(min-width:900px){.tabs{top:56px;bottom:auto;left:50%;transform:translateX(-50%);width:min(980px,100%);grid-template-columns:repeat(6,auto);justify-content:start;gap:4px;background:transparent;padding:0 16px}
   .tabs button{flex-direction:row;color:var(--ink2);font-size:13px;padding:14px 12px}.tabs button.on{color:var(--ink)}.tabs button.on::before{top:auto;bottom:0;left:0;right:0;background:var(--red)}
   .tabs button i{font-size:16px}.badge{position:static;margin-left:2px}.wrap{padding-top:70px}}
 /* filters */
@@ -79,6 +79,18 @@ h1{font-family:var(--head);text-transform:uppercase;font-size:clamp(30px,6vw,44p
 .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .acts .btn{flex:1 1 auto}
 .note{width:100%;margin-top:10px;border:1.5px solid var(--line);background:#fff;padding:8px;font-size:14px;min-height:40px;resize:vertical}
+.stats{padding:14px 16px}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sgrid small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.sgrid b{font-family:var(--head);font-size:clamp(20px,4vw,28px)}
+.bars{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;height:90px;margin:14px 0 6px;align-items:end}
+.bars div{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+.bars i{display:block;width:100%;min-height:2px;background:var(--yellow);border:1.5px solid var(--ink)}
+.bars span{font-family:var(--mono);font-size:10px;color:var(--ink2)}
+.sfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-top:1.5px dashed var(--line);padding-top:10px;font-size:14px}
+.amt{display:flex;align-items:center;gap:8px;margin-top:10px;font-family:var(--mono);font-size:12px;text-transform:uppercase;color:var(--ink2)}
+.amt input{width:120px;border:1.5px solid var(--ink);background:#fff;padding:7px 8px;font-family:var(--head);font-size:20px;text-align:right}
+@media(max-width:560px){.sgrid{grid-template-columns:1fr 1fr}.tabs button{font-size:10px}}
 .empty{text-align:center;color:var(--ink2);padding:40px 10px;font-family:var(--mono);font-size:13px}
 /* lists */
 .row{display:flex;gap:12px;align-items:center;cursor:pointer}
@@ -178,6 +190,7 @@ dialog h2{font-family:var(--head);text-transform:uppercase;font-size:26px}
 <div id="panel" hidden>
   <nav class="tabs" id="tabs">
     <button data-tab="orders" class="on"><i>✉</i>Заявки<span class="badge" id="badge" hidden></span></button>
+    <button data-tab="reviews"><i>★</i>Отзывы<span class="badge" id="rbadge" hidden></span></button>
     <button data-tab="cases"><i>◧</i>Работы</button>
     <button data-tab="gallery"><i>▦</i>Фото</button>
     <button data-tab="services"><i>₽</i>Цены</button>
