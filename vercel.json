@@ -18,7 +18,7 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+          "value": "camera=(), microphone=(), geolocation=(self), payment=(), usb=()"
         },
         {
           "key": "Cross-Origin-Opener-Policy",
@@ -26,7 +26,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://yywifvdegxqswtbuucuw.supabase.co; connect-src 'self' https://yywifvdegxqswtbuucuw.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://yywifvdegxqswtbuucuw.supabase.co https://tile.openstreetmap.org https://mc.yandex.ru https://mc.yandex.com; connect-src 'self' https://yywifvdegxqswtbuucuw.supabase.co https://nominatim.openstreetmap.org https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com; frame-src https://mc.yandex.ru https://mc.yandex.com; child-src blob: https://mc.yandex.ru https://mc.yandex.com; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
         }
       ]
     },

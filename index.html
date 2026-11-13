@@ -310,7 +310,51 @@ section{position:relative}
 .consent a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
 .consent.err{color:var(--red)}.consent.err .cbx{border-color:var(--red);animation:shake .4s}
 @keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
-.btn-wa.off{opacity:.45;box-shadow:none;filter:grayscale(.6)}
+.btn-wa.off,.btn-site.off{opacity:.45;box-shadow:none;filter:grayscale(.6)}
+.btn-site{width:100%;justify-content:center;margin-top:18px}
+.or{display:flex;align-items:center;gap:10px;margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink2);text-transform:uppercase}
+.or::before,.or::after{content:"";flex:1;height:1.5px;background:var(--line)}
+.slip .btn-wa{margin-top:12px}
+.sendmsg{font-family:var(--mono);font-size:12px;color:var(--red);min-height:0;margin-top:8px}
+.sendmsg:empty{display:none}
+.inp label.err input{border-color:var(--red)}
+.addr{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+.mapbtn{border:2px solid var(--ink);background:var(--yellow);font-family:var(--mono);font-size:12px;font-weight:600;padding:8px 10px;cursor:pointer;white-space:nowrap}
+.mapbtn.on{background:var(--ink);color:var(--yellow)}
+.mapbox{border:2px solid var(--ink);margin-top:4px}
+#map{height:240px;background:var(--paper2);position:relative;isolation:isolate;z-index:0}
+.maptools{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 8px;border-top:2px solid var(--ink);font-family:var(--mono);font-size:11px;color:var(--ink2);flex-wrap:wrap}
+.maptools button{border:1.5px solid var(--ink);background:var(--paper);font:inherit;font-weight:600;color:var(--ink);padding:5px 8px;cursor:pointer}
+.donebox{position:absolute;inset:0;background:var(--paper);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:14px;padding:30px 24px;z-index:3}
+.donebox[hidden]{display:none}
+.donebox h3{font-family:var(--head);text-transform:uppercase;font-size:34px;line-height:1}
+.donebox p{color:var(--ink2)}
+.donebox .stamp{position:static;opacity:.9;transform:rotate(-8deg);animation:stamp .45s cubic-bezier(.2,1.4,.4,1)}
+/* reviews */
+.rsum{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.rsum b{font-family:var(--head);font-size:64px;line-height:1}
+.stars{color:#e0a800;font-size:24px;letter-spacing:2px}
+.rsum small{font-family:var(--mono);font-size:12px;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em}
+.rlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.rcard{background:var(--paper);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:18px 20px;position:relative}
+.rcard .stars{font-size:18px}
+.rcard h4{font-family:var(--head);text-transform:uppercase;font-size:22px;margin:6px 0 2px}
+.rcard time{font-family:var(--mono);font-size:11px;color:var(--ink2)}
+.rcard p{margin-top:10px}
+.rcard .reply{margin-top:12px;padding:10px 12px;border-left:3px solid var(--yellow);background:rgba(255,212,0,.12);font-size:14px}
+.rcard .reply b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.rempty{font-family:var(--hand);font-size:28px;color:var(--ink2)}
+.rform{margin-top:34px;max-width:560px;background:var(--paper);border:2px solid var(--ink);padding:22px;display:grid;gap:12px;box-shadow:8px 8px 0 var(--yellow),8px 8px 0 2px var(--ink)}
+.rform h3{font-family:var(--head);text-transform:uppercase;font-size:28px}
+.rform label:not(.consent){display:grid;gap:4px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.rform input:not([type=checkbox]),.rform textarea{border:0;border-bottom:2px solid var(--ink);background:transparent;padding:6px 2px;font-family:var(--sans);font-size:16px;color:var(--ink);outline:none;border-radius:0;resize:vertical}
+.rform input:focus,.rform textarea:focus{border-color:var(--red)}
+.rstars{display:flex;gap:4px}
+.rstars button{font-size:34px;line-height:1;background:none;border:0;color:#c9c3b4;cursor:pointer;padding:0 2px;transition:transform .15s,color .15s}
+.rstars button.on{color:#e0a800}.rstars button:hover{transform:scale(1.15)}
+.rstars.err button{color:var(--red)}
+.rform .consent{margin-top:0}
+.rform.sent{place-items:start}
 .slip .alt{display:block;text-align:center;margin-top:12px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:900px){.og{grid-template-columns:1fr}.slip{position:relative;top:0}}
 
@@ -356,7 +400,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <div class="wrap">
     <a href="#top" class="logo" aria-label="Handyman Грозный — на главную"><span class="lvl"><i id="bub"></i></span><span class="lt">HANDYMAN<small>ГРОЗНЫЙ</small></span></a>
     <nav class="nav">
-      <a href="#spec">Работы</a><a href="#cases">Кейсы</a><a href="#master">Мастер</a><a href="#order">Наряд</a><a href="#faq">Вопросы</a>
+      <a href="#spec">Работы</a><a href="#cases">Кейсы</a><a href="#master">Мастер</a><a href="#order">Наряд</a><a href="#reviews">Отзывы</a><a href="#faq">Вопросы</a>
     </nav>
     <a href="tel:+79635993601" class="btn btn-ink">☎ <span class="full" data-phone>8 963 599-36-01</span><span class="short">Позвонить</span></a>
   </div>
@@ -614,24 +658,54 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <div class="total" id="total" hidden></div>
         <div class="inp">
           <label>Имя<input id="fName" autocomplete="name" placeholder="Как к вам обращаться"></label>
-          <label>Телефон<input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="8 9__ ___-__-__"></label>
-          <label>Район / адрес<input id="fArea" placeholder="Например, Ахматовский район"></label>
+          <label id="phoneLbl">Телефон<input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="8 9__ ___-__-__"></label>
+          <div class="addr"><label>Адрес<input id="fArea" autocomplete="street-address" placeholder="Улица, дом или район"></label><button type="button" class="mapbtn" id="mapBtn">📍 На карте</button></div>
+          <div class="mapbox" id="mapBox" hidden><div id="map" aria-label="Карта для выбора адреса"></div><div class="maptools"><button type="button" id="geoBtn">◎ Где я сейчас</button><span id="mapHint">Нажмите на карту — поставлю точку</span></div></div>
           <label>Когда удобно<select id="fWhen"><option>Как можно скорее</option><option>Сегодня</option><option>Завтра</option><option>На этой неделе</option><option>Не срочно</option></select></label>
           <input id="fWeb" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
           <label>Комментарий<textarea id="fNote" rows="2" placeholder="Что сломалось, сколько штук и т.д."></textarea></label>
         </div>
         <label class="consent" id="consentBox"><input type="checkbox" id="fConsent"><span class="cbx" aria-hidden="true"><svg viewBox="0 0 36 34"><path d="M4 18l8 9L32 4"/></svg></span><span>Согласен на обработку персональных данных и принимаю <a href="/privacy.html" target="_blank" rel="noopener">политику конфиденциальности</a></span></label>
+        <button type="button" class="btn btn-ink btn-site off" id="sendSite" aria-disabled="true">Отправить мастеру <b>→</b></button>
+        <p class="sendmsg" id="sendMsg" role="alert"></p>
+        <div class="or"><span>или</span></div>
         <a class="btn btn-wa off" id="send" href="https://wa.me/79635993601" target="_blank" rel="noopener" aria-disabled="true">Отправить в WhatsApp</a>
         <a class="alt" href="tel:+79635993601">или позвонить: <span data-phone>8 963 599-36-01</span></a>
+        <div class="donebox" id="doneBox" hidden><span class="stamp in">ПРИНЯТО</span><h3>Заявка № <span id="doneNum"></span> у мастера</h3><p>Рамзан уже получил уведомление и перезвонит вам. Если срочно — позвоните сами: <a href="tel:+79635993601"><span data-phone>8 963 599-36-01</span></a></p><button type="button" class="btn btn-line" id="newOrder">Новая заявка</button></div>
       </aside>
     </div>
+  </div>
+</section>
+
+<!-- ===== REVIEWS ===== -->
+<section class="sec" id="reviews">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sheet rv">Лист 09 · Отзывы</div>
+        <h2 class="h rv d1">Что говорят<br><em>клиенты</em></h2>
+      </div>
+      <p class="lead rv d2" data-edit="reviews_lead">Пишут те, у кого я уже был. Каждый отзыв — реальный клиент.</p>
+    </div>
+    <div class="rsum" id="rsum" hidden><b id="ravg">5.0</b><span class="stars" id="rstars"></span><small id="rcount"></small></div>
+    <div class="rlist" id="rlist"><p class="rempty">Отзывов на сайте пока нет — станьте первым, кто напишет.</p></div>
+    <form class="rform" id="rform" novalidate>
+      <h3>Оставить отзыв</h3>
+      <div class="rstars" role="radiogroup" aria-label="Оценка"><button type="button" role="radio" aria-checked="false" aria-label="1 из 5" data-v="1">★</button><button type="button" role="radio" aria-checked="false" aria-label="2 из 5" data-v="2">★</button><button type="button" role="radio" aria-checked="false" aria-label="3 из 5" data-v="3">★</button><button type="button" role="radio" aria-checked="false" aria-label="4 из 5" data-v="4">★</button><button type="button" role="radio" aria-checked="false" aria-label="5 из 5" data-v="5">★</button></div>
+      <label>Имя<input id="rName" maxlength="60" autocomplete="given-name" placeholder="Как вас зовут"></label>
+      <label>Отзыв<textarea id="rText" rows="4" maxlength="1500" placeholder="Что делал мастер, как всё прошло"></textarea></label>
+      <input id="rWeb" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="consent" id="rConsentBox"><input type="checkbox" id="rConsent"><span class="cbx" aria-hidden="true"><svg viewBox="0 0 36 34"><path d="M4 18l8 9L32 4"/></svg></span><span>Согласен на обработку персональных данных и принимаю <a href="/privacy.html" target="_blank" rel="noopener">политику конфиденциальности</a></span></label>
+      <button class="btn btn-ink" id="rSend" type="submit">Отправить отзыв</button>
+      <p class="sendmsg" id="rMsg" role="alert"></p>
+    </form>
   </div>
 </section>
 
 <!-- ===== FAQ ===== -->
 <section class="sec" id="faq">
   <div class="wrap">
-    <div class="sec-head"><div><div class="sheet rv">Лист 09 · Вопросы</div><h2 class="h rv d1">Частые<br>вопросы</h2></div></div>
+    <div class="sec-head"><div><div class="sheet rv">Лист 10 · Вопросы</div><h2 class="h rv d1">Частые<br>вопросы</h2></div></div>
     <div class="faq rv">
       <details><summary><span data-edit="faq1_q">Сколько стоит работа?</span> <i>+</i></summary><p data-edit="faq1_a">Зависит от задачи: розетка и кухня стоят по-разному. Пришлите фото в WhatsApp — назову цену до начала. Если на месте окажется сложнее, скажу об этом до того, как начну.</p></details>
       <details><summary><span data-edit="faq2_q">Как быстро приедете?</span> <i>+</i></summary><p data-edit="faq2_a">Зависит от загрузки. Позвоните — скажу честно, когда смогу. Если срочно — например, течёт — так и скажите.</p></details>
@@ -735,6 +809,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     document.documentElement.addEventListener('pointerleave', () => xh.classList.remove('on'));
   }
 
+  /* analytics (Яндекс Метрика: номер счётчика задаётся в админке) */
+  let METRIKA = 0;
+  const goal = g => { try { if (METRIKA && window.ym) window.ym(METRIKA, 'reachGoal', g); } catch (_) {} };
+  const loadMetrika = id => {
+    id = String(id || '').replace(/\D/g, ''); if (!id || METRIKA) return; METRIKA = +id;
+    (function (m, e, t, r, i, k, a) { m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); }; m[i].l = 1 * new Date(); k = e.createElement(t); a = e.getElementsByTagName(t)[0]; k.async = 1; k.src = r; a.parentNode.insertBefore(k, a); })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+    window.ym(METRIKA, 'init', { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true });
+  };
+  document.addEventListener('click', e => { const a = e.target.closest('a'); if (!a) return; if (a.href.startsWith('tel:')) goal('call'); else if (a.href.includes('wa.me/') && a.id !== 'send') goal('whatsapp'); });
+
   /* order (наряд) */
   const API = window.HM_API || '';
   let WA = '79635993601';
@@ -763,6 +847,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   const num = String(Math.floor(100 + Math.random() * 900)); $('#num').textContent = num;
   $('#date').textContent = new Date().toLocaleDateString('ru-RU');
   const v = id => $(id).value.trim();
+  let geo = null;
+  const mapLink = g => `https://yandex.ru/maps/?pt=${g.lon},${g.lat}&z=17&l=map`;
   const total = () => [...sel.values()].reduce((a, p) => a + (p || 0), 0);
   const render = () => {
     list.innerHTML = sel.size ? [...sel].map(([t, p]) => `<li>${tick}<span>${esc(t)}</span>${p ? `<span class="pr">от ${rub(p)}</span>` : ''}</li>`).join('') : '<li class="empty">тут появится то, что вы отметите</li>';
@@ -773,7 +859,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     if (tt) lines.push('Примерно от ' + tt + ' ₽');
     if (v('#fName')) lines.push('Имя: ' + v('#fName'));
     if (v('#fPhone')) lines.push('Телефон: ' + v('#fPhone'));
-    if (v('#fArea')) lines.push('Район: ' + v('#fArea'));
+    if (v('#fArea')) lines.push('Адрес: ' + v('#fArea'));
+    if (geo) lines.push('Точка на карте: ' + mapLink(geo));
     lines.push('Когда: ' + $('#fWhen').value);
     if (v('#fNote')) lines.push('Комментарий: ' + v('#fNote'));
     send.href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(lines.join('\n'));
@@ -793,22 +880,87 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     b.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.12)' }, { transform: 'scale(1)' }], { duration: 300 });
   }));
   render();
+  const qcat = new URLSearchParams(location.search).get('cat');
+  if (qcat) setTimeout(() => { const box = $('#cat-' + qcat); if (box) { const c = box.querySelector('.chip'); if (c && c.getAttribute('aria-pressed') !== 'true') { toggle(c, true); render(); } } $('#order').scrollIntoView(); }, 400);
   // consent is mandatory: without it the order can not be sent anywhere
-  const consent = $('#fConsent'), consentBox = $('#consentBox');
-  const syncConsent = () => { send.classList.toggle('off', !consent.checked); send.setAttribute('aria-disabled', String(!consent.checked)); if (consent.checked) consentBox.classList.remove('err'); };
+  const consent = $('#fConsent'), consentBox = $('#consentBox'), sendSite = $('#sendSite'), sendMsg = $('#sendMsg');
+  const syncConsent = () => { [send, sendSite].forEach(b => { b.classList.toggle('off', !consent.checked); b.setAttribute('aria-disabled', String(!consent.checked)); }); if (consent.checked) consentBox.classList.remove('err'); };
+  const shakeConsent = () => { consentBox.classList.remove('err'); void consentBox.offsetWidth; consentBox.classList.add('err'); };
   consent.addEventListener('change', syncConsent); syncConsent();
   send.addEventListener('click', e => {
     if (consent.checked) return;
-    e.preventDefault(); e.stopImmediatePropagation();
-    consentBox.classList.remove('err'); void consentBox.offsetWidth; consentBox.classList.add('err');
+    e.preventDefault(); e.stopImmediatePropagation(); shakeConsent();
+  });
+  const orderPayload = source => ({ action: 'order', source, num, items: [...sel].map(([name, price_from]) => ({ name, price_from: price_from || null })), name: v('#fName'), phone: v('#fPhone'), area: v('#fArea'), when: $('#fWhen').value, note: v('#fNote'), lat: geo?.lat, lon: geo?.lon, website: $('#fWeb').value, t: Math.round(performance.now()), consent: true });
+  // direct order: saved in the admin panel + Telegram notification, no WhatsApp needed
+  sendSite.addEventListener('click', async () => {
+    sendMsg.textContent = '';
+    if (!consent.checked) return shakeConsent();
+    if (!sel.size && !v('#fNote')) { sendMsg.textContent = 'Отметьте хотя бы одну задачу или напишите комментарий'; return; }
+    if (v('#fPhone').replace(/\D/g, '').length < 10) { $('#phoneLbl').classList.add('err'); $('#fPhone').focus(); sendMsg.textContent = 'Укажите телефон — мастер перезвонит'; return; }
+    if (!API) { sendMsg.textContent = 'Сейчас не получается отправить, напишите в WhatsApp'; return; }
+    const html = sendSite.innerHTML; sendSite.disabled = true; sendSite.innerHTML = 'Отправляю…';
+    try {
+      const r = await fetch(API, { method: 'POST', headers: { 'content-type': 'text/plain;charset=UTF-8' }, body: JSON.stringify(orderPayload('site')) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || j.error) throw new Error(j.error || 'Не получилось отправить');
+      $('#doneNum').textContent = j.num || num; $('#doneBox').hidden = false; goal('order_site');
+      $('#slip').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) { sendMsg.textContent = (err.message || 'Ошибка') + '. Можно отправить в WhatsApp ниже.'; }
+    finally { sendSite.disabled = false; sendSite.innerHTML = html; }
+  });
+  $('#fPhone').addEventListener('input', () => $('#phoneLbl').classList.remove('err'));
+  $('#newOrder').addEventListener('click', () => { sel.clear(); renderCats(); ['#fNote'].forEach(id => $(id).value = ''); render(); $('#doneBox').hidden = true; });
+
+  // map picker (OpenStreetMap tiles; the master gets a Yandex Maps link)
+  let map, marker, autoAddr = '';
+  const loadLeaflet = () => new Promise((ok, no) => {
+    if (window.L) return ok();
+    const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = '/vendor/leaflet/leaflet.css'; document.head.append(css);
+    const js = document.createElement('script'); js.src = '/vendor/leaflet/leaflet.js'; js.onload = ok; js.onerror = no; document.head.append(js);
+  });
+  const pinIcon = () => L.divIcon({ className: '', html: '<div style="width:30px;height:30px;border-radius:50% 50% 50% 0;background:#d6281c;border:3px solid #1d2a44;transform:rotate(-45deg);box-shadow:2px 2px 0 #1d2a44"></div>', iconSize: [30, 30], iconAnchor: [15, 30] });
+  const setPoint = async (lat, lon, zoom) => {
+    geo = { lat: +lat.toFixed(6), lon: +lon.toFixed(6) };
+    if (!marker) { marker = L.marker([lat, lon], { draggable: true, icon: pinIcon() }).addTo(map); marker.on('dragend', () => { const p = marker.getLatLng(); setPoint(p.lat, p.lng); }); }
+    else marker.setLatLng([lat, lon]);
+    if (zoom) map.setView([lat, lon], zoom);
+    $('#mapHint').textContent = 'Точка поставлена ✓ можно перетащить'; render(); goal('map_point');
+    try {
+      const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=18&accept-language=ru`);
+      const j = await r.json(); const a = j.address || {};
+      const line = [a.road, a.house_number].filter(Boolean).join(', ') || a.suburb || a.city_district || j.name || '';
+      const full = [line, a.city || a.town || a.village].filter(Boolean).join(', ');
+      if (full && (!v('#fArea') || v('#fArea') === autoAddr)) { $('#fArea').value = autoAddr = full; render(); }
+    } catch (_) {}
+  };
+  $('#mapBtn').addEventListener('click', async () => {
+    const box = $('#mapBox'), btn = $('#mapBtn');
+    box.hidden = !box.hidden; btn.classList.toggle('on', !box.hidden);
+    if (box.hidden) return;
+    try {
+      await loadLeaflet();
+      if (!map) {
+        map = L.map('map', { zoomControl: true, attributionControl: true }).setView([43.3178, 45.6949], 13);
+        map.attributionControl.setPrefix('Leaflet');
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
+        map.on('click', e => setPoint(e.latlng.lat, e.latlng.lng));
+      }
+      setTimeout(() => map.invalidateSize(), 50);
+    } catch (_) { $('#mapHint').textContent = 'Карта не загрузилась — напишите адрес текстом'; }
+  });
+  $('#geoBtn').addEventListener('click', () => {
+    if (!navigator.geolocation) { $('#mapHint').textContent = 'Телефон не даёт определить место'; return; }
+    $('#mapHint').textContent = 'Определяю…';
+    navigator.geolocation.getCurrentPosition(p => setPoint(p.coords.latitude, p.coords.longitude, 17), () => { $('#mapHint').textContent = 'Нет доступа к геолокации — отметьте точку вручную'; }, { enableHighAccuracy: true, timeout: 12000 });
   });
   // save the order in the admin panel too (WhatsApp still opens via the link)
   let sentKey = '';
   send.addEventListener('click', () => {
     if (!API || !consent.checked) return;
-    const items = [...sel].map(([name, price_from]) => ({ name, price_from: price_from || null }));
-    if (!items.length && !v('#fNote')) return;
-    const payload = { action: 'order', num, items, name: v('#fName'), phone: v('#fPhone'), area: v('#fArea'), when: $('#fWhen').value, note: v('#fNote'), website: $('#fWeb').value, t: Math.round(performance.now()), consent: true };
+    goal('order_whatsapp');
+    const payload = orderPayload('wa');
+    if (!payload.items.length && !payload.note) return;
     const key = JSON.stringify(payload); if (key === sentKey) return; sentKey = key;
     try { fetch(API, { method: 'POST', keepalive: true, headers: { 'content-type': 'text/plain;charset=UTF-8' }, body: key }); } catch (_) {}
   });
@@ -837,8 +989,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <dl>${c.was ? `<dt>Было</dt><dd>${esc(c.was)}</dd>` : ''}${c.did ? `<dt>Сделал</dt><dd>${esc(c.did)}</dd>` : ''}${c.result ? `<dt>Итог</dt><dd class="ok">${esc(c.result)}</dd>` : ''}</dl>
       </div>
     </article>`;
+  const stars = n => '★'.repeat(n) + '☆'.repeat(5 - n);
+  const renderReviews = list => {
+    if (!Array.isArray(list) || !list.length) return;
+    const avg = list.reduce((a, r) => a + r.rating, 0) / list.length;
+    $('#rsum').hidden = false; $('#ravg').textContent = avg.toFixed(1); $('#rstars').textContent = stars(Math.round(avg));
+    $('#rcount').textContent = list.length + ' ' + (list.length % 10 === 1 && list.length % 100 !== 11 ? 'отзыв' : [2, 3, 4].includes(list.length % 10) && ![12, 13, 14].includes(list.length % 100) ? 'отзыва' : 'отзывов');
+    $('#rlist').innerHTML = list.map(r => `<article class="rcard rv"><span class="stars" aria-label="${r.rating} из 5">${stars(r.rating)}</span><h4>${esc(r.name)}</h4><time>${new Date(r.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}</time><p>${esc(r.text)}</p>${r.reply ? `<div class="reply"><b>Ответ мастера</b>${esc(r.reply)}</div>` : ''}</article>`).join('');
+    $$('#rlist .rv').forEach(el => io.observe(el));
+    const ld = document.createElement('script'); ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'HomeAndConstructionBusiness', name: 'Handyman Грозный — мастер Рамзан', url: location.origin + '/', telephone: '+7 963 599-36-01', address: { '@type': 'PostalAddress', addressLocality: 'Грозный', addressCountry: 'RU' }, aggregateRating: { '@type': 'AggregateRating', ratingValue: avg.toFixed(1), reviewCount: list.length, bestRating: 5 }, review: list.slice(0, 10).map(r => ({ '@type': 'Review', author: { '@type': 'Person', name: r.name }, reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5 }, reviewBody: r.text, datePublished: r.created_at.slice(0, 10) })) });
+    document.head.append(ld);
+  };
   const applyContent = d => {
     const T = d.texts || {};
+    if (T.metrika_id) loadMetrika(T.metrika_id);
+    renderReviews(d.reviews);
     $$('[data-edit]').forEach(el => { const k = el.dataset.edit; if (T[k] != null && T[k] !== '') el.innerHTML = md(T[k]); });
     if (T.phone) setPhone(T.phone);
     if (Array.isArray(d.cases) && d.cases.length) {
@@ -857,6 +1023,26 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       render();
     }
   };
+  // review form
+  let rating = 0;
+  const rstarsEl = $('#rform .rstars');
+  rstarsEl.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; rating = +b.dataset.v; rstarsEl.classList.remove('err'); rstarsEl.querySelectorAll('button').forEach(x => { const on = +x.dataset.v <= rating; x.classList.toggle('on', on); x.setAttribute('aria-checked', String(+x.dataset.v === rating)); }); });
+  $('#rConsent').addEventListener('change', () => $('#rConsentBox').classList.remove('err'));
+  $('#rform').addEventListener('submit', async e => {
+    e.preventDefault(); const msg = $('#rMsg'); msg.textContent = '';
+    if (!rating) { rstarsEl.classList.add('err'); msg.textContent = 'Поставьте оценку'; return; }
+    if (!$('#rName').value.trim()) { msg.textContent = 'Напишите имя'; return; }
+    if ($('#rText').value.trim().length < 10) { msg.textContent = 'Напишите хотя бы пару предложений'; return; }
+    if (!$('#rConsent').checked) { const b = $('#rConsentBox'); b.classList.remove('err'); void b.offsetWidth; b.classList.add('err'); return; }
+    const btn = $('#rSend'); btn.disabled = true; btn.textContent = 'Отправляю…';
+    try {
+      const r = await fetch(API, { method: 'POST', headers: { 'content-type': 'text/plain;charset=UTF-8' }, body: JSON.stringify({ action: 'review', name: $('#rName').value, rating, text: $('#rText').value, website: $('#rWeb').value, t: Math.round(performance.now()), consent: true }) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || j.error) throw new Error(j.error || 'Не получилось отправить');
+      $('#rform').innerHTML = '<h3>Спасибо! ✓</h3><p>Отзыв появится на сайте после проверки. Для меня это правда важно.</p>'; goal('review_sent');
+    } catch (err) { msg.textContent = err.message; btn.disabled = false; btn.textContent = 'Отправить отзыв'; }
+  });
+
   const getJSON = u => fetch(u).then(r => r.ok ? r.json() : Promise.reject());
   if (window.HM_CONTENT) getJSON(window.HM_CONTENT).catch(() => getJSON(API + '?action=content')).then(d => { if (d && !d.error) applyContent(d); }).catch(() => {});
 
