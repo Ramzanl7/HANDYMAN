@@ -4,7 +4,7 @@ Prices are baked in at build time and refreshed live from the content snapshot b
 Run: python3 tools/gen_seo.py  (prices are read from tools/prices.json if present)."""
 import json, os, html, datetime
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SITE = "https://handyman-grozny.vercel.app"
+SITE = "https://handyman-grozny.ru"
 PHONE, PHONE_INTL = "8 963 599-36-01", "79635993601"
 TODAY = datetime.date.today().isoformat()
 prices_path = os.path.join(ROOT, "tools", "prices.json")

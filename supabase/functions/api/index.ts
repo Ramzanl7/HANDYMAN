@@ -7,7 +7,7 @@ const sb = createClient(SUPA_URL, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { 
 const BOT = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
 const BUCKET = "hm-media";
 const FN_URL = `${SUPA_URL}/functions/v1/api`;
-const SITE = "https://handyman-grozny.vercel.app";
+const SITE = "https://handyman-grozny.ru";
 const STATUSES = ["new", "work", "done", "cancel"];
 const ST: Record<string, string> = { new: "Новая", work: "В работе", done: "Готово", cancel: "Отмена" };
 

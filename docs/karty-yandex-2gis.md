@@ -27,8 +27,8 @@
 
 **Телефон:** 8 963 599-36-01 (отметить WhatsApp)
 **Сайт:**
-- Яндекс: `https://handyman-grozny.vercel.app/?utm_source=yandex_maps`
-- 2ГИС: `https://handyman-grozny.vercel.app/?utm_source=2gis`
+- Яндекс: `https://handyman-grozny.ru/?utm_source=yandex_maps`
+- 2ГИС: `https://handyman-grozny.ru/?utm_source=2gis`
 (метка в конце ссылки нужна, чтобы в Метрике было видно, сколько людей пришло с карт)
 
 **Зона выезда:** Грозный и ближайшие районы
