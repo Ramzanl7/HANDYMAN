@@ -290,6 +290,17 @@ section{position:relative}
 .inp textarea{resize:vertical;min-height:44px}
 .hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
 .slip .btn{width:100%;justify-content:center;margin-top:18px}
+.consent{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:13px;line-height:1.45;color:var(--ink2);cursor:pointer;position:relative}
+.consent input{position:absolute;opacity:0;width:1px;height:1px}
+.consent .cbx{flex:0 0 22px;height:22px;border:2px solid var(--ink);background:#fff;position:relative;margin-top:1px;transition:border-color .2s}
+.consent .cbx svg{position:absolute;inset:-6px -8px -2px -2px;width:32px;height:30px;overflow:visible}
+.consent .cbx path{fill:none;stroke:var(--red);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;opacity:0;transition:stroke-dashoffset .35s,opacity .1s}
+.consent input:checked+.cbx path{stroke-dashoffset:0;opacity:1}
+.consent input:focus-visible+.cbx{outline:2px solid var(--red);outline-offset:2px}
+.consent a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+.consent.err{color:var(--red)}.consent.err .cbx{border-color:var(--red);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+.btn-wa.off{opacity:.45;box-shadow:none;filter:grayscale(.6)}
 .slip .alt{display:block;text-align:center;margin-top:12px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:900px){.og{grid-template-columns:1fr}.slip{position:relative;top:0}}
 
@@ -599,7 +610,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
           <input id="fWeb" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
           <label>Комментарий<textarea id="fNote" rows="2" placeholder="Что сломалось, сколько штук и т.д."></textarea></label>
         </div>
-        <a class="btn btn-wa" id="send" href="https://wa.me/79635993601" target="_blank" rel="noopener">Отправить в WhatsApp</a>
+        <label class="consent" id="consentBox"><input type="checkbox" id="fConsent"><span class="cbx" aria-hidden="true"><svg viewBox="0 0 36 34"><path d="M4 18l8 9L32 4"/></svg></span><span>Согласен на обработку персональных данных и принимаю <a href="/privacy.html" target="_blank" rel="noopener">политику конфиденциальности</a></span></label>
+        <a class="btn btn-wa off" id="send" href="https://wa.me/79635993601" target="_blank" rel="noopener" aria-disabled="true">Отправить в WhatsApp</a>
         <a class="alt" href="tel:+79635993601">или позвонить: <span data-phone>8 963 599-36-01</span></a>
       </aside>
     </div>
@@ -634,7 +646,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   </div>
 </section>
 
-<footer><div class="wrap"><span>© <span id="yr"></span> Handyman Грозный · мастер Рамзан</span><a href="tel:+79635993601" data-phone>8 963 599‑36‑01</a></div></footer>
+<footer><div class="wrap"><span>© <span id="yr"></span> Handyman Грозный · мастер Рамзан · <a href="/privacy.html" style="text-decoration:underline">Политика конфиденциальности</a></span><a href="tel:+79635993601" data-phone>8 963 599‑36‑01</a></div></footer>
 <a href="#order" class="fab" id="fab">✎ Написать задачу</a>
 
 <script src="/config.js"></script>
@@ -771,13 +783,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     b.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.12)' }, { transform: 'scale(1)' }], { duration: 300 });
   }));
   render();
+  // consent is mandatory: without it the order can not be sent anywhere
+  const consent = $('#fConsent'), consentBox = $('#consentBox');
+  const syncConsent = () => { send.classList.toggle('off', !consent.checked); send.setAttribute('aria-disabled', String(!consent.checked)); if (consent.checked) consentBox.classList.remove('err'); };
+  consent.addEventListener('change', syncConsent); syncConsent();
+  send.addEventListener('click', e => {
+    if (consent.checked) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    consentBox.classList.remove('err'); void consentBox.offsetWidth; consentBox.classList.add('err');
+  });
   // save the order in the admin panel too (WhatsApp still opens via the link)
   let sentKey = '';
   send.addEventListener('click', () => {
-    if (!API) return;
+    if (!API || !consent.checked) return;
     const items = [...sel].map(([name, price_from]) => ({ name, price_from: price_from || null }));
     if (!items.length && !v('#fNote')) return;
-    const payload = { action: 'order', num, items, name: v('#fName'), phone: v('#fPhone'), area: v('#fArea'), when: $('#fWhen').value, note: v('#fNote'), website: $('#fWeb').value, t: Math.round(performance.now()) };
+    const payload = { action: 'order', num, items, name: v('#fName'), phone: v('#fPhone'), area: v('#fArea'), when: $('#fWhen').value, note: v('#fNote'), website: $('#fWeb').value, t: Math.round(performance.now()), consent: true };
     const key = JSON.stringify(payload); if (key === sentKey) return; sentKey = key;
     try { fetch(API, { method: 'POST', keepalive: true, headers: { 'content-type': 'text/plain;charset=UTF-8' }, body: key }); } catch (_) {}
   });

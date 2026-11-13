@@ -110,6 +110,7 @@
         ${o.area ? `<dt>Район</dt><dd>${esc(o.area)}</dd>` : ''}
         ${o.when_text ? `<dt>Когда</dt><dd>${esc(o.when_text)}</dd>` : ''}
         ${o.note ? `<dt>Коммент.</dt><dd>${esc(o.note)}</dd>` : ''}
+        ${o.consent_at ? `<dt>Согласие</dt><dd><small>✓ ${fmtDate(o.consent_at)}</small></dd>` : ''}
       </dl>
       <textarea class="note" placeholder="Заметка для себя: адрес, цена, договорились на…">${esc(o.admin_note)}</textarea>
       <div class="acts">

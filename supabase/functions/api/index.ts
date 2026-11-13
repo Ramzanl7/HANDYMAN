@@ -107,6 +107,7 @@ async function order(body: any, req: Request) {
     total_from: items.reduce((a: number, i: any) => a + (i.price_from || 0), 0) || null,
   };
   if (!items.length && !row.note) fail("Пустая заявка");
+  if (body.consent !== true) fail("Нужно согласие на обработку персональных данных");
   // bots: hidden field filled or form sent faster than a human can
   if (str(body.website, 200) || (Number.isFinite(+body.t) && +body.t < 2500)) return { ok: true, id: 0 };
   const recent = new Date(Date.now() - 10 * 60_000).toISOString();
@@ -119,7 +120,7 @@ async function order(body: any, req: Request) {
     const { count } = await sb.from("hm_orders").select("id", { count: "exact", head: true }).eq("ip_hash", ip_hash).gte("created_at", since);
     if ((count ?? 0) >= 5) fail("Слишком много заявок, попробуйте позже", 429);
   }
-  const saved = must(await sb.from("hm_orders").insert({ ...row, ip_hash }).select("id").single()) as any;
+  const saved = must(await sb.from("hm_orders").insert({ ...row, ip_hash, consent_at: new Date().toISOString() }).select("id").single()) as any;
 
   // notify the master in Telegram (best effort)
   try {
