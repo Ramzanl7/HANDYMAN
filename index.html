@@ -275,6 +275,10 @@ section{position:relative}
 .list li .box{flex:0 0 20px;height:20px}.list li .box svg{inset:-5px -7px -2px -2px;width:28px;height:27px}
 .list li .box path{stroke-dashoffset:0;animation:tick .45s}
 @keyframes tick{from{stroke-dashoffset:40}}
+.chip small{margin-left:8px;font-family:var(--mono);font-size:11px;opacity:.7;white-space:nowrap}
+.list li .pr{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--ink2);white-space:nowrap}
+.total{display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-top:2px solid var(--ink);padding-top:8px;font-family:var(--mono);font-size:12px;letter-spacing:.04em}
+.total b{font-family:var(--head);font-size:24px;letter-spacing:0}
 .list .empty{font-family:var(--hand);font-size:24px;color:var(--ink2);border:0;padding-top:16px}
 .inp{display:grid;gap:10px;margin-top:12px}
 .inp label{display:grid;gap:4px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
@@ -329,7 +333,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     <nav class="nav">
       <a href="#spec">Работы</a><a href="#cases">Кейсы</a><a href="#master">Мастер</a><a href="#order">Наряд</a><a href="#faq">Вопросы</a>
     </nav>
-    <a href="tel:+79635993601" class="btn btn-ink">☎ <span class="full">8 963 599-36-01</span><span class="short">Позвонить</span></a>
+    <a href="tel:+79635993601" class="btn btn-ink">☎ <span class="full" data-phone>8 963 599-36-01</span><span class="short">Позвонить</span></a>
   </div>
 </header>
 <div class="mbar" id="mbar"></div>
@@ -343,8 +347,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     <div>
       <div class="sheet">Лист 01 · Handyman по-грозненски</div>
       <h1><span class="ln"><span>Рамзан.</span></span><span class="ln"><span>Мастер</span></span><span class="ln"><span>по дому.</span></span></h1>
-      <p class="lead">Вешаю люстры и телевизоры, собираю шкафы и кухни, меняю смесители, кладу ламинат. Занимаюсь этим пять лет, живу в Грозном. Позвоните, расскажите, что случилось, — скажу, сколько стоит и когда смогу приехать.</p>
-      <p class="why"><b>Handyman</b> — так в Америке называют мастера, к которому идут с любой домашней поломкой. Один человек вместо пяти разных. В Грозном такой тоже есть.</p>
+      <p class="lead" data-edit="hero_lead">Вешаю люстры и телевизоры, собираю шкафы и кухни, меняю смесители, кладу ламинат. Занимаюсь этим пять лет, живу в Грозном. Позвоните, расскажите, что случилось, — скажу, сколько стоит и когда смогу приехать.</p>
+      <p class="why" data-edit="hero_why"><b>Handyman</b> — так в Америке называют мастера, к которому идут с любой домашней поломкой. Один человек вместо пяти разных. В Грозном такой тоже есть.</p>
       <div class="spec"><div><b>5</b>лет в работе</div><div><b>8</b>видов работ</div><div><b>1</b>мастер, без бригад</div></div>
       <div class="ctas">
         <a href="#order" class="btn btn-ink">Написать задачу <b>→</b></a>
@@ -377,7 +381,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <div class="sheet rv">Лист 02 · Спецификация работ</div>
         <h2 class="h rv d1">Что я<br><mark>делаю</mark></h2>
       </div>
-      <p class="lead rv d2">Список длинный, потому что дома ломается всё подряд. Если вашей задачи тут нет — всё равно спросите.</p>
+      <p class="lead rv d2" data-edit="spec_lead">Список длинный, потому что дома ломается всё подряд. Если вашей задачи тут нет — всё равно спросите.</p>
     </div>
     <div class="rows">
       <div class="row" data-cat="el" data-img="img/light-after.webp"><span class="n">01</span><h3>Электрика</h3><p>Розетки и выключатели, люстры и светильники, прокладка кабеля, электромонтаж</p><button class="add" type="button">+ в наряд</button></div>
@@ -398,7 +402,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     <div>
       <div class="sheet">Лист 03 · Объект: комната</div>
       <h2 class="h" style="margin-top:16px">Одна<br>комната,<br><em>от и до</em></h2>
-      <p class="lead" style="margin-top:18px;font-size:16px">Облезлый линолеум, старый стеллаж, пустые стены. Листайте — увидите, что стало.</p>
+      <p class="lead" style="margin-top:18px;font-size:16px" data-edit="tf_lead">Облезлый линолеум, старый стеллаж, пустые стены. Листайте — увидите, что стало.</p>
       <ul class="checks" id="checks">
         <li><span class="box"><svg viewBox="0 0 36 34"><path d="M4 18l8 9L32 4"/></svg></span>Снять старый линолеум и стеллаж</li>
         <li><span class="box"><svg viewBox="0 0 36 34"><path d="M4 18l8 9L32 4"/></svg></span>Уложить ламинат</li>
@@ -424,9 +428,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <div class="sheet rv">Лист 04 · Недавние заказы</div>
         <h2 class="h rv d1">Что делал<br><em>недавно</em></h2>
       </div>
-      <p class="lead rv d2">Фото с телефона, прямо с объектов. Без обработки «как в журнале» — как есть.</p>
+      <p class="lead rv d2" data-edit="cases_lead">Фото с телефона, прямо с объектов. Без обработки «как в журнале» — как есть.</p>
     </div>
 
+    <div id="jobs">
     <article class="job">
       <div class="board">
         <figure class="pol b"><img src="img/crystal-before.webp" alt="Провода из потолка" loading="lazy"><span class="cap">было</span></figure>
@@ -491,6 +496,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <dl><dt>Было</dt><dd>Телевизор нужно повесить на стену</dd><dt>Сделал</dt><dd>Закрепил наклонный кронштейн, повесил по уровню</dd><dt>Итог</dt><dd class="ok">СМОТРЯТ С КРОВАТИ</dd></dl>
       </div>
     </article>
+    </div>
   </div>
 </section>
 
@@ -504,7 +510,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       </div>
     </div>
   </div>
-  <div class="mas">
+  <div class="mas" id="mas">
     <div class="col" data-speed="-0.07">
       <figure class="obj"><div class="im"><img src="img/kitchen.webp" alt="Кухонный гарнитур" loading="lazy"></div><figcaption><b>Кухня</b><span>сборка</span></figcaption></figure>
       <figure class="obj"><div class="im"><img src="img/wardrobe-gold.webp" alt="Шкаф во всю стену" loading="lazy"></div><figcaption><b>Шкаф во всю стену</b><span>сборка</span></figcaption></figure>
@@ -530,7 +536,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <div class="sheet rv">Лист 06 · Паспорт мастера</div>
         <h2 class="h rv d1">Это<br><em>я</em></h2>
       </div>
-      <p class="lead rv d2">Мне 21, руками работаю с шестнадцати. Работаю один: трубку беру я, приезжаю тоже я.</p>
+      <p class="lead rv d2" data-edit="master_lead">Мне 21, руками работаю с шестнадцати. Работаю один: трубку беру я, приезжаю тоже я.</p>
     </div>
     <div class="pass rv" id="pass">
       <div class="pp"><img src="img/master.webp" alt="Рамзан" loading="lazy"><span>РАМЗАН · 21</span></div>
@@ -538,11 +544,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <div class="top"><span>ПАСПОРТ МАСТЕРА</span><span>HANDYMAN · ГРОЗНЫЙ</span></div>
         <dl>
           <div class="f"><dt>Имя</dt><dd class="big">Рамзан</dd></div>
-          <div class="f"><dt>Возраст</dt><dd>21 год</dd></div>
-          <div class="f"><dt>Родом из</dt><dd>Грозный — родился и живу здесь</dd></div>
-          <div class="f"><dt>Стаж</dt><dd>5 лет в ремонте</dd></div>
-          <div class="f"><dt>Умеет</dt><dd>Электрика, сантехника, мебель, полы, двери, слаботочка</dd></div>
-          <div class="f"><dt>Выезд</dt><dd>Грозный и ближайшие районы</dd></div>
+          <div class="f"><dt>Возраст</dt><dd data-edit="p_age">21 год</dd></div>
+          <div class="f"><dt>Родом из</dt><dd data-edit="p_from">Грозный — родился и живу здесь</dd></div>
+          <div class="f"><dt>Стаж</dt><dd data-edit="p_exp">5 лет в ремонте</dd></div>
+          <div class="f"><dt>Умеет</dt><dd data-edit="p_skills">Электрика, сантехника, мебель, полы, двери, слаботочка</dd></div>
+          <div class="f"><dt>Выезд</dt><dd data-edit="p_area">Грозный и ближайшие районы</dd></div>
         </dl>
         <div class="sign"><div><span class="hand">Рамзан</span><small>ПОДПИСЬ МАСТЕРА</small></div><a href="tel:+79635993601" class="btn btn-ink">☎ Позвонить</a></div>
       </div>
@@ -556,10 +562,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <div class="wrap">
     <div class="sheet rv" style="margin-bottom:24px">Лист 07 · Как я работаю</div>
     <div class="rules rv d1">
-      <div class="rule"><span class="n">ТУ‑1</span><h3>Цена — до начала</h3><p>Скидываете фото, называю цифру. Если на месте вылезет что-то ещё, сначала скажу, потом делаю.</p></div>
-      <div class="rule"><span class="n">ТУ‑2</span><h3>Инструмент свой</h3><p>Перфоратор, уровень, стремянка — всё привожу. Искать дрель по соседям не придётся.</p></div>
-      <div class="rule"><span class="n">ТУ‑3</span><h3>Убираю за собой</h3><p>Пыль от сверления, коробки и плёнку от мебели — забираю или складываю, куда скажете.</p></div>
-      <div class="rule"><span class="n">ТУ‑4</span><h3>Если что-то не так</h3><p>Звоните. Приеду и переделаю — без споров, чья вина.</p></div>
+      <div class="rule"><span class="n">ТУ‑1</span><h3 data-edit="r1_t">Цена — до начала</h3><p data-edit="r1_p">Скидываете фото, называю цифру. Если на месте вылезет что-то ещё, сначала скажу, потом делаю.</p></div>
+      <div class="rule"><span class="n">ТУ‑2</span><h3 data-edit="r2_t">Инструмент свой</h3><p data-edit="r2_p">Перфоратор, уровень, стремянка — всё привожу. Искать дрель по соседям не придётся.</p></div>
+      <div class="rule"><span class="n">ТУ‑3</span><h3 data-edit="r3_t">Убираю за собой</h3><p data-edit="r3_p">Пыль от сверления, коробки и плёнку от мебели — забираю или складываю, куда скажете.</p></div>
+      <div class="rule"><span class="n">ТУ‑4</span><h3 data-edit="r4_t">Если что-то не так</h3><p data-edit="r4_p">Звоните. Приеду и переделаю — без споров, чья вина.</p></div>
     </div>
   </div>
 </section>
@@ -572,7 +578,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <div class="sheet rv">Лист 08 · Наряд-заказ</div>
         <h2 class="h rv d1">Что нужно<br><em>сделать?</em></h2>
       </div>
-      <p class="lead rv d2">Отметьте задачи и нажмите кнопку — откроется WhatsApp с готовым сообщением. Фото киньте туда же, так быстрее посчитаю.</p>
+      <p class="lead rv d2" data-edit="order_lead">Отметьте задачи и нажмите кнопку — откроется WhatsApp с готовым сообщением. Фото киньте туда же, так быстрее посчитаю.</p>
     </div>
     <div class="og">
       <div class="cats" id="cats"></div>
@@ -580,14 +586,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <div class="top"><span>НАРЯД № <span id="num">—</span></span><span id="date"></span></div>
         <h3>Задачи</h3>
         <ul class="list" id="list"></ul>
+        <div class="total" id="total" hidden></div>
         <div class="inp">
           <label>Имя<input id="fName" autocomplete="name" placeholder="Как к вам обращаться"></label>
+          <label>Телефон<input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="8 9__ ___-__-__"></label>
           <label>Район / адрес<input id="fArea" placeholder="Например, Ахматовский район"></label>
           <label>Когда удобно<select id="fWhen"><option>Как можно скорее</option><option>Сегодня</option><option>Завтра</option><option>На этой неделе</option><option>Не срочно</option></select></label>
           <label>Комментарий<textarea id="fNote" rows="2" placeholder="Что сломалось, сколько штук и т.д."></textarea></label>
         </div>
         <a class="btn btn-wa" id="send" href="https://wa.me/79635993601" target="_blank" rel="noopener">Отправить в WhatsApp</a>
-        <a class="alt" href="tel:+79635993601">или позвонить: 8 963 599-36-01</a>
+        <a class="alt" href="tel:+79635993601">или позвонить: <span data-phone>8 963 599-36-01</span></a>
       </aside>
     </div>
   </div>
@@ -598,11 +606,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <div class="wrap">
     <div class="sec-head"><div><div class="sheet rv">Лист 09 · Вопросы</div><h2 class="h rv d1">Частые<br>вопросы</h2></div></div>
     <div class="faq rv">
-      <details><summary>Сколько стоит работа? <i>+</i></summary><p>Зависит от задачи: розетка и кухня стоят по-разному. Пришлите фото в WhatsApp — назову цену до начала. Если на месте окажется сложнее, скажу об этом до того, как начну.</p></details>
-      <details><summary>Как быстро приедете? <i>+</i></summary><p>Зависит от загрузки. Позвоните — скажу честно, когда смогу. Если срочно — например, течёт — так и скажите.</p></details>
-      <details><summary>Работаете за пределами Грозного? <i>+</i></summary><p>Да, выезжаю в ближайшие районы. Напишите адрес — скажу, когда смогу приехать.</p></details>
-      <details><summary>Материалы покупать мне? <i>+</i></summary><p>Обычно покупаете вы — я скажу, что именно взять, чтобы не ездить в магазин дважды.</p></details>
-      <details><summary>Можно несколько работ за раз? <i>+</i></summary><p>Да, и так даже лучше. Отметьте всё сразу — сделаю за один приезд, а не за три.</p></details>
+      <details><summary><span data-edit="faq1_q">Сколько стоит работа?</span> <i>+</i></summary><p data-edit="faq1_a">Зависит от задачи: розетка и кухня стоят по-разному. Пришлите фото в WhatsApp — назову цену до начала. Если на месте окажется сложнее, скажу об этом до того, как начну.</p></details>
+      <details><summary><span data-edit="faq2_q">Как быстро приедете?</span> <i>+</i></summary><p data-edit="faq2_a">Зависит от загрузки. Позвоните — скажу честно, когда смогу. Если срочно — например, течёт — так и скажите.</p></details>
+      <details><summary><span data-edit="faq3_q">Работаете за пределами Грозного?</span> <i>+</i></summary><p data-edit="faq3_a">Да, выезжаю в ближайшие районы. Напишите адрес — скажу, когда смогу приехать.</p></details>
+      <details><summary><span data-edit="faq4_q">Материалы покупать мне?</span> <i>+</i></summary><p data-edit="faq4_a">Обычно покупаете вы — я скажу, что именно взять, чтобы не ездить в магазин дважды.</p></details>
+      <details><summary><span data-edit="faq5_q">Можно несколько работ за раз?</span> <i>+</i></summary><p data-edit="faq5_a">Да, и так даже лучше. Отметьте всё сразу — сделаю за один приезд, а не за три.</p></details>
     </div>
   </div>
 </section>
@@ -612,18 +620,19 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <div class="wrap">
     <div class="biglvl" aria-hidden="true"><i id="bigBub"></i></div>
     <h2 class="h rv">Звоните<br>или <em>пишите</em></h2>
-    <a href="tel:+79635993601" class="phone rv d1">8 963 599‑36‑01</a>
+    <a href="tel:+79635993601" class="phone rv d1" data-phone>8 963 599‑36‑01</a>
     <div class="ctas rv d2">
       <a href="tel:+79635993601" class="btn btn-ink">☎ Позвонить</a>
       <a href="https://wa.me/79635993601" target="_blank" rel="noopener" class="btn btn-wa">WhatsApp</a>
     </div>
-    <p class="area">ГРОЗНЫЙ И БЛИЖАЙШИЕ РАЙОНЫ · ЕСЛИ НЕ ВЗЯЛ ТРУБКУ — ЗНАЧИТ, НА ОБЪЕКТЕ, ПЕРЕЗВОНЮ</p>
+    <p class="area" data-edit="final_area">ГРОЗНЫЙ И БЛИЖАЙШИЕ РАЙОНЫ · ЕСЛИ НЕ ВЗЯЛ ТРУБКУ — ЗНАЧИТ, НА ОБЪЕКТЕ, ПЕРЕЗВОНЮ</p>
   </div>
 </section>
 
-<footer><div class="wrap"><span>© <span id="yr"></span> Handyman Грозный · мастер Рамзан</span><a href="tel:+79635993601">8 963 599‑36‑01</a></div></footer>
+<footer><div class="wrap"><span>© <span id="yr"></span> Handyman Грозный · мастер Рамзан</span><a href="tel:+79635993601" data-phone>8 963 599‑36‑01</a></div></footer>
 <a href="#order" class="fab" id="fab">✎ Написать задачу</a>
 
+<script src="/config.js"></script>
 <script>
 (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -700,7 +709,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   }
 
   /* order (наряд) */
-  const CATS = [
+  const API = window.HM_API || '';
+  let WA = '79635993601';
+  const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const rub = n => Number(n).toLocaleString('ru-RU') + ' ₽';
+  const STATIC = [
     ['el','Электрика',['Установить розетку','Установить выключатель','Повесить люстру / светильник','Проложить кабель','Другая электрика']],
     ['pl','Сантехника',['Заменить смеситель / кран','Установить сифон','Подключить стиральную машину','Установить унитаз','Устранить протечку']],
     ['mb','Сборка мебели',['Собрать шкаф','Собрать кровать','Собрать комод / тумбу','Собрать кухню','Стол / стеллаж','Разобрать / переставить']],
@@ -710,37 +723,103 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     ['sm','Мелкий ремонт',['Повесить ТВ на стену','Повесить полку / карниз','Повесить зеркало / картину']],
     ['ot','Другое',['Установить бытовую технику','Монтаж / демонтаж','Другое — опишу в комментарии']]
   ];
-  const sel = new Set(), cats = $('#cats');
-  cats.innerHTML = CATS.map(([k, t, items]) => `<div class="cat" id="cat-${k}"><h4>${t}</h4><div class="chips">${items.map(i => `<button type="button" class="chip" aria-pressed="false" data-t="${i}">${i}</button>`).join('')}</div></div>`).join('');
+  let SERV = STATIC.flatMap(([cat, cat_title, items]) => items.map(name => ({ cat, cat_title, name, price_from: null })));
+  const sel = new Map(), cats = $('#cats');
+  const renderCats = () => {
+    const groups = [], by = {};
+    SERV.forEach(x => { if (!by[x.cat]) { by[x.cat] = { k: x.cat, t: x.cat_title, items: [] }; groups.push(by[x.cat]); } by[x.cat].items.push(x); });
+    cats.innerHTML = groups.map(g => `<div class="cat" id="cat-${esc(g.k)}"><h4>${esc(g.t)}</h4><div class="chips">${g.items.map(x => `<button type="button" class="chip" aria-pressed="${sel.has(x.name)}" data-t="${esc(x.name)}" data-p="${x.price_from ?? ''}">${esc(x.name)}${x.price_from ? `<small>от ${rub(x.price_from)}</small>` : ''}</button>`).join('')}</div></div>`).join('');
+  };
+  renderCats();
   const tick = '<span class="box"><svg viewBox="0 0 36 34"><path d="M4 18l8 9L32 4"/></svg></span>';
-  const list = $('#list'), send = $('#send');
+  const list = $('#list'), send = $('#send'), totalEl = $('#total');
   const num = String(Math.floor(100 + Math.random() * 900)); $('#num').textContent = num;
   $('#date').textContent = new Date().toLocaleDateString('ru-RU');
   const v = id => $(id).value.trim();
+  const total = () => [...sel.values()].reduce((a, p) => a + (p || 0), 0);
   const render = () => {
-    list.innerHTML = sel.size ? [...sel].map(t => `<li>${tick}<span>${t}</span></li>`).join('') : '<li class="empty">тут появится то, что вы отметите</li>';
+    list.innerHTML = sel.size ? [...sel].map(([t, p]) => `<li>${tick}<span>${esc(t)}</span>${p ? `<span class="pr">от ${rub(p)}</span>` : ''}</li>`).join('') : '<li class="empty">тут появится то, что вы отметите</li>';
+    const tt = total();
+    totalEl.hidden = !tt; if (tt) totalEl.innerHTML = `<span>ОРИЕНТИРОВОЧНО</span><b>от ${rub(tt)}</b>`;
     const lines = ['Здравствуйте, Рамзан! Наряд с сайта № ' + num + ':'];
-    sel.size ? sel.forEach(t => lines.push('— ' + t)) : lines.push('— (опишу задачу)');
+    sel.size ? sel.forEach((p, t) => lines.push('— ' + t + (p ? ` (от ${p} ₽)` : ''))) : lines.push('— (опишу задачу)');
+    if (tt) lines.push('Примерно от ' + tt + ' ₽');
     if (v('#fName')) lines.push('Имя: ' + v('#fName'));
+    if (v('#fPhone')) lines.push('Телефон: ' + v('#fPhone'));
     if (v('#fArea')) lines.push('Район: ' + v('#fArea'));
     lines.push('Когда: ' + $('#fWhen').value);
     if (v('#fNote')) lines.push('Комментарий: ' + v('#fNote'));
-    send.href = 'https://wa.me/79635993601?text=' + encodeURIComponent(lines.join('\n'));
+    send.href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(lines.join('\n'));
     $$('.row').forEach(r => {
       const has = [...cats.querySelectorAll(`#cat-${r.dataset.cat} .chip`)].some(c => c.getAttribute('aria-pressed') === 'true');
       const b = r.querySelector('.add'); b.classList.toggle('ok', has); b.textContent = has ? '✓ в наряде' : '+ в наряд';
     });
   };
-  const toggle = (chip, on) => { const t = chip.dataset.t; on = on ?? chip.getAttribute('aria-pressed') !== 'true'; chip.setAttribute('aria-pressed', String(on)); on ? sel.add(t) : sel.delete(t); };
+  const toggle = (chip, on) => { const t = chip.dataset.t; on = on ?? chip.getAttribute('aria-pressed') !== 'true'; chip.setAttribute('aria-pressed', String(on)); on ? sel.set(t, +chip.dataset.p || 0) : sel.delete(t); };
   cats.addEventListener('click', e => { const c = e.target.closest('.chip'); if (c) { toggle(c); render(); } });
-  ['#fName','#fArea','#fWhen','#fNote'].forEach(id => $(id).addEventListener('input', render));
+  ['#fName','#fPhone','#fArea','#fWhen','#fNote'].forEach(id => $(id).addEventListener('input', render));
   $$('.row .add').forEach(b => b.addEventListener('click', () => {
     const box = $('#cat-' + b.closest('.row').dataset.cat);
-    if (![...box.querySelectorAll('.chip')].some(c => c.getAttribute('aria-pressed') === 'true')) toggle(box.querySelector('.chip'), true);
+    if (box && ![...box.querySelectorAll('.chip')].some(c => c.getAttribute('aria-pressed') === 'true')) toggle(box.querySelector('.chip'), true);
     render();
+    if (!box) $('#order').scrollIntoView();
     b.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.12)' }, { transform: 'scale(1)' }], { duration: 300 });
   }));
   render();
+  // save the order in the admin panel too (WhatsApp still opens via the link)
+  let sentKey = '';
+  send.addEventListener('click', () => {
+    if (!API) return;
+    const items = [...sel].map(([name, price_from]) => ({ name, price_from: price_from || null }));
+    if (!items.length && !v('#fNote')) return;
+    const payload = { action: 'order', num, items, name: v('#fName'), phone: v('#fPhone'), area: v('#fArea'), when: $('#fWhen').value, note: v('#fNote') };
+    const key = JSON.stringify(payload); if (key === sentKey) return; sentKey = key;
+    try { fetch(API, { method: 'POST', keepalive: true, headers: { 'content-type': 'text/plain;charset=UTF-8' }, body: key }); } catch (_) {}
+  });
+
+  /* live content from the admin panel */
+  const md = t => esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+  const setPhone = ph => {
+    const d = ph.replace(/\D/g, ''); if (d.length < 10) return;
+    const intl = d.length === 11 && d[0] === '8' ? '7' + d.slice(1) : d;
+    WA = intl;
+    $$('a[href^="tel:"]').forEach(a => a.href = 'tel:+' + intl);
+    $$('a[href*="wa.me/"]').forEach(a => a.href = a.href.replace(/wa\.me\/\d+/, 'wa.me/' + intl));
+    $$('[data-phone]').forEach(el => el.textContent = ph);
+  };
+  const caseHTML = (c, i) => `<article class="job">
+      <div class="board">
+        <figure class="pol b"><img src="${esc(c.before_url)}" alt="${esc(c.title)} — было" loading="lazy"><span class="cap">${esc(c.before_cap)}</span></figure>
+        <figure class="pol a"><img src="${esc(c.after_url)}" alt="${esc(c.title)} — стало" loading="lazy"><span class="cap">${esc(c.after_cap)}</span></figure>
+        <span class="stamp">ГОТОВО</span>
+      </div>
+      <div class="ticket rv">
+        <div class="top"><span>НАРЯД · ${esc(c.tag)}</span><span>${String(i + 1).padStart(2, '0')}</span></div>
+        <h3>${esc(c.title)}</h3>
+        <dl>${c.was ? `<dt>Было</dt><dd>${esc(c.was)}</dd>` : ''}${c.did ? `<dt>Сделал</dt><dd>${esc(c.did)}</dd>` : ''}${c.result ? `<dt>Итог</dt><dd class="ok">${esc(c.result)}</dd>` : ''}</dl>
+      </div>
+    </article>`;
+  const applyContent = d => {
+    const T = d.texts || {};
+    $$('[data-edit]').forEach(el => { const k = el.dataset.edit; if (T[k] != null && T[k] !== '') el.innerHTML = md(T[k]); });
+    if (T.phone) setPhone(T.phone);
+    if (Array.isArray(d.cases) && d.cases.length) {
+      const jobs = $('#jobs'); jobs.innerHTML = d.cases.map(caseHTML).join('');
+      jobs.querySelectorAll('.job, .rv').forEach(el => io.observe(el));
+    }
+    if (Array.isArray(d.gallery) && d.gallery.length) {
+      const cols = $$('#mas .col'); cols.forEach(c => c.innerHTML = '');
+      d.gallery.forEach((g, i) => cols[i % cols.length].insertAdjacentHTML('beforeend', `<figure class="obj"><div class="im"><img src="${esc(g.image_url)}" alt="${esc(g.title)}" loading="lazy"></div><figcaption><b>${esc(g.title)}</b><span>${esc(g.tag)}</span></figcaption></figure>`));
+      $$('#mas .obj').forEach(el => io.observe(el));
+    }
+    if (Array.isArray(d.services) && d.services.length) {
+      const prev = new Map(sel); sel.clear();
+      SERV = d.services; renderCats();
+      SERV.forEach(x => { if (prev.has(x.name)) sel.set(x.name, x.price_from || 0); });
+      render();
+    }
+  };
+  if (API) fetch(API + '?action=content').then(r => r.ok ? r.json() : null).then(d => { if (d && !d.error) applyContent(d); }).catch(() => {});
 
   /* scroll-driven */
   const tagB = $('#tagB'), tagA = $('#tagA'), bpImg = $('.bp img');

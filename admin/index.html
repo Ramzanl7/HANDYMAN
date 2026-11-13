@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Админка · Handyman</title>
+<meta name="theme-color" content="#1d2a44">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect x=%272%27 y=%2720%27 width=%2760%27 height=%2724%27 rx=%2712%27 fill=%27%23ffd400%27 stroke=%27%231d2a44%27 stroke-width=%274%27/%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%276%27 fill=%27%23fff%27 stroke=%27%231d2a44%27 stroke-width=%273%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#ece8df;--paper2:#e2ddd0;--ink:#1d2a44;--ink2:#55607a;--line:rgba(29,42,68,.18);--yellow:#ffd400;--red:#d6281c;--green:#1f8a4c;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;--sans:"IBM Plex Sans",system-ui,sans-serif;--head:Oswald,Impact,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font:16px/1.45 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh;
+  background-image:linear-gradient(rgba(29,42,68,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(29,42,68,.05) 1px,transparent 1px);background-size:24px 24px}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+[hidden]{display:none!important}
+.top{position:sticky;top:0;z-index:20;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:space-between;padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top))}
+.top b{font-family:var(--head);letter-spacing:.1em;font-size:19px}
+.top small{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--yellow);margin-left:8px}
+.top a,.top button{font-family:var(--mono);font-size:12px;background:none;border:1.5px solid rgba(236,232,223,.4);color:var(--paper);padding:6px 10px;cursor:pointer;text-decoration:none}
+.wrap{max-width:980px;margin:0 auto;padding:16px 16px 110px}
+h1{font-family:var(--head);text-transform:uppercase;font-size:clamp(30px,6vw,44px);line-height:1;margin:8px 0 6px}
+.sub{color:var(--ink2);font-size:14px;margin-bottom:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:12px 16px;border:2px solid var(--ink);background:var(--paper);cursor:pointer;text-decoration:none;transition:transform .15s,background .15s}
+.btn:active{transform:translate(1px,1px)}
+.btn.ink{background:var(--ink);color:var(--paper);box-shadow:4px 4px 0 var(--yellow),4px 4px 0 2px var(--ink)}
+.btn.y{background:var(--yellow)}
+.btn.sm{padding:7px 10px;font-size:11px}
+.btn.del{color:var(--red);border-color:var(--red)}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.card{background:var(--paper);border:2px solid var(--ink);padding:16px;margin-bottom:14px}
+.login{max-width:440px;margin:6vh auto 0}
+.login .card{box-shadow:8px 8px 0 var(--ink);padding:24px}
+.code{display:flex;gap:8px;margin:16px 0}
+.code input{width:100%;font-family:var(--head);font-size:34px;text-align:center;letter-spacing:.3em;border:2px solid var(--ink);background:#fff;padding:10px 6px;outline:none}
+.code input:focus{border-color:var(--red)}
+.steps{margin:12px 0 0 18px;display:grid;gap:8px;font-size:15px}
+.steps code,.pair{font-family:var(--mono);background:var(--yellow);padding:1px 6px;border:1.5px solid var(--ink);font-weight:600}
+.pair{display:inline-block;font-size:22px;padding:6px 12px;margin:6px 0}
+.msg{font-family:var(--mono);font-size:13px;margin-top:12px;min-height:18px}
+.msg.err{color:var(--red)}
+/* tabs */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);background:var(--ink);padding-bottom:env(safe-area-inset-bottom)}
+.tabs button{background:none;border:0;color:#aab3c7;font-family:var(--mono);font-size:11px;letter-spacing:.04em;padding:10px 2px 12px;cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;gap:3px}
+.tabs button i{font-style:normal;font-size:20px;line-height:1}
+.tabs button.on{color:var(--yellow)}
+.tabs button.on::before{content:"";position:absolute;top:0;left:20%;right:20%;height:3px;background:var(--yellow)}
+.badge{position:absolute;top:5px;right:calc(50% - 22px);background:var(--red);color:#fff;font-size:10px;border-radius:9px;padding:1px 6px;font-weight:600}
+@media(min-width:900px){.tabs{top:56px;bottom:auto;left:50%;transform:translateX(-50%);width:min(980px,100%);grid-template-columns:repeat(5,auto);justify-content:start;gap:4px;background:transparent;padding:0 16px}
+  .tabs button{flex-direction:row;color:var(--ink2);font-size:13px;padding:14px 12px}.tabs button.on{color:var(--ink)}.tabs button.on::before{top:auto;bottom:0;left:0;right:0;background:var(--red)}
+  .tabs button i{font-size:16px}.badge{position:static;margin-left:2px}.wrap{padding-top:70px}}
+/* filters */
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.filters button{font-family:var(--mono);font-size:12px;border:1.5px solid var(--ink);background:transparent;padding:6px 10px;cursor:pointer}
+.filters button.on{background:var(--ink);color:var(--yellow)}
+/* orders */
+.order{position:relative}
+.order .hd{display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-bottom:2px dashed var(--ink);padding-bottom:8px;margin-bottom:10px;font-family:var(--mono);font-size:12px;letter-spacing:.06em}
+.order .hd b{font-size:14px}
+.st{font-family:var(--mono);font-size:11px;font-weight:600;padding:3px 8px;border:1.5px solid var(--ink)}
+.st.new{background:var(--yellow)}.st.work{background:#cfe0ff}.st.done{background:#c9efd6}.st.cancel{background:#eee;color:#888;text-decoration:line-through}
+.order ul{list-style:none;margin:6px 0 10px}
+.order li{padding:3px 0;border-bottom:1px dotted var(--line);display:flex;justify-content:space-between;gap:10px}
+.order li span{font-family:var(--mono);font-size:12px;color:var(--ink2);white-space:nowrap}
+.kv{display:grid;grid-template-columns:96px 1fr;gap:4px 10px;font-size:15px}
+.kv dt{font-family:var(--mono);font-size:11px;text-transform:uppercase;color:var(--ink2);padding-top:3px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.acts .btn{flex:1 1 auto}
+.note{width:100%;margin-top:10px;border:1.5px solid var(--line);background:#fff;padding:8px;font-size:14px;min-height:40px;resize:vertical}
+.empty{text-align:center;color:var(--ink2);padding:40px 10px;font-family:var(--mono);font-size:13px}
+/* lists */
+.row{display:flex;gap:12px;align-items:center;cursor:pointer}
+.row .grow small::after{content:" · нажмите, чтобы изменить";opacity:.6}
+.thumbs{display:flex;gap:4px;flex:0 0 auto}
+.thumbs img{width:56px;height:70px;object-fit:cover;border:1.5px solid var(--ink);background:var(--paper2)}
+.grow{flex:1;min-width:0}
+.grow b{display:block;font-size:16px}
+.grow small{color:var(--ink2);font-family:var(--mono);font-size:11px}
+.ord{display:flex;flex-direction:column;gap:4px}
+.ord button{width:34px;height:30px;border:1.5px solid var(--ink);background:var(--paper);cursor:pointer;font-size:13px}
+.off{opacity:.5}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.tile{border:2px solid var(--ink);background:var(--paper);padding:6px;cursor:pointer;position:relative}
+.tile img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;background:var(--paper2)}
+.tile p{font-family:var(--mono);font-size:11px;padding-top:6px;display:flex;justify-content:space-between;gap:6px}
+.tile .hid{position:absolute;top:10px;left:10px;background:var(--ink);color:var(--yellow);font-family:var(--mono);font-size:10px;padding:2px 6px}
+/* prices */
+.cat h3{font-family:var(--head);text-transform:uppercase;font-size:22px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.prow{display:grid;grid-template-columns:1fr 110px 34px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dotted var(--line)}
+.prow input{border:0;border-bottom:1.5px solid var(--ink);background:transparent;padding:6px 2px;outline:none;min-width:0;font-size:15px}
+.prow input:focus{border-color:var(--red)}
+.prow .p{display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:12px}
+.prow .p input{text-align:right;font-family:var(--mono)}
+.x{width:34px;height:34px;border:1.5px solid var(--line);background:none;cursor:pointer;color:var(--red);font-size:16px}
+/* texts */
+.tx label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin-bottom:6px}
+.tx textarea{width:100%;border:1.5px solid var(--ink);background:#fff;padding:10px;font-size:15px;resize:vertical;min-height:46px;outline:none}
+.tx textarea:focus{border-color:var(--red)}
+.tx .ok{font-family:var(--mono);font-size:11px;color:var(--green);height:14px;margin-top:4px}
+/* dialog */
+dialog{border:2px solid var(--ink);background:var(--paper);color:var(--ink);padding:0;width:min(560px,calc(100% - 20px));max-height:calc(100% - 20px);box-shadow:10px 10px 0 var(--ink);margin:auto}
+dialog::backdrop{background:rgba(29,42,68,.55)}
+dialog form{padding:18px;display:grid;gap:12px}
+dialog h2{font-family:var(--head);text-transform:uppercase;font-size:26px}
+.f label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin-bottom:4px}
+.f input,.f textarea{width:100%;border:1.5px solid var(--ink);background:#fff;padding:9px;font-size:15px;outline:none}
+.f input:focus,.f textarea:focus{border-color:var(--red)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pick{border:2px dashed var(--ink);background:#fff;aspect-ratio:4/5;display:grid;place-items:center;text-align:center;cursor:pointer;position:relative;overflow:hidden;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.pick img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pick input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.pick .ld{position:absolute;inset:0;background:rgba(236,232,223,.85);display:grid;place-items:center;font-weight:600;color:var(--ink)}
+.chk{display:flex;gap:8px;align-items:center;font-size:15px}
+.chk input{width:20px;height:20px;accent-color:var(--ink)}
+.dacts{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap;border-top:2px dashed var(--ink);padding-top:12px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--yellow);font-family:var(--mono);font-size:13px;padding:10px 16px;opacity:0;transition:.25s;z-index:60;pointer-events:none;max-width:90vw}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.toast.err{background:var(--red);color:#fff}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<header class="top"><div><b>HANDYMAN</b><small>АДМИНКА</small></div><div style="display:flex;gap:8px"><a href="/" target="_blank">Сайт ↗</a><button id="logout" hidden>Выйти</button></div></header>
+
+<!-- LOGIN -->
+<main class="wrap login" id="login" hidden>
+  <div class="card">
+    <div id="lgLoading" class="msg"><span class="spin"></span> Проверяю…</div>
+
+    <div id="lgNoBot" hidden>
+      <h1>Почти готово</h1>
+      <p class="sub">Боту нужен токен. Создайте бота в @BotFather и добавьте токен в Supabase → Edge Functions → Secrets под именем <code>TELEGRAM_BOT_TOKEN</code>.</p>
+      <button class="btn" onclick="location.reload()">Проверить снова</button>
+    </div>
+
+    <div id="lgPair" hidden>
+      <h1>Привязка Telegram</h1>
+      <p class="sub">Один раз: свяжем админку с вашим Telegram. Сюда будут приходить коды для входа и новые заявки.</p>
+      <button class="btn ink" id="pairStart">Начать привязку</button>
+      <div id="pairBox" hidden>
+        <ol class="steps">
+          <li>Откройте бота: <a id="botLink" target="_blank" rel="noopener"><b id="botName"></b></a></li>
+          <li>Отправьте ему сообщение:<br><span class="pair" id="pairCmd"></span></li>
+          <li>Вернитесь сюда и нажмите кнопку ниже</li>
+        </ol>
+        <p style="margin-top:14px"><button class="btn ink" id="pairFinish">Я отправил</button></p>
+      </div>
+    </div>
+
+    <div id="lgCode" hidden>
+      <h1>Вход</h1>
+      <p class="sub">Код придёт в Telegram от вашего бота.</p>
+      <button class="btn ink" id="getCode" style="width:100%">Получить код в Telegram</button>
+      <div id="codeBox" hidden>
+        <div class="code"><input id="codeIn" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"></div>
+        <button class="btn ink" id="verify" style="width:100%">Войти</button>
+        <p style="margin-top:10px;text-align:center"><button class="btn sm" id="again">Отправить ещё раз</button></p>
+      </div>
+    </div>
+    <div class="msg err" id="lgMsg"></div>
+  </div>
+</main>
+
+<!-- PANEL -->
+<div id="panel" hidden>
+  <nav class="tabs" id="tabs">
+    <button data-tab="orders" class="on"><i>✉</i>Заявки<span class="badge" id="badge" hidden></span></button>
+    <button data-tab="cases"><i>◧</i>Работы</button>
+    <button data-tab="gallery"><i>▦</i>Фото</button>
+    <button data-tab="services"><i>₽</i>Цены</button>
+    <button data-tab="texts"><i>¶</i>Тексты</button>
+  </nav>
+  <main class="wrap" id="view"></main>
+</div>
+
+<dialog id="dlg"><form method="dialog" id="dlgForm"></form></dialog>
+<div class="toast" id="toast"></div>
+
+<script src="/config.js"></script>
+<script>
+(() => {
+  const API = window.HM_API;
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const tok = () => { try { return localStorage.getItem('hm_t') || ''; } catch { return ''; } };
+  const setTok = t => { try { t ? localStorage.setItem('hm_t', t) : localStorage.removeItem('hm_t'); } catch {} };
+  let toastT;
+  const toast = (m, err) => { const t = $('#toast'); t.textContent = m; t.className = 'toast on' + (err ? ' err' : ''); clearTimeout(toastT); toastT = setTimeout(() => t.className = 'toast', 2400); };
+
+  async function call(action, data = {}) {
+    const h = { 'content-type': 'application/json' };
+    if (tok()) h.authorization = 'Bearer ' + tok();
+    let r, j;
+    try { r = await fetch(API, { method: 'POST', headers: h, body: JSON.stringify({ action, ...data }) }); j = await r.json(); }
+    catch { throw new Error('Нет связи с сервером'); }
+    if (r.status === 401 && !['login_verify', 'login_request'].includes(action)) { setTok(''); showLogin(); throw new Error(j.error || 'Нужно войти'); }
+    if (!r.ok || j.error) throw new Error(j.error || 'Ошибка');
+    return j;
+  }
+  const busy = async (btn, fn) => { const t = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<span class="spin"></span>'; try { return await fn(); } finally { btn.disabled = false; btn.innerHTML = t; } };
+  const fmtDate = d => new Date(d).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+  const rub = n => Number(n).toLocaleString('ru-RU') + ' ₽';
+
+  /* ================= LOGIN ================= */
+  const lgMsg = m => $('#lgMsg').textContent = m || '';
+  async function showLogin() {
+    $('#panel').hidden = true; $('#logout').hidden = true; $('#login').hidden = false;
+    ['#lgNoBot', '#lgPair', '#lgCode'].forEach(s => $(s).hidden = true); $('#lgLoading').hidden = false; lgMsg('');
+    try {
+      const s = await call('status');
+      $('#lgLoading').hidden = true;
+      if (!s.bot_ready) $('#lgNoBot').hidden = false;
+      else if (!s.paired) $('#lgPair').hidden = false;
+      else $('#lgCode').hidden = false;
+    } catch (e) { $('#lgLoading').hidden = true; lgMsg(e.message); }
+  }
+  $('#pairStart').onclick = e => busy(e.currentTarget, async () => {
+    lgMsg('');
+    try {
+      const r = await call('pair_start');
+      $('#botName').textContent = '@' + r.bot; $('#botLink').href = 'https://t.me/' + r.bot + '?start=' + r.code;
+      $('#pairCmd').textContent = '/start ' + r.code; $('#pairBox').hidden = false; $('#pairStart').hidden = true;
+    } catch (e) { lgMsg(e.message); }
+  });
+  $('#pairFinish').onclick = e => busy(e.currentTarget, async () => {
+    lgMsg('');
+    try { await call('pair_finish'); toast('Telegram привязан ✓'); showLogin(); } catch (err) { lgMsg(err.message); }
+  });
+  const reqCode = btn => busy(btn, async () => {
+    lgMsg('');
+    try { await call('login_request'); $('#codeBox').hidden = false; $('#getCode').hidden = true; $('#codeIn').focus(); toast('Код отправлен в Telegram'); }
+    catch (e) { lgMsg(e.message); }
+  });
+  $('#getCode').onclick = e => reqCode(e.currentTarget);
+  $('#again').onclick = e => reqCode(e.currentTarget);
+  const verify = () => busy($('#verify'), async () => {
+    lgMsg('');
+    try { const r = await call('login_verify', { code: $('#codeIn').value }); setTok(r.token); showPanel(); }
+    catch (e) { lgMsg(e.message); $('#codeIn').select(); }
+  });
+  $('#verify').onclick = verify;
+  $('#codeIn').addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 6); if (e.target.value.length === 6) verify(); });
+  $('#logout').onclick = async () => { try { await call('logout'); } catch {} setTok(''); showLogin(); };
+
+  /* ================= PANEL ================= */
+  let tab = 'orders';
+  function showPanel() {
+    $('#login').hidden = true; $('#panel').hidden = false; $('#logout').hidden = false;
+    go(location.hash.slice(1) || 'orders');
+  }
+  function go(t) {
+    if (!VIEWS[t]) t = 'orders';
+    tab = t; history.replaceState(null, '', '#' + t);
+    $$('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+    $('#view').innerHTML = '<div class="empty"><span class="spin"></span></div>';
+    VIEWS[t]().catch(e => { $('#view').innerHTML = `<div class="empty">${esc(e.message)}</div>`; });
+    scrollTo(0, 0);
+  }
+  $('#tabs').onclick = e => { const b = e.target.closest('button'); if (b) go(b.dataset.tab); };
+
+  /* ---------- orders ---------- */
+  const ST = { new: 'Новая', work: 'В работе', done: 'Готово', cancel: 'Отмена' };
+  let oFilter = 'active', orders = [];
+  const setBadge = () => { const n = orders.filter(o => o.status === 'new').length; $('#badge').hidden = !n; $('#badge').textContent = n; };
+  async function vOrders() {
+    orders = (await call('list', { table: 'orders' })).rows; setBadge();
+    renderOrders();
+  }
+  function renderOrders() {
+    const F = { active: o => o.status === 'new' || o.status === 'work', new: o => o.status === 'new', done: o => o.status === 'done', all: () => true };
+    const list = orders.filter(F[oFilter]);
+    const cnt = k => orders.filter(F[k]).length;
+    $('#view').innerHTML = `<h1>Заявки</h1><p class="sub">Каждый наряд с сайта сохраняется здесь и приходит вам в Telegram.</p>
+      <div class="filters">${[['active', 'Активные'], ['new', 'Новые'], ['done', 'Готово'], ['all', 'Все']].map(([k, t]) => `<button data-f="${k}" class="${k === oFilter ? 'on' : ''}">${t} · ${cnt(k)}</button>`).join('')}</div>
+      ${list.length ? list.map(orderCard).join('') : '<div class="empty">Пока пусто. Как только кто-то отправит наряд с сайта — он появится здесь.</div>'}`;
+    $('.filters').onclick = e => { const b = e.target.closest('button'); if (b) { oFilter = b.dataset.f; renderOrders(); } };
+  }
+  function orderCard(o) {
+    const ph = (o.phone || '').replace(/[^\d+]/g, '');
+    const wa = ph ? 'https://wa.me/' + ph.replace(/^\+/, '').replace(/^8/, '7') : '';
+    return `<article class="card order" data-id="${o.id}">
+      <div class="hd"><b>№ ${esc(o.num || o.id)}</b><span>${fmtDate(o.created_at)}</span><span class="st ${o.status}">${ST[o.status]}</span></div>
+      ${o.items?.length ? `<ul>${o.items.map(i => `<li>${esc(i.name)}${i.price_from ? `<span>от ${rub(i.price_from)}</span>` : ''}</li>`).join('')}</ul>` : ''}
+      <dl class="kv">
+        ${o.total_from ? `<dt>Примерно</dt><dd><b>от ${rub(o.total_from)}</b></dd>` : ''}
+        ${o.name ? `<dt>Имя</dt><dd>${esc(o.name)}</dd>` : ''}
+        ${o.phone ? `<dt>Телефон</dt><dd><a href="tel:${esc(ph)}">${esc(o.phone)}</a></dd>` : ''}
+        ${o.area ? `<dt>Район</dt><dd>${esc(o.area)}</dd>` : ''}
+        ${o.when_text ? `<dt>Когда</dt><dd>${esc(o.when_text)}</dd>` : ''}
+        ${o.note ? `<dt>Коммент.</dt><dd>${esc(o.note)}</dd>` : ''}
+      </dl>
+      <textarea class="note" placeholder="Заметка для себя: адрес, цена, договорились на…">${esc(o.admin_note)}</textarea>
+      <div class="acts">
+        ${ph ? `<a class="btn sm" href="tel:${esc(ph)}">☎ Позвонить</a><a class="btn sm" href="${wa}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
+        ${o.status !== 'work' ? `<button class="btn sm" data-s="work">В работу</button>` : ''}
+        ${o.status !== 'done' ? `<button class="btn sm y" data-s="done">✓ Готово</button>` : ''}
+        ${o.status !== 'cancel' ? `<button class="btn sm" data-s="cancel">Отмена</button>` : `<button class="btn sm" data-s="new">Вернуть</button>`}
+      </div></article>`;
+  }
+  document.addEventListener('click', async e => {
+    const b = e.target.closest('.order [data-s]'); if (!b) return;
+    const id = +b.closest('.order').dataset.id, s = b.dataset.s;
+    await busy(b, async () => {
+      try { await call('save', { table: 'orders', row: { id, status: s } }); const o = orders.find(x => x.id === id); o.status = s; setBadge(); renderOrders(); toast(ST[s]); }
+      catch (err) { toast(err.message, 1); }
+    });
+  });
+  document.addEventListener('change', async e => {
+    if (!e.target.matches('.order .note')) return;
+    const id = +e.target.closest('.order').dataset.id, v = e.target.value;
+    try { await call('save', { table: 'orders', row: { id, admin_note: v } }); orders.find(x => x.id === id).admin_note = v; toast('Заметка сохранена'); } catch (err) { toast(err.message, 1); }
+  });
+
+  /* ---------- image upload ---------- */
+  async function shrink(file, max = 1600) {
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = url; });
+      const k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      let blob = await new Promise(r => c.toBlob(r, 'image/webp', .82));
+      if (!blob || blob.type !== 'image/webp') blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .85));
+      return blob;
+    } finally { URL.revokeObjectURL(url); }
+  }
+  async function upload(file) {
+    const blob = await shrink(file);
+    const ext = blob.type === 'image/webp' ? 'webp' : 'jpg';
+    const { signedUrl, publicUrl } = await call('upload_url', { ext });
+    const r = await fetch(signedUrl, { method: 'PUT', headers: { 'content-type': blob.type }, body: blob });
+    if (!r.ok) throw new Error('Не удалось загрузить фото');
+    return publicUrl;
+  }
+  const pickHTML = (name, url, label) => `<label class="pick" data-pick="${name}">${url ? `<img src="${esc(url)}" alt="">` : `<span>＋<br>${label}</span>`}<input type="file" accept="image/*"><input type="hidden" name="${name}" value="${esc(url || '')}"></label>`;
+  function bindPicks(root) {
+    root.querySelectorAll('.pick').forEach(p => p.querySelector('input[type=file]').addEventListener('change', async e => {
+      const f = e.target.files[0]; if (!f) return;
+      const ld = document.createElement('div'); ld.className = 'ld'; ld.innerHTML = '<span><span class="spin"></span> загрузка…</span>'; p.append(ld);
+      try {
+        const u = await upload(f);
+        p.querySelector('input[type=hidden]').value = u;
+        let im = p.querySelector('img'); if (!im) { p.querySelector('span')?.remove(); im = document.createElement('img'); p.prepend(im); }
+        im.src = u;
+      } catch (err) { toast(err.message, 1); } finally { ld.remove(); e.target.value = ''; }
+    }));
+  }
+
+  /* ---------- dialog helper ---------- */
+  function openDlg(html, onSave, onDelete) {
+    const d = $('#dlg'), f = $('#dlgForm');
+    f.innerHTML = html + `<div class="dacts"><span>${onDelete ? '<button type="button" class="btn sm del" id="dDel">Удалить</button>' : ''}</span><span style="display:flex;gap:8px"><button type="button" class="btn sm" id="dCancel">Отмена</button><button type="submit" class="btn sm ink" id="dSave">Сохранить</button></span></div>`;
+    bindPicks(f);
+    $('#dCancel').onclick = () => d.close();
+    if (onDelete) $('#dDel').onclick = async () => { if (!confirm('Удалить безвозвратно?')) return; try { await onDelete(); d.close(); } catch (e) { toast(e.message, 1); } };
+    f.onsubmit = async e => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(f).entries());
+      f.querySelectorAll('input[type=checkbox]').forEach(c => data[c.name] = c.checked);
+      await busy($('#dSave'), async () => { try { await onSave(data); d.close(); } catch (err) { toast(err.message, 1); } });
+    };
+    d.showModal();
+  }
+  const reorder = async (table, rows, i, dir) => {
+    const j = i + dir; if (j < 0 || j >= rows.length) return;
+    [rows[i], rows[j]] = [rows[j], rows[i]];
+    await call('reorder', { table, ids: rows.map(r => r.id) });
+  };
+
+  /* ---------- cases ---------- */
+  let cases = [];
+  async function vCases() { cases = (await call('list', { table: 'cases' })).rows; renderCases(); }
+  function renderCases() {
+    $('#view').innerHTML = `<h1>Работы</h1><p class="sub">Кейсы «было / стало» на сайте. Нажмите на работу, чтобы изменить. Порядок — стрелками.</p>
+      <p style="margin-bottom:14px"><button class="btn ink" id="addCase">＋ Добавить работу</button></p>
+      ${cases.map((c, i) => `<div class="card row ${c.published ? '' : 'off'}" data-i="${i}">
+        <div class="thumbs"><img src="${esc(c.before_url || '')}" alt=""><img src="${esc(c.after_url || '')}" alt=""></div>
+        <div class="grow"><b>${esc(c.title)}</b><small>${esc(c.tag)}${c.published ? '' : ' · СКРЫТО'}</small></div>
+        <div class="ord"><button data-mv="-1">▲</button><button data-mv="1">▼</button></div></div>`).join('') || '<div class="empty">Работ пока нет</div>'}`;
+    $('#addCase').onclick = () => caseDlg({ published: true, before_cap: 'было', after_cap: 'стало ✓' });
+    $$('#view [data-i]').forEach(el => {
+      const i = +el.dataset.i;
+      el.onclick = e => { if (!e.target.closest('[data-mv]')) caseDlg(cases[i]); };
+      el.querySelectorAll('[data-mv]').forEach(b => b.onclick = async () => { try { await reorder('cases', cases, i, +b.dataset.mv); renderCases(); } catch (e) { toast(e.message, 1); } });
+    });
+  }
+  function caseDlg(c) {
+    openDlg(`<h2>${c.id ? 'Работа' : 'Новая работа'}</h2>
+      <div class="two">${pickHTML('before_url', c.before_url, 'фото «было»')}${pickHTML('after_url', c.after_url, 'фото «стало»')}</div>
+      <div class="f"><label>Название</label><input name="title" required value="${esc(c.title)}" placeholder="Например: Шкаф-купе"></div>
+      <div class="f"><label>Категория (в шапке квитанции)</label><input name="tag" value="${esc(c.tag)}" placeholder="СБОРКА МЕБЕЛИ"></div>
+      <div class="f"><label>Было</label><textarea name="was" rows="2">${esc(c.was)}</textarea></div>
+      <div class="f"><label>Сделал</label><textarea name="did" rows="2">${esc(c.did)}</textarea></div>
+      <div class="f"><label>Итог (коротко)</label><input name="result" value="${esc(c.result)}" placeholder="ДВЕРИ ЗАКРЫВАЮТСЯ МЯГКО"></div>
+      <div class="two"><div class="f"><label>Подпись «было»</label><input name="before_cap" value="${esc(c.before_cap)}"></div><div class="f"><label>Подпись «стало»</label><input name="after_cap" value="${esc(c.after_cap)}"></div></div>
+      <label class="chk"><input type="checkbox" name="published" ${c.published ? 'checked' : ''}> Показывать на сайте</label>`,
+      async d => {
+        if (!d.before_url || !d.after_url) throw new Error('Добавьте оба фото');
+        const row = { ...d, id: c.id }; if (!c.id) row.sort = (cases.at(-1)?.sort || 0) + 10;
+        await call('save', { table: 'cases', row }); toast('Сохранено'); await vCases();
+      },
+      c.id ? async () => { await call('delete', { table: 'cases', id: c.id }); toast('Удалено'); await vCases(); } : null);
+  }
+
+  /* ---------- gallery ---------- */
+  let gal = [];
+  async function vGallery() { gal = (await call('list', { table: 'gallery' })).rows; renderGallery(); }
+  function renderGallery() {
+    $('#view').innerHTML = `<h1>Фото</h1><p class="sub">Галерея «Мебель и объекты». Нажмите на фото, чтобы изменить.</p>
+      <p style="margin-bottom:14px"><button class="btn ink" id="addG">＋ Добавить фото</button></p>
+      <div class="grid">${gal.map((g, i) => `<div class="tile ${g.published ? '' : 'off'}" data-i="${i}">${g.published ? '' : '<span class="hid">СКРЫТО</span>'}<img src="${esc(g.image_url)}" alt="" loading="lazy"><p><b>${esc(g.title)}</b><span>${esc(g.tag)}</span></p>
+        <div class="ord" style="flex-direction:row;margin-top:6px"><button data-mv="-1">◀</button><button data-mv="1">▶</button></div></div>`).join('')}</div>`;
+    $('#addG').onclick = () => galDlg({ published: true });
+    $$('#view .tile').forEach(el => {
+      const i = +el.dataset.i;
+      el.onclick = e => { if (e.target.closest('[data-mv]')) return; galDlg(gal[i]); };
+      el.querySelectorAll('[data-mv]').forEach(b => b.onclick = async () => { try { await reorder('gallery', gal, i, +b.dataset.mv); renderGallery(); } catch (e) { toast(e.message, 1); } });
+    });
+  }
+  function galDlg(g) {
+    openDlg(`<h2>${g.id ? 'Фото' : 'Новое фото'}</h2>
+      <div style="max-width:260px">${pickHTML('image_url', g.image_url, 'выбрать фото')}</div>
+      <div class="two"><div class="f"><label>Подпись</label><input name="title" value="${esc(g.title)}" placeholder="Шкаф-купе"></div><div class="f"><label>Тег</label><input name="tag" value="${esc(g.tag)}" placeholder="сборка"></div></div>
+      <label class="chk"><input type="checkbox" name="published" ${g.published ? 'checked' : ''}> Показывать на сайте</label>`,
+      async d => {
+        if (!d.image_url) throw new Error('Выберите фото');
+        const row = { ...d, id: g.id }; if (!g.id) row.sort = (gal.at(-1)?.sort || 0) + 10;
+        await call('save', { table: 'gallery', row }); toast('Сохранено'); await vGallery();
+      },
+      g.id ? async () => { await call('delete', { table: 'gallery', id: g.id }); toast('Удалено'); await vGallery(); } : null);
+  }
+
+  /* ---------- prices ---------- */
+  let serv = [];
+  async function vServices() { serv = (await call('list', { table: 'services' })).rows; renderServices(); }
+  function renderServices() {
+    const groups = []; const by = {};
+    serv.forEach(s => { if (!by[s.cat]) { by[s.cat] = { k: s.cat, t: s.cat_title, items: [] }; groups.push(by[s.cat]); } by[s.cat].items.push(s); });
+    $('#view').innerHTML = `<h1>Цены</h1><p class="sub">Цена «от» видна клиенту в наряде. Пустое поле — цена не показывается. Сохраняется само.</p>
+      ${groups.map(g => `<section class="card cat" data-cat="${esc(g.k)}"><h3>${esc(g.t)}<button class="btn sm" data-add>＋ строка</button></h3>
+        ${g.items.map(s => `<div class="prow" data-id="${s.id}"><input value="${esc(s.name)}" data-f="name"><span class="p">от<input inputmode="numeric" value="${s.price_from ?? ''}" data-f="price_from" placeholder="—">₽</span><button class="x" data-del title="Удалить">✕</button></div>`).join('')}
+      </section>`).join('')}
+      <button class="btn" id="addCat">＋ Новая категория</button>`;
+    $$('#view .prow input').forEach(inp => inp.addEventListener('change', async () => {
+      const id = +inp.closest('.prow').dataset.id, f = inp.dataset.f;
+      let v = inp.value.trim(); if (f === 'price_from') { v = v.replace(/\D/g, ''); inp.value = v; v = v ? +v : null; }
+      try { await call('save', { table: 'services', row: { id, [f]: v } }); const s = serv.find(x => x.id === id); s[f] = v; toast('Сохранено'); } catch (e) { toast(e.message, 1); }
+    }));
+    $$('#view [data-del]').forEach(b => b.onclick = async () => {
+      const id = +b.closest('.prow').dataset.id; if (!confirm('Удалить строку?')) return;
+      try { await call('delete', { table: 'services', id }); serv = serv.filter(x => x.id !== id); renderServices(); } catch (e) { toast(e.message, 1); }
+    });
+    $$('#view [data-add]').forEach(b => b.onclick = async () => {
+      const k = b.closest('.cat').dataset.cat, g = by[k], last = g.items.at(-1);
+      const name = prompt('Название услуги'); if (!name) return;
+      try { await call('save', { table: 'services', row: { cat: k, cat_title: g.t, name, sort: (last?.sort || 0) + 1 } }); await vServices(); } catch (e) { toast(e.message, 1); }
+    });
+    $('#addCat').onclick = async () => {
+      const t = prompt('Название категории'); if (!t) return;
+      const name = prompt('Первая услуга в категории'); if (!name) return;
+      try { await call('save', { table: 'services', row: { cat: 'c' + Date.now().toString(36), cat_title: t, name, sort: (serv.at(-1)?.sort || 0) + 10 } }); await vServices(); } catch (e) { toast(e.message, 1); }
+    };
+  }
+
+  /* ---------- texts ---------- */
+  async function vTexts() {
+    const rows = (await call('list', { table: 'texts' })).rows;
+    $('#view').innerHTML = `<h1>Тексты</h1><p class="sub">Измените текст и нажмите в другом месте — сохранится само. **Слово** — жирным.</p>
+      ${rows.map(r => `<div class="card tx" data-k="${esc(r.key)}"><label>${esc(r.label)}</label><textarea rows="${Math.min(6, Math.ceil(r.value.length / 60) + 1)}">${esc(r.value)}</textarea><div class="ok"></div></div>`).join('')}`;
+    $$('#view .tx textarea').forEach(t => t.addEventListener('change', async () => {
+      const box = t.closest('.tx'), ok = box.querySelector('.ok');
+      try { await call('save', { table: 'texts', row: { key: box.dataset.k, value: t.value } }); ok.textContent = '✓ сохранено'; setTimeout(() => ok.textContent = '', 2000); } catch (e) { toast(e.message, 1); }
+    }));
+  }
+
+  const VIEWS = { orders: vOrders, cases: vCases, gallery: vGallery, services: vServices, texts: vTexts };
+
+  /* ---------- start ---------- */
+  if (!API) { document.body.innerHTML = '<div class="wrap"><h1>Не настроено</h1><p>В config.js нет адреса API.</p></div>'; return; }
+  (async () => { if (tok()) { try { await call('me'); return showPanel(); } catch {} } showLogin(); })();
+  setInterval(() => { if (!document.hidden && tok() && tab === 'orders' && !$('#panel').hidden && !$('#dlg').open && !document.activeElement?.matches('textarea')) vOrders().catch(() => {}); }, 60000);
+})();
+</script>
+</body>
+</html>
