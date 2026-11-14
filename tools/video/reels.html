@@ -33,7 +33,7 @@ html,body{width:1080px;height:1920px;overflow:hidden}
 #outro img{width:260px;height:260px;border-radius:58px;box-shadow:14px 14px 0 var(--y)}
 #outro h2{font:700 140px/.9 Osw;text-transform:uppercase;margin:70px 0 18px;letter-spacing:.04em}
 #outro .s{font:600 30px/1 PMono;letter-spacing:.24em;color:var(--y);text-transform:uppercase}
-#outro .t{margin-top:90px;font:700 92px/1 Osw;background:var(--y);color:var(--ink);padding:26px 40px}
+#outro .t{margin-top:90px;font:700 76px/1 Osw;background:var(--y);color:var(--ink);padding:26px 40px}
 #outro .u{margin-top:34px;font:600 44px/1 PMono;border:4px solid var(--paper);padding:24px 34px}
 #outro .w{margin-top:40px;font:500 36px/1.3 Plex;color:#aab3c7}
 </style></head><body><div id="st">
@@ -57,7 +57,7 @@ const D={dur:G?13:12.5,laser:[2.6,3.6],split:[6.4,8.0],price:G?8.4:8.2,outro:G?1
 $('#badge').textContent=G?'МОИ РАБОТЫ':'ДО → ПОСЛЕ';
 $('#title').innerHTML=R.title;
 $('#price .n').textContent=R.price[0];$('#price .p').innerHTML=R.price[1];
-$('#outro').innerHTML=`<img src="${IMG.logo}"><h2>Handyman</h2><div class="s">Рамзан · мастер по дому</div><div class="t">8 963 599-36-01</div><div class="u">handyman-grozny.ru</div><div class="w">Цена — до начала работы.<br>Пишите в WhatsApp или оставьте заявку на сайте.</div>`;
+$('#outro').innerHTML=`<img src="${IMG.logo}"><h2>Handyman</h2><div class="s">Рамзан · мастер по дому</div><div class="t">handyman-grozny.ru</div><div class="u">Instagram · @ramzan.done</div><div class="w">Цена — до начала работы.<br>Заявка — на сайте или в Direct.</div>`;
 const win=$('#win');
 if(G){win.innerHTML=R.items.map((x,i)=>`<img id="g${i}" src="${IMG[x[0]]}">`).join('');}
 else win.innerHTML=`<img id="bef" src="${IMG.before}"><div id="aftWrap"><img id="aft" src="${IMG.after}"></div><div id="laser"></div>`;

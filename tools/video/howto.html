@@ -117,7 +117,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#ece8df}
 #outro h2{font:700 170px/.9 var(--head);text-transform:uppercase;margin:70px 0 26px}
 #outro p{font:500 44px/1.35 var(--sans);color:#2f3a55}
 #outro .url{margin-top:70px;font:600 46px/1 var(--mono);border:4px solid var(--ink);padding:26px 34px;background:var(--paper)}
-#outro .tel{margin-top:30px;font:700 64px/1 var(--head);background:var(--ink);color:var(--y);padding:22px 34px;letter-spacing:.02em}
+#outro .tel{margin-top:30px;font:700 54px/1 var(--head);background:var(--ink);color:var(--y);padding:22px 34px;letter-spacing:.02em}
 </style></head><body><div id="stage">
 <div class="haz" style="top:0"></div>
 <div id="brand"><i></i>HANDYMAN · ИНСТРУКЦИЯ</div>
@@ -241,7 +241,7 @@ window.EVENTS=()=>{const E=[],T=S.taps,add=(k,t,v=1)=>E.push([k,+t.toFixed(3),v]
  return {dur:S.dur,events:E}};
 // intro / outro content
 $('#intro').innerHTML=`<div class="k">Инструкция · 20 секунд</div><h1><span><b>Как добавить</b></span><span><b>Handyman</b></span><span class="r"><b>на экран</b></span><span class="r"><b>телефона</b></span></h1><div class="chipb">${OS==='ios'?'iPhone <em>·</em> Safari':'Android <em>·</em> Chrome'}</div><div class="sub">Значок на экране — и мастер всегда под рукой: заявка, цены, звонок в один тап.</div>`;
-$('#outro').innerHTML=`<img src="${IMG.logo}"><h2>Готово!</h2><p>Теперь Handyman открывается<br>с экрана, как приложение</p><div class="url">handyman-grozny.ru</div><div class="tel">8 963 599-36-01</div>`;
+$('#outro').innerHTML=`<img src="${IMG.logo}"><h2>Готово!</h2><p>Теперь Handyman открывается<br>с экрана, как приложение</p><div class="url">handyman-grozny.ru</div><div class="tel">Instagram · @ramzan.done</div>`;
 const center=sel=>{const r=$(sel).getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]};
 const show=(el,o,tf)=>{el=typeof el==='string'?$(el):el;el.style.opacity=o;el.style.visibility=o<=0.001?'hidden':'visible';if(tf!==undefined)el.style.transform=tf};
 let lastStep=-1;
