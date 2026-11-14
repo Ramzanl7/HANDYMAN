@@ -352,7 +352,7 @@ section{position:relative}
 .mapbtn{border:2px solid var(--ink);background:var(--yellow);font-family:var(--mono);font-size:12px;font-weight:600;padding:8px 10px;cursor:pointer;white-space:nowrap}
 .mapbtn.on{background:var(--ink);color:var(--yellow)}
 .mapbox{border:2px solid var(--ink);margin-top:4px}
-#map{height:240px;background:var(--paper2);position:relative;isolation:isolate;z-index:0}
+#map{height:280px;background:var(--paper2);position:relative;isolation:isolate;z-index:0}
 .maptools{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 8px;border-top:2px solid var(--ink);font-family:var(--mono);font-size:11px;color:var(--ink2);flex-wrap:wrap}
 .maptools button{border:1.5px solid var(--ink);background:var(--paper);font:inherit;font-weight:600;color:var(--ink);padding:5px 8px;cursor:pointer}
 .donebox{position:absolute;inset:0;background:var(--paper);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:14px;padding:30px 24px;z-index:3}
@@ -897,7 +897,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     if (v('#fName')) lines.push('Имя: ' + v('#fName'));
     if (v('#fPhone')) lines.push('Телефон: ' + v('#fPhone'));
     if (v('#fArea')) lines.push('Адрес: ' + v('#fArea'));
-    if (geo) lines.push('Точка на карте: ' + mapLink(geo));
+    if (geo) { lines.push('Точка на карте: ' + mapLink(geo)); lines.push('Маршрут: https://yandex.ru/maps/?rtext=~' + geo.lat + ',' + geo.lon + '&rtt=auto'); }
     lines.push('Когда: ' + $('#fWhen').value);
     if (v('#fNote')) lines.push('Комментарий: ' + v('#fNote'));
     send.href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(lines.join('\n'));
@@ -1030,42 +1030,69 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   $('#fPhone').addEventListener('input', () => $('#phoneLbl').classList.remove('err'));
   $('#newOrder').addEventListener('click', () => { sel.clear(); renderCats(); ['#fNote'].forEach(id => $(id).value = ''); render(); $('#doneBox').hidden = true; });
 
-  // map picker (OpenStreetMap tiles; the master gets a Yandex Maps link)
-  let map, marker, autoAddr = '';
-  const loadLeaflet = () => new Promise((ok, no) => {
-    if (window.L) return ok();
+  // map picker: Яндекс Карты (ключ в config.js); если не загрузились — запасная карта OpenStreetMap
+  let map, marker, autoAddr = '', kind = '';
+  const loadScript = src => new Promise((ok, no) => { const js = document.createElement('script'); js.src = src; js.onload = ok; js.onerror = no; document.head.append(js); });
+  const loadYandex = async () => {
+    if (!window.HM_YMAPS) throw new Error('no key');
+    if (!window.ymaps) await loadScript('https://api-maps.yandex.ru/2.1/?apikey=' + encodeURIComponent(window.HM_YMAPS) + '&lang=ru_RU');
+    await new Promise((ok, no) => { const t = setTimeout(no, 10000); window.ymaps.ready(() => { clearTimeout(t); ok(); }); });
+  };
+  const loadLeaflet = async () => {
+    if (window.L) return;
     const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = '/vendor/leaflet/leaflet.css'; document.head.append(css);
-    const js = document.createElement('script'); js.src = '/vendor/leaflet/leaflet.js'; js.onload = ok; js.onerror = no; document.head.append(js);
-  });
+    await loadScript('/vendor/leaflet/leaflet.js');
+  };
   const pinIcon = () => L.divIcon({ className: '', html: '<div style="width:30px;height:30px;border-radius:50% 50% 50% 0;background:#d6281c;border:3px solid #1d2a44;transform:rotate(-45deg);box-shadow:2px 2px 0 #1d2a44"></div>', iconSize: [30, 30], iconAnchor: [15, 30] });
-  const setPoint = async (lat, lon, zoom) => {
-    geo = { lat: +lat.toFixed(6), lon: +lon.toFixed(6) };
-    if (!marker) { marker = L.marker([lat, lon], { draggable: true, icon: pinIcon() }).addTo(map); marker.on('dragend', () => { const p = marker.getLatLng(); setPoint(p.lat, p.lng); }); }
-    else marker.setLatLng([lat, lon]);
-    if (zoom) map.setView([lat, lon], zoom);
-    $('#mapHint').textContent = 'Точка поставлена ✓ можно перетащить'; render(); goal('map_point');
+  const fillAddr = full => { if (full && (!v('#fArea') || v('#fArea') === autoAddr)) { $('#fArea').value = autoAddr = full; render(); } };
+  const reverse = async (lat, lon) => {
+    if (kind === 'y') {
+      try { const r = await ymaps.geocode([lat, lon], { results: 1 }); const g = r.geoObjects.get(0); if (g) return fillAddr(String(g.getAddressLine() || '').replace(/^Россия,\s*/, '').replace(/^Чеченская Республика,\s*/, '')); } catch (_) {}
+    }
     try {
       const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=18&accept-language=ru`);
       const j = await r.json(); const a = j.address || {};
       const line = [a.road, a.house_number].filter(Boolean).join(', ') || a.suburb || a.city_district || j.name || '';
-      const full = [line, a.city || a.town || a.village].filter(Boolean).join(', ');
-      if (full && (!v('#fArea') || v('#fArea') === autoAddr)) { $('#fArea').value = autoAddr = full; render(); }
+      fillAddr([line, a.city || a.town || a.village].filter(Boolean).join(', '));
     } catch (_) {}
+  };
+  const setPoint = (lat, lon, zoom) => {
+    geo = { lat: +lat.toFixed(6), lon: +lon.toFixed(6) };
+    if (kind === 'y') {
+      if (!marker) {
+        marker = new ymaps.Placemark([lat, lon], { hintContent: 'Сюда приедет мастер' }, { preset: 'islands#redDotIcon', draggable: true });
+        marker.events.add('dragend', () => { const c = marker.geometry.getCoordinates(); setPoint(c[0], c[1]); });
+        map.geoObjects.add(marker);
+      } else marker.geometry.setCoordinates([lat, lon]);
+      if (zoom) map.setCenter([lat, lon], zoom, { duration: 300 });
+    } else {
+      if (!marker) { marker = L.marker([lat, lon], { draggable: true, icon: pinIcon() }).addTo(map); marker.on('dragend', () => { const q = marker.getLatLng(); setPoint(q.lat, q.lng); }); }
+      else marker.setLatLng([lat, lon]);
+      if (zoom) map.setView([lat, lon], zoom);
+    }
+    $('#mapHint').textContent = 'Точка поставлена ✓ можно перетащить'; render(); goal('map_point');
+    reverse(lat, lon);
   };
   $('#mapBtn').addEventListener('click', async () => {
     const box = $('#mapBox'), btn = $('#mapBtn');
     box.hidden = !box.hidden; btn.classList.toggle('on', !box.hidden);
-    if (box.hidden) return;
+    if (box.hidden || map) { if (map && kind === 'l') setTimeout(() => map.invalidateSize(), 50); if (map && kind === 'y') map.container.fitToViewport(); return; }
+    $('#mapHint').textContent = 'Загружаю карту…';
     try {
-      await loadLeaflet();
-      if (!map) {
+      await loadYandex(); kind = 'y';
+      map = new ymaps.Map('map', { center: [43.3178, 45.6949], zoom: 13, controls: ['zoomControl'] }, { suppressMapOpenBlock: true, yandexMapDisablePoiInteractivity: true });
+      map.events.add('click', e => { const c = e.get('coords'); setPoint(c[0], c[1]); });
+    } catch (_) {
+      try {
+        await loadLeaflet(); kind = 'l';
         map = L.map('map', { zoomControl: true, attributionControl: true }).setView([43.3178, 45.6949], 13);
         map.attributionControl.setPrefix('Leaflet');
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
         map.on('click', e => setPoint(e.latlng.lat, e.latlng.lng));
-      }
-      setTimeout(() => map.invalidateSize(), 50);
-    } catch (_) { $('#mapHint').textContent = 'Карта не загрузилась — напишите адрес текстом'; }
+        setTimeout(() => map.invalidateSize(), 50);
+      } catch (_) { $('#mapHint').textContent = 'Карта не загрузилась — напишите адрес текстом'; return; }
+    }
+    $('#mapHint').textContent = 'Нажмите на карту — поставлю точку';
   });
   $('#geoBtn').addEventListener('click', () => {
     if (!navigator.geolocation) { $('#mapHint').textContent = 'Телефон не даёт определить место'; return; }

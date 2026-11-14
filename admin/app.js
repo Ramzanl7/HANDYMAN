@@ -128,11 +128,12 @@
         ${o.name ? `<dt>Имя</dt><dd>${esc(o.name)}</dd>` : ''}
         ${o.phone ? `<dt>Телефон</dt><dd><a href="tel:${esc(ph)}">${esc(o.phone)}</a></dd>` : ''}
         ${o.area ? `<dt>Адрес</dt><dd>${esc(o.area)}</dd>` : ''}
-        ${o.lat != null ? `<dt>Точка</dt><dd><a href="https://yandex.ru/maps/?pt=${o.lon},${o.lat}&z=17&l=map" target="_blank" rel="noopener">📍 Открыть в Яндекс Картах</a></dd>` : ''}
         ${o.when_text ? `<dt>Когда</dt><dd>${esc(o.when_text)}</dd>` : ''}
         ${o.note ? `<dt>Коммент.</dt><dd>${esc(o.note)}</dd>` : ''}
         ${o.consent_at ? `<dt>Согласие</dt><dd><small>✓ ${fmtDate(o.consent_at)}</small></dd>` : ''}
       </dl>
+      ${o.lat != null ? `<div class="omap"><iframe loading="lazy" title="Точка заказчика" src="https://yandex.ru/map-widget/v1/?ll=${+o.lon},${+o.lat}&z=16&pt=${+o.lon},${+o.lat},pm2rdm"></iframe>
+        <div class="omap-b"><a class="btn sm y" href="https://yandex.ru/maps/?rtext=~${+o.lat},${+o.lon}&rtt=auto" target="_blank" rel="noopener">🚗 Маршрут</a><a class="btn sm" href="https://yandex.ru/maps/?pt=${+o.lon},${+o.lat}&z=17&l=map" target="_blank" rel="noopener">📍 Карта</a></div></div>` : ''}
       ${o.status === 'done' ? `<label class="amt">Сколько взяли<input inputmode="numeric" class="amount" value="${o.amount ?? ''}" placeholder="—"><span>₽</span></label>` : ''}
       <textarea class="note" placeholder="Заметка для себя: адрес, цена, договорились на…">${esc(o.admin_note)}</textarea>
       <div class="acts">

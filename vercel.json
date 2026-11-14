@@ -26,7 +26,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://yywifvdegxqswtbuucuw.supabase.co https://tile.openstreetmap.org https://mc.yandex.ru https://mc.yandex.com; connect-src 'self' https://yywifvdegxqswtbuucuw.supabase.co https://nominatim.openstreetmap.org https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com; frame-src https://mc.yandex.ru https://mc.yandex.com; child-src blob: https://mc.yandex.ru https://mc.yandex.com; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://api-maps.yandex.ru https://suggest-maps.yandex.ru https://*.maps.yandex.net https://yandex.ru https://yastatic.net https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline' blob: https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.maps.yandex.net https://api-maps.yandex.ru https://yandex.ru https://*.yandex.ru https://yastatic.net https://yywifvdegxqswtbuucuw.supabase.co https://tile.openstreetmap.org https://mc.yandex.ru https://mc.yandex.com; connect-src 'self' https://api-maps.yandex.ru https://suggest-maps.yandex.ru https://*.maps.yandex.net https://yandex.ru https://yastatic.net https://*.yandex.ru https://yywifvdegxqswtbuucuw.supabase.co https://nominatim.openstreetmap.org https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com; frame-src https://api-maps.yandex.ru https://yandex.ru https://mc.yandex.ru https://mc.yandex.com; child-src blob: https://mc.yandex.ru https://mc.yandex.com; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
         }
       ]
     },
@@ -35,7 +35,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://yywifvdegxqswtbuucuw.supabase.co; connect-src https://yywifvdegxqswtbuucuw.supabase.co; frame-ancestors 'none'; base-uri 'none'; form-action 'self'; object-src 'none'"
+          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://yywifvdegxqswtbuucuw.supabase.co; connect-src https://yywifvdegxqswtbuucuw.supabase.co; frame-src https://yandex.ru; frame-ancestors 'none'; base-uri 'none'; form-action 'self'; object-src 'none'"
         },
         {
           "key": "X-Robots-Tag",

@@ -33,6 +33,8 @@ const must = <T>(r: { data: T; error: { message: string } | null }) => { if (r.e
 const rub = (n: number) => n.toLocaleString("ru-RU") + " ₽";
 const waNum = (phone: string) => { const d = (phone || "").replace(/\D/g, ""); if (d.length < 10) return ""; return d.length === 11 && d[0] === "8" ? "7" + d.slice(1) : d; };
 const mapUrl = (lat: number, lon: number) => `https://yandex.ru/maps/?pt=${lon},${lat}&z=17&l=map`;
+// Route from the master's current location (empty start in rtext) to the customer's point; opens Yandex Maps / Navigator app on the phone.
+const routeUrl = (lat: number, lon: number) => `https://yandex.ru/maps/?rtext=~${lat},${lon}&rtt=auto`;
 
 async function tg(method: string, body: Record<string, unknown>) {
   if (!BOT) fail("Бот не настроен: добавьте TELEGRAM_BOT_TOKEN в секреты Supabase", 500);
@@ -122,7 +124,7 @@ function orderKb(o: Record<string, any>, reviewText = "") {
   const links: any[] = [];
   const wa = waNum(o.phone);
   if (wa) links.push({ text: "💬 WhatsApp", url: `https://wa.me/${wa}` });
-  if (o.lat != null && o.lon != null) links.push({ text: "📍 Карта", url: mapUrl(o.lat, o.lon) });
+  if (o.lat != null && o.lon != null) { links.push({ text: "📍 Карта", url: mapUrl(o.lat, o.lon) }); links.push({ text: "🚗 Маршрут", url: routeUrl(o.lat, o.lon) }); }
   if (links.length) rows.push(links);
   if (o.status === "done" && wa && reviewText) rows.push([{ text: "⭐ Попросить отзыв", url: `https://wa.me/${wa}?text=${encodeURIComponent(reviewText)}` }]);
   return { inline_keyboard: rows };
@@ -166,7 +168,7 @@ async function order(body: any, req: Request) {
       if (row.name) lines.push(`Имя: ${row.name}`);
       if (row.phone) lines.push(`Телефон: ${row.phone}`);
       if (row.area) lines.push(`Адрес: ${row.area}`);
-      if (row.lat != null) lines.push(`Точка: ${mapUrl(row.lat, row.lon!)}`);
+      if (row.lat != null) { lines.push(`Точка: ${mapUrl(row.lat, row.lon!)}`); lines.push(`Маршрут: ${routeUrl(row.lat, row.lon!)}`); }
       if (row.when_text) lines.push(`Когда: ${row.when_text}`);
       if (row.note) lines.push(`Комментарий: ${row.note}`);
       await tg("sendMessage", { chat_id: a.chat_id, text: lines.join("\n"), reply_markup: orderKb(saved), disable_web_page_preview: true });
@@ -220,7 +222,7 @@ async function warrantyCreate(body: any) {
 
 // ---------- backup & stats ----------
 const csvCell = (v: unknown) => { const s = v == null ? "" : typeof v === "object" ? JSON.stringify(v) : String(v); return /[";\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
-const toCsv = (rows: any[], cols: [string, string][]) => "﻿" + [cols.map((c) => c[1]).join(";"), ...rows.map((r) => cols.map(([k]) => csvCell(k === "items" ? (r.items || []).map((i: any) => i.name).join(", ") : r[k])).join(";"))].join("\n");
+const toCsv = (rows: any[], cols: [string, string][]) => "\uFEFF" + [cols.map((c) => c[1]).join(";"), ...rows.map((r) => cols.map(([k]) => csvCell(k === "items" ? (r.items || []).map((i: any) => i.name).join(", ") : r[k])).join(";"))].join("\n");
 async function sendBackup(chat_id: number | string) {
   const orders = must(await sb.from("hm_orders").select("*").order("created_at")) as any[];
   const reviews = must(await sb.from("hm_reviews").select("*").order("created_at")) as any[];
