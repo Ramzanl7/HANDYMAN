@@ -107,7 +107,7 @@ def page(pg):
     ld = [
       {"@context": "https://schema.org", "@type": "Service", "name": pg["h1"], "serviceType": pg["short"], "description": pg["desc"], "url": url,
        "areaServed": {"@type": "City", "name": "Грозный"},
-       "provider": {"@type": "HomeAndConstructionBusiness", "name": "Handyman Грозный — мастер Рамзан", "telephone": "+7 963 599-36-01", "url": SITE + "/",
+       "provider": {"@type": "HomeAndConstructionBusiness", "name": "Handyman Грозный — мастер Рамзан", "telephone": "+7 963 599-36-01", "url": SITE + "/", "sameAs": ["https://www.instagram.com/ramzan.done/"],
                     "address": {"@type": "PostalAddress", "addressLocality": "Грозный", "addressRegion": "Чеченская Республика", "addressCountry": "RU"}},
        **({"offers": [{"@type": "Offer", "name": p["name"], "priceCurrency": "RUB", "price": p["price_from"], "priceSpecification": {"@type": "PriceSpecification", "minPrice": p["price_from"], "priceCurrency": "RUB"}} for p in rows if p.get("price_from")]} if rows else {})},
       {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in pg["faq"]]},
@@ -151,7 +151,7 @@ def page(pg):
   <section class="final"><h2>Мастер Рамзан</h2><p>Мне 21, в ремонте 5 лет, живу в Грозном. Работаю один: трубку беру я, приезжаю тоже я.</p><div class="ctas"><a class="btn ink" href="/?cat={pg["cat"]}#order">Оставить заявку <b>→</b></a><a class="btn" href="tel:+{PHONE_INTL}" data-phone-link>☎ <span data-phone>{PHONE}</span></a></div></section>
   <nav class="others" aria-label="Другие услуги"><h2>Другие услуги</h2>{others}</nav>
 </main>
-<footer><div class="w"><span>© Handyman Грозный · мастер Рамзан</span><a href="/privacy.html">Политика конфиденциальности</a></div></footer>
+<footer><div class="w"><span>© Handyman Грозный · мастер Рамзан</span><span><a href="https://www.instagram.com/ramzan.done/" target="_blank" rel="noopener">Instagram</a> · <a href="/privacy.html">Политика конфиденциальности</a></span></div></footer>
 <script src="/config.js"></script><script src="/assets/seo.js"></script>
 </body>
 </html>
@@ -175,7 +175,7 @@ def hub():
 <div class="sheet">Грозный и ближайшие районы</div><h1>Услуги мастера по дому</h1>
 <p class="lead">Один мастер на все домашние задачи. Выберите услугу — там цены, примеры работ и ответы на частые вопросы.</p>
 <div class="hub">{cards}</div></main>
-<footer><div class="w"><span>© Handyman Грозный · мастер Рамзан</span><a href="/privacy.html">Политика конфиденциальности</a></div></footer>
+<footer><div class="w"><span>© Handyman Грозный · мастер Рамзан</span><span><a href="https://www.instagram.com/ramzan.done/" target="_blank" rel="noopener">Instagram</a> · <a href="/privacy.html">Политика конфиденциальности</a></span></div></footer>
 <script src="/config.js"></script><script src="/assets/seo.js"></script>
 </body></html>
 '''
