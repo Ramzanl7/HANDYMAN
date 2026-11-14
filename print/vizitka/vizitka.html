@@ -1,0 +1,53 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Визитка Handyman</title>
+<style>
+/*FONTS*/
+@page{size:94mm 54mm;margin:0}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--paper:#ece8df;--ink:#1d2a44;--ink2:#55607a;--y:#ffd400;--red:#d6281c}
+html,body{background:#888}
+.card{width:94mm;height:54mm;position:relative;overflow:hidden;page-break-after:always;break-after:page}
+/* 2mm bleed on every side: safe area = inset 2mm + 3mm margin */
+.front{background:var(--ink);color:var(--paper);background-image:linear-gradient(rgba(255,255,255,.06) .3mm,transparent .3mm),linear-gradient(90deg,rgba(255,255,255,.06) .3mm,transparent .3mm);background-size:4mm 4mm}
+.back{background:var(--paper);color:var(--ink);background-image:linear-gradient(rgba(29,42,68,.08) .3mm,transparent .3mm),linear-gradient(90deg,rgba(29,42,68,.08) .3mm,transparent .3mm);background-size:4mm 4mm}
+.haz{position:absolute;left:0;right:0;height:4.2mm;background:repeating-linear-gradient(-45deg,#0f1830 0 2.2mm,var(--y) 2.2mm 4.4mm)}
+.back .haz{background:repeating-linear-gradient(-45deg,var(--ink) 0 2.2mm,var(--y) 2.2mm 4.4mm)}
+.logo{position:absolute;left:7mm;top:7mm;display:flex;align-items:center;gap:2.2mm;font:700 4.6mm/1 Osw;letter-spacing:.12em}
+.lvl{width:9.5mm;height:3.8mm;border:.55mm solid var(--paper);border-radius:2mm;background:var(--y);position:relative}
+.lvl::after{content:"";position:absolute;left:3.1mm;top:.35mm;width:2.1mm;height:2.1mm;border-radius:50%;background:#fff;border:.45mm solid var(--ink)}
+.logo small{display:block;font:600 1.7mm/1 PMono;letter-spacing:.3em;color:#aab3c7;margin-top:.9mm}
+.name{position:absolute;left:7mm;top:18.5mm;font:700 9.4mm/.9 Osw;text-transform:uppercase;letter-spacing:.01em}
+.role{position:absolute;left:7mm;top:28.4mm;font:500 2.9mm/1.3 Plex;color:#c9cfdc}
+.tel{position:absolute;left:7mm;bottom:9.5mm;background:var(--y);color:var(--ink);font:700 6mm/1 Osw;padding:1.6mm 2.4mm;letter-spacing:.01em;box-shadow:1.1mm 1.1mm 0 #0f1830,1.1mm 1.1mm 0 .45mm var(--paper)}
+.wa{position:absolute;right:7mm;bottom:10.6mm;text-align:right;font:600 2.3mm/1.45 PMono;color:#aab3c7;letter-spacing:.04em}
+.wa b{color:var(--y);font-weight:600}
+.stamp{position:absolute;right:6.5mm;top:7mm;border:.5mm solid var(--y);color:var(--y);font:700 2.6mm/1.05 Osw;text-transform:uppercase;letter-spacing:.06em;padding:1mm 1.6mm;transform:rotate(4deg);text-align:center}
+/* back */
+.qrbox{position:absolute;left:6.5mm;top:7mm;width:33mm;height:33mm;background:#fffdf6;border:.45mm solid var(--ink);box-shadow:1mm 1mm 0 var(--y),1mm 1mm 0 .45mm var(--ink)}
+.qrbox svg{width:100%;height:100%;display:block}
+.qcap{position:absolute;left:6.5mm;top:42.3mm;width:33mm;text-align:center;font:600 2.1mm/1 PMono;letter-spacing:.1em;text-transform:uppercase}
+.list{position:absolute;left:44.5mm;top:6.6mm;right:6mm}
+.list h3{font:700 4.1mm/1 Osw;text-transform:uppercase;margin-bottom:1.6mm}
+.list li{list-style:none;font:500 2.35mm/1.2 Plex;padding:.45mm 0 .45mm 3.4mm;position:relative;border-bottom:.2mm dotted rgba(29,42,68,.35)}
+.list li::before{content:"";position:absolute;left:0;top:.95mm;width:1.9mm;height:1.9mm;background:var(--y);border:.3mm solid var(--ink)}
+.note{position:absolute;left:44.5mm;right:6mm;top:38.2mm;font:600 2.25mm/1.3 Plex;color:var(--red)}
+.url{position:absolute;left:44.5mm;top:42.6mm;font:600 2.35mm/1 PMono;letter-spacing:.02em}
+</style></head><body>
+<section class="card front">
+  <div class="logo"><span class="lvl"></span><span>HANDYMAN<small>ГРОЗНЫЙ</small></span></div>
+  <div class="stamp">5 лет<br>в работе</div>
+  <div class="name">Рамзан</div>
+  <div class="role">Мастер по дому · Грозный и районы</div>
+  <div class="tel">8 963 599-36-01</div>
+  <div class="wa"><b>WhatsApp</b> · звонки<br>@ramzan.done</div>
+  <div class="haz" style="bottom:0"></div>
+</section>
+<section class="card back">
+  <div class="qrbox">/*QR*/</div>
+  <div class="qcap">Цены и заявка</div>
+  <div class="list"><h3>Что делаю</h3><ul>
+    <li>Люстры, розетки, кабель</li><li>Смесители, унитазы, протечки</li><li>Сборка шкафов и кухонь</li><li>Ламинат, линолеум, плинтус</li><li>Двери, ручки, замки</li><li>ТВ, полки, карнизы на стену</li></ul></div>
+  <div class="note">Цена — до начала работы</div>
+  <div class="url">handyman-grozny.ru</div>
+  <div class="haz" style="bottom:0"></div>
+</section>
+</body></html>

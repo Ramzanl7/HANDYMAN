@@ -2,7 +2,7 @@
 """Branded 3D QR sticker for Handyman. Outputs print/qr.svg and print/qr-sticker.html (rendered to PNG/PDF by tools/render_qr.js)."""
 import segno, os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-URL = "HTTPS://HANDYMAN-GROZNY.VERCEL.APP/QR"   # upper case -> compact alphanumeric QR; /QR redirects to the site
+URL = "HTTPS://HANDYMAN-GROZNY.RU/QR"   # upper case -> compact alphanumeric QR; /QR redirects to the site (utm_source=qr)
 qr = segno.make(URL, error="h", micro=False)
 M = [list(r) for r in qr.matrix]; N = len(M)
 INK, SIDE, PAPER, YEL, SHADOW = "#1d2a44", "#0c1426", "#fffdf6", "#ffd400", "#e9e2cd"
