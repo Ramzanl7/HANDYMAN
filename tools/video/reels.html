@@ -1,0 +1,103 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><style>
+/*FONTS*/
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden}
+:root{--paper:#ece8df;--ink:#1d2a44;--ink2:#55607a;--y:#ffd400;--red:#d6281c;--green:#1f9d55}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;color:var(--ink);font-family:Plex;background:var(--paper);background-image:linear-gradient(rgba(29,42,68,.07) 2px,transparent 2px),linear-gradient(90deg,rgba(29,42,68,.07) 2px,transparent 2px);background-size:60px 60px}
+.haz{position:absolute;left:0;right:0;height:26px;background:repeating-linear-gradient(-45deg,var(--ink) 0 22px,var(--y) 22px 44px);z-index:3}
+#brand{position:absolute;left:70px;top:70px;display:flex;align-items:center;gap:16px;font:600 26px/1 PMono;letter-spacing:.18em;color:var(--ink2)}
+#brand i{width:66px;height:26px;border:3px solid var(--ink);border-radius:15px;background:var(--y);position:relative;display:block}
+#brand i::after{content:"";position:absolute;left:22px;top:2.5px;width:15px;height:15px;border-radius:50%;background:#fff;border:2.5px solid var(--ink)}
+#head{position:absolute;left:70px;right:70px;top:136px}
+#badge{display:inline-block;background:var(--ink);color:var(--y);font:600 30px/1 PMono;letter-spacing:.12em;padding:14px 18px}
+#title{font:700 112px/.95 Osw;text-transform:uppercase;margin-top:22px}
+#frame{position:absolute;left:90px;top:470px;width:900px;height:1125px;border:5px solid var(--ink);background:var(--paper);padding:16px;box-shadow:20px 20px 0 var(--y),20px 20px 0 5px var(--ink)}
+#win{position:relative;width:100%;height:100%;overflow:hidden;background:#cfc9bb}
+#win img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform}
+#aftWrap{position:absolute;inset:0}
+#laser{position:absolute;top:-20px;bottom:-20px;width:8px;margin-left:-4px;background:var(--y);box-shadow:0 0 18px 6px rgba(255,212,0,.85),0 0 60px 18px rgba(255,212,0,.45);z-index:4}
+#laser::before{content:"";position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px;border-radius:50%;background:var(--y);border:5px solid var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.35)}
+#laser::after{content:"◀ ▶";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:700 16px/1 Plex;color:var(--ink);white-space:nowrap;letter-spacing:-2px}
+#tag{position:absolute;left:-26px;top:44px;z-index:5;font:700 58px/1 Osw;text-transform:uppercase;padding:14px 24px;border:5px solid var(--ink);transform-origin:0 50%}
+#tag.b{background:var(--paper);color:var(--red)}
+#tag.a{background:var(--y);color:var(--ink)}
+#cap{position:absolute;left:90px;right:90px;top:1640px;font:500 40px/1.3 Plex;color:#2f3a55}
+#cap b{font:600 26px/1 PMono;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);display:block;margin-bottom:12px}
+#price{position:absolute;left:60px;right:60px;bottom:120px;background:var(--ink);color:var(--paper);padding:40px 46px;z-index:8;box-shadow:16px 16px 0 var(--y),16px 16px 0 5px var(--ink)}
+#price .n{font:600 34px/1.2 Plex;color:#c9cfdc}
+#price .p{font:700 120px/1 Osw;color:var(--y);margin-top:12px;letter-spacing:.01em}
+#price .p small{font-size:56px}
+#price .ok{position:absolute;right:40px;top:-60px;width:150px;height:150px;border-radius:50%;background:var(--green);border:6px solid var(--ink);display:grid;place-items:center;font:700 86px/1 Plex;color:#fff}
+#gtags{position:absolute;inset:0;pointer-events:none}
+#outro{position:absolute;inset:0;z-index:20;background:var(--ink);color:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background-image:linear-gradient(rgba(255,255,255,.05) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.05) 2px,transparent 2px);background-size:60px 60px}
+#outro img{width:260px;height:260px;border-radius:58px;box-shadow:14px 14px 0 var(--y)}
+#outro h2{font:700 140px/.9 Osw;text-transform:uppercase;margin:70px 0 18px;letter-spacing:.04em}
+#outro .s{font:600 30px/1 PMono;letter-spacing:.24em;color:var(--y);text-transform:uppercase}
+#outro .t{margin-top:90px;font:700 92px/1 Osw;background:var(--y);color:var(--ink);padding:26px 40px}
+#outro .u{margin-top:34px;font:600 44px/1 PMono;border:4px solid var(--paper);padding:24px 34px}
+#outro .w{margin-top:40px;font:500 36px/1.3 Plex;color:#aab3c7}
+</style></head><body><div id="st">
+<div class="haz" style="top:0"></div>
+<div id="brand"><i></i>HANDYMAN · ГРОЗНЫЙ</div>
+<div id="head"><div id="badge"></div><div id="title"></div></div>
+<div id="frame"><div id="win"></div><div id="tag" class="b">Было</div><div id="gtags"></div></div>
+<div id="cap"></div>
+<div id="price"><div class="ok">✓</div><div class="n"></div><div class="p"></div></div>
+<div id="outro"></div>
+<div class="haz" style="bottom:0"></div>
+</div>
+<script>
+const R=/*REEL*/{}, IMG=/*IMG*/{};
+const $=s=>document.querySelector(s);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)), seg=(t,a,b)=>clamp((t-a)/(b-a));
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2, eout=x=>1-Math.pow(1-x,3);
+const back=x=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const G=!!R.gallery;
+const D={dur:G?13:12.5,laser:[2.6,3.6],split:[6.4,8.0],price:G?8.4:8.2,outro:G?10.5:10.0};
+$('#badge').textContent=G?'МОИ РАБОТЫ':'ДО → ПОСЛЕ';
+$('#title').innerHTML=R.title;
+$('#price .n').textContent=R.price[0];$('#price .p').innerHTML=R.price[1];
+$('#outro').innerHTML=`<img src="${IMG.logo}"><h2>Handyman</h2><div class="s">Рамзан · мастер по дому</div><div class="t">8 963 599-36-01</div><div class="u">handyman-grozny.ru</div><div class="w">Цена — до начала работы.<br>Пишите в WhatsApp или оставьте заявку на сайте.</div>`;
+const win=$('#win');
+if(G){win.innerHTML=R.items.map((x,i)=>`<img id="g${i}" src="${IMG[x[0]]}">`).join('');}
+else win.innerHTML=`<img id="bef" src="${IMG.before}"><div id="aftWrap"><img id="aft" src="${IMG.after}"></div><div id="laser"></div>`;
+window.EVENTS=()=>{const E=[],a=(k,t,v=1)=>E.push([k,+t.toFixed(3),v]);
+ a('whoosh',.05,.7);a('thump',.25);a('blip',.6,.7);
+ if(G){R.items.forEach((x,i)=>{const t=.9+i*1.85;a('swish',t,.7);a('click',t+.05);a('pop',t+.35,.5)})}
+ else{a('blip',1.0,.5);a('click',D.laser[0]);a('whoosh',D.laser[0]+.05,.9);a('pop',D.laser[1]+.05,.8);a('blip',D.laser[1]+.4,.5);a('swish',D.split[0],.6);a('swish',D.split[0]+.8,.6)}
+ a('whoosh',D.price,.7);a('pop',D.price+.35);a('chime',D.price+.5);a('whoosh',D.outro,.9);a('chime2',D.outro+.45);
+ return {dur:D.dur,events:E}};
+let lastCap='';
+const setCap=(lab,txt)=>{const k=lab+txt;if(k!==lastCap){lastCap=k;$('#cap').innerHTML=`<b>${lab}</b>${txt}`}};
+window.frame=t=>{
+ const hk=eout(seg(t,.05,.6));$('#head').style.opacity=hk;$('#head').style.transform=`translateY(${(1-hk)*-40}px)`;
+ const fk=eout(seg(t,.2,.8));$('#frame').style.opacity=fk;$('#frame').style.transform=`translateY(${(1-fk)*90}px) rotate(${(1-fk)*-2}deg)`;
+ const tag=$('#tag');
+ if(G){
+  const n=R.items.length,step=1.85,t0=.9;let cur=clamp(Math.floor((t-t0)/step),0,n-1);
+  R.items.forEach((x,i)=>{const im=$('#g'+i);const a=t0+i*step;const k=i===0?1:eio(seg(t,a-.0,a+.45));
+   im.style.clipPath=`inset(0 ${(1-k)*100}% 0 0)`;im.style.zIndex=i;im.style.transform=`scale(${1.08-.08*seg(t,a-.2,a+step+.6)})`;});
+  tag.className='a';tag.textContent=R.items[cur][1];const tk=back(seg(t,t0+cur*step+.3,t0+cur*step+.65));tag.style.transform=`scale(${t<t0+.3?0:tk})`;
+  setCap(`Работа ${cur+1} из ${n}`,R.items[cur][2]);
+ }else{
+  const [l0,l1]=D.laser,[s0,s1]=D.split;
+  let x=1-eio(seg(t,l0,l1)); // 1 = all before visible
+  if(t>s0&&t<s1){const k=(t-s0)/(s1-s0);x=.5-.5*Math.cos(Math.PI*2*k);x=x*.55;} // swing to show split
+  const pos=(1-x)*100;
+  $('#aftWrap').style.clipPath=`inset(0 0 0 ${100-pos}%)`;
+  // after revealed from right edge: laser moves right->left
+  $('#laser').style.left=(100-pos)+'%';$('#laser').style.opacity=(t>l0-.15&&t<l1+.15)||(t>s0&&t<s1)?1:0;
+  $('#bef').style.transform=`scale(${1.12-.12*seg(t,0,l1)})`;$('#aft').style.transform=`scale(${1.0+.06*seg(t,l1,D.price+1)})`;
+  const after=t>=l1;tag.className=after?'a':'b';tag.textContent=after?'Стало ✓':'Было';
+  const tk=after?back(seg(t,l1,l1+.35)):back(seg(t,.6,.95));tag.style.transform=`scale(${tk})`;
+  if(t<l1)setCap('Было',R.before);else setCap('Стало',R.after);
+ }
+ const ck=eout(seg(t,lastCapT(t),lastCapT(t)+.4));$('#cap').style.opacity=ck*(1-seg(t,D.price-.1,D.price+.2));$('#cap').style.transform=`translateY(${(1-ck)*20}px)`;
+ const pk=eout(seg(t,D.price,D.price+.45));$('#price').style.transform=`translateY(${(1-pk)*160}%)`;$('#price').style.visibility=pk>0?'visible':'hidden';
+ const ok=$('#price .ok');ok.style.transform=`scale(${back(seg(t,D.price+.3,D.price+.65))}) rotate(${-12*(1-seg(t,D.price+.3,D.price+.65))}deg)`;
+ const ok2=seg(t,D.outro,D.outro+.45);const o=$('#outro');o.style.opacity=ok2;o.style.transform=`scale(${1.05-.05*eout(ok2)})`;
+ o.querySelectorAll('img,h2,.s,.t,.u,.w').forEach((e,i)=>{const k=eout(seg(t,D.outro+.2+i*.12,D.outro+.65+i*.12));e.style.opacity=k;e.style.transform=`translateY(${(1-k)*40}px)`});
+};
+function lastCapT(t){if(G){const i=clamp(Math.floor((t-.9)/1.85),0,R.items.length-1);return .9+i*1.85+.2}return t<D.laser[1]?.9:D.laser[1]+.3}
+window.frame(0);
+</script></body></html>
