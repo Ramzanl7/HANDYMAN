@@ -46,7 +46,7 @@
   <div class="tabs" role="group" aria-label="Телефон"><button type="button" data-os="ios" aria-pressed="true">iPhone</button><button type="button" data-os="android" aria-pressed="false">Android</button></div>
 
   <div class="howto" data-os="ios">
-    <div class="vid"><video src="/app/howto-ios.mp4" poster="/app/howto-ios.jpg" controls playsinline muted loop preload="metadata" width="1080" height="1920"></video></div>
+    <div class="vid"><video src="/app/howto-ios.mp4" poster="/app/howto-ios.jpg" controls playsinline preload="metadata" width="1080" height="1920"></video></div>
     <ol class="steps2">
       <li><div><b>Откройте handyman-grozny.ru в Safari</b><span>Именно в Safari: в других браузерах на iPhone этого пункта может не быть.</span></div></li>
       <li><div><b>Нажмите «•••» внизу справа</b><span>На старых iPhone сразу нажмите «Поделиться» — квадрат со стрелкой вверх в нижней панели.</span></div></li>
@@ -58,7 +58,7 @@
   </div>
 
   <div class="howto" data-os="android" hidden>
-    <div class="vid"><video src="/app/howto-android.mp4" poster="/app/howto-android.jpg" controls playsinline muted loop preload="metadata" width="1080" height="1920"></video></div>
+    <div class="vid"><video src="/app/howto-android.mp4" poster="/app/howto-android.jpg" controls playsinline preload="metadata" width="1080" height="1920"></video></div>
     <ol class="steps2">
       <li><div><b>Откройте handyman-grozny.ru в Chrome</b><span>В Яндекс Браузере и Samsung Internet пункт тоже есть — в меню.</span></div></li>
       <li><div><b>Нажмите ⋮ вверху справа</b><span>Три точки рядом с адресом сайта.</span></div></li>
@@ -79,11 +79,11 @@
 <script>
 (() => {
   const tabs = [...document.querySelectorAll('.tabs button')], boxes = [...document.querySelectorAll('.howto')];
-  const pick = os => {
+  const pick = (os, play) => {
     tabs.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.os === os)));
-    boxes.forEach(x => { const on = x.dataset.os === os; x.hidden = !on; const v = x.querySelector('video'); if (!on) v.pause(); else { const p = v.play(); if (p) p.catch(() => {}); } });
+    boxes.forEach(x => { const on = x.dataset.os === os; x.hidden = !on; const v = x.querySelector('video'); if (!on) v.pause(); else if (play) { const p = v.play(); if (p) p.catch(() => {}); } });
   };
-  tabs.forEach(b => b.addEventListener('click', () => pick(b.dataset.os)));
+  tabs.forEach(b => b.addEventListener('click', () => pick(b.dataset.os, true)));
   pick(/android/i.test(navigator.userAgent) ? 'android' : 'ios');
   if (matchMedia('(display-mode: standalone)').matches || navigator.standalone) document.getElementById('done').style.display = 'block';
 })();

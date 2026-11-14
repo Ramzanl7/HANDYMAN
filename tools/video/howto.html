@@ -227,6 +227,18 @@ const S = OS==='ios' ? {
  moves:[[6.8,7.8,'#ab-more'],[10,11.4,'#am-add'],[13.4,14.6,'#ad-add'],[18.2,19.0,'#hm-icon']],
  taps:[8.0,11.8,15.0,19.2], fingerOff:[19.7,20.1]
 };
+
+window.EVENTS=()=>{const E=[],T=S.taps,add=(k,t,v=1)=>E.push([k,+t.toFixed(3),v]);
+ add('whoosh',.05,.7);for(let i=0;i<4;i++)add('thump',.2+i*.12);add('pop',1.15,.6);add('whoosh',2.7);add('whoosh',3.0,.6);
+ S.steps.forEach(s=>add('blip',s[0]));
+ const [a,b]=S.type;for(let k=1;k<=URL_T.length;k++)add('key',a+(b-a)*(k-.5)/URL_T.length);
+ add('done',S.load[1],.5);
+ T.forEach(x=>add('click',x));
+ if(OS==='ios'){add('swish',T[0]+.15);add('whoosh',T[1]+.2);add('swish',12.5,.5);add('whoosh',T[2]+.35);add('whoosh',T[3]+.45,.8);var pop=T[3]+1.5,tap=T[4]}
+ else{add('swish',T[0]+.15);add('swish',T[1]+.35);add('whoosh',T[2]+.6,.8);var pop=T[2]+1.5,tap=T[3]}
+ add('pop',pop+.05);add('chime',pop+.45);add('whoosh',tap+.15,.8);
+ add('whoosh',S.outroAt,.9);add('chime2',S.outroAt+.45);
+ return {dur:S.dur,events:E}};
 // intro / outro content
 $('#intro').innerHTML=`<div class="k">Инструкция · 20 секунд</div><h1><span><b>Как добавить</b></span><span><b>Handyman</b></span><span class="r"><b>на экран</b></span><span class="r"><b>телефона</b></span></h1><div class="chipb">${OS==='ios'?'iPhone <em>·</em> Safari':'Android <em>·</em> Chrome'}</div><div class="sub">Значок на экране — и мастер всегда под рукой: заявка, цены, звонок в один тап.</div>`;
 $('#outro').innerHTML=`<img src="${IMG.logo}"><h2>Готово!</h2><p>Теперь Handyman открывается<br>с экрана, как приложение</p><div class="url">handyman-grozny.ru</div><div class="tel">8 963 599-36-01</div>`;
