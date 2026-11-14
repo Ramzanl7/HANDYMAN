@@ -1,0 +1,298 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><style>
+/*FONTS*/
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#ece8df}
+:root{--paper:#ece8df;--ink:#1d2a44;--ink2:#55607a;--y:#ffd400;--red:#d6281c;--blue:#0a84ff;--sans:"Plex",system-ui,sans-serif;--mono:"PMono",monospace;--head:"Osw",sans-serif}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:var(--sans);color:var(--ink);
+ background:var(--paper);background-image:linear-gradient(rgba(29,42,68,.07) 2px,transparent 2px),linear-gradient(90deg,rgba(29,42,68,.07) 2px,transparent 2px);background-size:60px 60px}
+.haz{position:absolute;left:0;right:0;height:26px;background:repeating-linear-gradient(-45deg,var(--ink) 0 22px,var(--y) 22px 44px)}
+#brand{position:absolute;left:60px;top:58px;display:flex;align-items:center;gap:16px;font:600 24px/1 var(--mono);letter-spacing:.18em;color:var(--ink2)}
+#brand i{width:62px;height:24px;border:3px solid var(--ink);border-radius:14px;background:var(--y);position:relative;display:block}
+#brand i::after{content:"";position:absolute;left:21px;top:2px;width:14px;height:14px;border-radius:50%;background:#fff;border:2.5px solid var(--ink)}
+#top{position:absolute;left:60px;right:60px;top:118px}
+#badge{display:inline-block;background:var(--ink);color:var(--y);font:600 28px/1 var(--mono);letter-spacing:.12em;padding:14px 18px}
+#cap{font:700 70px/1.14 var(--head);text-transform:uppercase;margin-top:22px}
+#cap em{font-style:normal;background:linear-gradient(var(--y),var(--y)) 0 60%/100% 1em no-repeat;padding:0 .12em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+#note{font:500 32px/1.3 var(--sans);color:var(--ink2);margin-top:16px}
+#phone{position:absolute;left:198px;top:520px;width:684px;height:1340px;border-radius:100px;background:#0f1830;padding:20px;box-shadow:18px 18px 0 var(--y),18px 18px 0 4px var(--ink)}
+#screen{position:relative;width:644px;height:1300px;border-radius:82px;overflow:hidden;background:#f2f2f7;isolation:isolate}
+.L{position:absolute;inset:0}
+.siteimg{position:absolute;left:0;width:644px;display:block}
+.sb{position:absolute;left:0;right:0;top:0;height:64px;display:flex;justify-content:space-between;align-items:center;padding:8px 54px 0;font:600 26px/1 var(--sans);z-index:5}
+.sb .r{display:flex;gap:10px;align-items:center}
+.sb .bat{width:44px;height:22px;border:2.5px solid currentColor;border-radius:7px;position:relative;opacity:.9}.sb .bat::after{content:"";position:absolute;inset:2.5px;right:8px;background:currentColor;border-radius:3px}
+.sb .sig{display:flex;gap:3px;align-items:flex-end}.sb .sig b{width:6px;background:currentColor;border-radius:2px;display:block}
+.isl{position:absolute;left:50%;top:18px;width:190px;height:54px;margin-left:-95px;background:#000;border-radius:28px;z-index:6}
+/* iOS safari */
+.ibar{position:absolute;left:0;right:0;bottom:0;height:170px;background:linear-gradient(rgba(236,232,223,0),rgba(236,232,223,.96) 45%);z-index:4}
+.glass{position:absolute;background:rgba(255,255,255,.9);box-shadow:0 6px 22px rgba(15,24,48,.16),inset 0 0 0 1px rgba(255,255,255,.7)}
+#ib-back{left:26px;bottom:52px;width:76px;height:76px;border-radius:50%;display:grid;place-items:center}
+#ib-pill{left:116px;right:116px;bottom:52px;height:76px;border-radius:38px;display:flex;align-items:center;justify-content:center;gap:10px;font:500 27px/1 var(--sans);color:#111}
+#ib-more{right:26px;bottom:52px;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;font:700 30px/1 var(--sans);letter-spacing:2px}
+.ph{color:#8e8e93}
+.prog{position:absolute;left:0;bottom:0;height:5px;background:var(--blue);border-radius:3px}
+.start{background:#f2f2f7}
+.start h5{position:absolute;left:44px;top:140px;font:700 40px/1 var(--sans)}
+.tiles{position:absolute;left:44px;top:210px;display:grid;grid-template-columns:repeat(4,118px);gap:30px 22px}
+.tiles i{display:block;width:118px;height:118px;border-radius:26px;background:#e2e2e8}
+#imenu{position:absolute;right:22px;bottom:146px;width:440px;background:rgba(250,250,252,.98);border-radius:36px;box-shadow:0 24px 70px rgba(0,0,0,.28);padding:12px 0;transform-origin:92% 100%;z-index:7}
+.mi{display:flex;align-items:center;gap:22px;padding:21px 30px;font:500 29px/1 var(--sans);color:#111}
+.mi svg{width:34px;height:34px;flex:none}
+.mi.sep{border-top:1px solid #e0e0e6}
+.hl{background:#d9dae2!important}
+#sheet{position:absolute;left:0;right:0;bottom:0;height:880px;background:#f2f2f7;border-radius:44px 44px 0 0;z-index:8;box-shadow:0 -10px 40px rgba(0,0,0,.18);overflow:hidden}
+.shh{position:relative;z-index:2;background:#f2f2f7;display:flex;align-items:center;gap:20px;padding:34px 30px 24px}
+.shh img{width:88px;height:88px;border-radius:20px}
+.shh b{display:block;font:600 27px/1.2 var(--sans)}.shh span{font:400 23px/1.3 var(--sans);color:#8e8e93}
+.shh .x{margin-left:auto;width:52px;height:52px;border-radius:50%;background:#e3e3e8;display:grid;place-items:center;font:600 26px/1 var(--sans);color:#6b6b72;flex:none}
+.circ{display:flex;gap:34px;padding:10px 34px 28px;border-bottom:1px solid #dcdce2}
+.circ div{text-align:center;font:400 21px/1.2 var(--sans);color:#333;width:112px}
+.circ i{display:block;width:112px;height:112px;border-radius:50%;margin-bottom:10px}
+#shsc{padding:26px 30px}
+.grp{background:#fff;border-radius:24px;overflow:hidden}
+.row{display:flex;justify-content:space-between;align-items:center;padding:0 30px;height:94px;font:400 29px/1 var(--sans);color:#111;border-bottom:1px solid #e6e6ea}
+.row:last-child{border-bottom:0}
+.row svg{width:36px;height:36px}
+#add{position:absolute;left:0;right:0;bottom:0;top:74px;background:#f2f2f7;border-radius:44px 44px 0 0;z-index:9;box-shadow:0 -10px 40px rgba(0,0,0,.2)}
+.ah{display:flex;justify-content:space-between;align-items:center;padding:34px 32px;font:400 29px/1 var(--sans)}
+.ah b{font-weight:600;color:#111}
+.ah .bl{color:var(--blue)}
+#add-btn{font-weight:600;color:var(--blue);padding:10px 6px}
+.acard{margin:10px 30px;background:#fff;border-radius:24px;padding:28px;display:flex;gap:26px;align-items:center}
+.acard img{width:140px;height:140px;border-radius:32px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.acard .in{flex:1;font:400 32px/1 var(--sans);color:#111;border-bottom:1.5px solid #d0d0d6;padding:14px 0}
+.acard .u{font:400 23px/1.3 var(--sans);color:#8e8e93;margin-top:12px}
+.atxt{margin:18px 50px;font:400 23px/1.4 var(--sans);color:#8e8e93}
+.atog{margin:24px 30px;background:#fff;border-radius:24px;padding:24px 28px;display:flex;justify-content:space-between;align-items:center;font:400 28px/1.2 var(--sans)}
+.sw{width:96px;height:58px;border-radius:30px;background:#34c759;position:relative;flex:none}.sw::after{content:"";position:absolute;right:4px;top:4px;width:50px;height:50px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+/* home */
+#home{z-index:15;background:linear-gradient(165deg,#3a5590 0%,#1d2a44 55%,#0d1428 100%);color:#fff}
+.hg{position:absolute;left:0;right:0;top:150px}
+.app{position:absolute;width:138px;text-align:center;font:500 21px/1.2 var(--sans);color:#fff}
+.app i{display:block;width:118px;height:118px;margin:0 auto 10px;border-radius:28px;position:relative}
+.app i::after{content:"";position:absolute;inset:32px;border:6px solid rgba(255,255,255,.85);border-radius:50%}
+.app.sq i::after{border-radius:10px}.app.ln i::after{inset:52px 26px;border-radius:4px;border-width:0;background:rgba(255,255,255,.85)}
+.and .app i{border-radius:50%}
+#hm-app img{width:118px;height:118px;border-radius:28px;display:block;margin:0 auto 10px;box-shadow:0 6px 16px rgba(0,0,0,.35)}
+.and #hm-app img{border-radius:50%}
+#glow{position:absolute;border:5px solid var(--y);border-radius:36px;pointer-events:none}
+.and #glow{border-radius:50%}
+.dock{position:absolute;left:22px;right:22px;bottom:30px;height:170px;border-radius:52px;background:rgba(255,255,255,.18)}
+#open{z-index:20;background:var(--paper);overflow:hidden}
+/* android */
+.abar{position:absolute;left:0;right:0;top:64px;height:104px;background:#fff;display:flex;align-items:center;gap:14px;padding:0 18px;z-index:4;border-bottom:1px solid #e3e3e3}
+.abar .home{width:52px;height:52px;display:grid;place-items:center}
+#ab-pill{flex:1;height:72px;border-radius:36px;background:#eef0f4;display:flex;align-items:center;gap:12px;padding:0 24px;font:400 27px/1 var(--sans);color:#202124}
+.tabs{width:44px;height:44px;border:3.5px solid #444;border-radius:9px;display:grid;place-items:center;font:600 21px/1 var(--sans);color:#444}
+#ab-more{width:56px;height:72px;display:grid;place-items:center}
+#ab-more b{display:block;width:8px;height:8px;border-radius:50%;background:#444;box-shadow:0 -15px 0 #444,0 15px 0 #444}
+#amenu{position:absolute;top:76px;right:12px;width:450px;background:#fff;border-radius:24px;box-shadow:0 14px 50px rgba(0,0,0,.3);z-index:7;transform-origin:95% 0;overflow:hidden;padding-bottom:10px}
+.aic{display:flex;justify-content:space-around;padding:26px 10px;border-bottom:1px solid #e8e8e8}
+.aic svg{width:36px;height:36px}
+.am{padding:0 34px;height:80px;display:flex;align-items:center;font:400 28px/1 var(--sans);color:#202124}
+#adim{background:rgba(0,0,0,.45);z-index:9}
+#adlg{position:absolute;left:44px;right:44px;top:420px;background:#fff;border-radius:40px;padding:44px 40px 30px;z-index:10;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#adlg h4{font:400 36px/1.2 var(--sans);color:#202124}
+.adr{display:flex;align-items:center;gap:26px;margin:36px 0 40px}
+.adr img{width:100px;height:100px;border-radius:50%}
+.adr .in{flex:1;font:400 32px/1 var(--sans);border-bottom:3px solid #1a73e8;padding:12px 0;color:#202124}
+.adb{display:flex;justify-content:flex-end;gap:20px;font:500 29px/1 var(--sans);color:#1a73e8}
+.adb span{padding:18px 22px;border-radius:30px}
+.gest{position:absolute;left:50%;bottom:14px;width:200px;margin-left:-100px;height:8px;border-radius:4px;background:rgba(0,0,0,.35);z-index:12}
+/* finger */
+#finger{position:absolute;left:0;top:0;width:96px;height:96px;margin:-48px 0 0 -48px;border-radius:50%;background:rgba(255,255,255,.22);border:5px solid var(--ink);box-shadow:0 8px 24px rgba(15,24,48,.35);z-index:50;pointer-events:none}
+#finger::after{content:"";position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px;border-radius:50%;background:var(--ink)}
+#rip{position:absolute;border-radius:50%;border:6px solid var(--y);z-index:49;pointer-events:none}
+/* intro / outro */
+.card{position:absolute;inset:0;z-index:60;background:var(--paper);background-image:linear-gradient(rgba(29,42,68,.07) 2px,transparent 2px),linear-gradient(90deg,rgba(29,42,68,.07) 2px,transparent 2px);background-size:60px 60px;padding:0 70px;display:flex;flex-direction:column;justify-content:center}
+.card .k{font:600 30px/1 var(--mono);letter-spacing:.16em;color:var(--ink2);text-transform:uppercase}
+.card h1{font:700 150px/.9 var(--head);text-transform:uppercase;margin:34px 0 40px}
+.card h1 span{display:block;overflow:hidden}.card h1 span b{display:block;font-weight:700}
+.card h1 .r b{color:var(--red)}
+.chipb{display:inline-flex;align-self:flex-start;gap:16px;align-items:center;background:var(--ink);color:var(--paper);font:600 40px/1 var(--mono);padding:24px 30px;box-shadow:10px 10px 0 var(--y),10px 10px 0 4px var(--ink)}
+.chipb em{font-style:normal;color:var(--y)}
+.card .sub{font:500 40px/1.35 var(--sans);color:#2f3a55;margin-top:56px}
+#outro{align-items:center;text-align:center}
+#outro img{width:300px;height:300px;border-radius:66px;box-shadow:14px 14px 0 var(--y),14px 14px 0 4px var(--ink)}
+#outro h2{font:700 170px/.9 var(--head);text-transform:uppercase;margin:70px 0 26px}
+#outro p{font:500 44px/1.35 var(--sans);color:#2f3a55}
+#outro .url{margin-top:70px;font:600 46px/1 var(--mono);border:4px solid var(--ink);padding:26px 34px;background:var(--paper)}
+#outro .tel{margin-top:30px;font:700 64px/1 var(--head);background:var(--ink);color:var(--y);padding:22px 34px;letter-spacing:.02em}
+</style></head><body><div id="stage">
+<div class="haz" style="top:0"></div>
+<div id="brand"><i></i>HANDYMAN · ИНСТРУКЦИЯ</div>
+<div id="top"><div id="badge"></div><div id="cap"></div><div id="note"></div></div>
+<div id="phone"><div id="screen"></div></div>
+<div id="rip"></div><div id="finger"></div>
+<div class="card" id="intro"></div>
+<div class="card" id="outro"></div>
+</div>
+<script>
+const IMG=/*IMG*/{};
+const OS=/*OS*/'ios';
+const $=s=>document.querySelector(s);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eout=x=>1-Math.pow(1-x,3);
+const back=x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const lerp=(a,b,k)=>a+(b-a)*k;
+const ico={
+ share:'<svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M7 10H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-1"/></svg>',
+ book:'<svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2z"/><path d="M8 3v18"/></svg>',
+ star:'<svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>',
+ search:'<svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg>',
+ pc:'<svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M9 20h6M12 16v4"/></svg>',
+ plus:'<svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/></svg>',
+ copy:'<svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>',
+ glasses:'<svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8"><circle cx="6.5" cy="14" r="3.5"/><circle cx="17.5" cy="14" r="3.5"/><path d="M10 14h4"/></svg>',
+ pen:'<svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg>',
+ lock:'<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#5f6368" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+ chev:'<svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+ house:'<svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#444" stroke-width="2" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9H4z"/></svg>',
+ fwd:'<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+ dl:'<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+ info:'<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>',
+ rel:'<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6"/></svg>',
+ astar:'<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>'
+};
+const sb=(dark,time)=>`<div class="sb" style="color:${dark?'#111':'#fff'}"><span>${time}</span><span class="r"><span class="sig"><b style="height:9px"></b><b style="height:13px"></b><b style="height:17px"></b><b style="height:21px"></b></span><span class="bat"></span></span></div>`;
+const PAL=['#ff9f0a','#30d158','#64d2ff','#bf5af2','#ff453a','#ffd60a','#5e5ce6','#ff375f','#8e8e93','#0a84ff','#ac8e68','#32ade6','#66d4cf','#ff9f0a','#30b0c7','#a2845e'];
+const NAMES=['Телефон','Сообщения','Камера','Фото','Карты','Погода','Часы','Заметки','Календарь','Настройки','Музыка','Почта'];
+function homeHTML(){
+ let h='<div class="hg">';
+ const cols=4,cw=138,x0=(644-cols*cw)/2;
+ for(let i=0;i<13;i++){const r=Math.floor(i/cols),c=i%cols;const x=x0+c*cw,y=r*178;
+  if(i===12){h+=`<div class="app" id="hm-app" style="left:${x}px;top:${y}px"><img id="hm-icon" src="${IMG.icon}">Handyman</div>`;continue}
+  h+=`<div class="app ${['','sq','ln'][i%3]}" style="left:${x}px;top:${y}px"><i style="background:${PAL[i]}"></i>${NAMES[i]}</div>`}
+ h+='</div><div id="glow"></div><div class="dock">';
+ for(let c=0;c<4;c++)h+=`<div class="app ${['sq','','ln','sq'][c]}" style="left:${12+c*148}px;top:26px"><i style="background:${PAL[12+c]}"></i></div>`;
+ return h+'</div>';
+}
+/* ---------- build screen ---------- */
+const scr=$('#screen');
+if(OS==='ios'){
+ scr.innerHTML=`
+ <div class="L start" id="start"><h5>Избранное</h5><div class="tiles">${'<i></i>'.repeat(8)}</div></div>
+ <div class="L" id="site" style="background:var(--paper)"><img class="siteimg" src="${IMG.site}" style="top:64px"></div>
+ <div class="isl"></div>${sb(true,'9:41')}
+ <div class="ibar"><div class="glass" id="ib-back">${ico.chev}</div><div class="glass" id="ib-pill"><span id="url"></span><div class="prog" id="prog"></div></div><div class="glass" id="ib-more">•••</div></div>
+ <div id="imenu"><div class="mi" id="mi-share">${ico.share}Поделиться</div><div class="mi sep">${ico.book}Добавить в закладки</div><div class="mi">${ico.star}Добавить в избранное</div><div class="mi sep">${ico.search}Найти на странице</div><div class="mi">${ico.pc}Версия для ПК</div></div>
+ <div id="sheet"><div class="shh"><img src="${IMG.icon}"><div><b>Handyman Грозный — мастер по дому</b><span>handyman-grozny.ru</span></div><div class="x">✕</div></div>
+  <div id="shbody"><div class="circ"><div><i style="background:#34c759"></i>Сообщения</div><div><i style="background:#0a84ff"></i>Почта</div><div><i style="background:#ffd60a"></i>Заметки</div><div><i style="background:#d1d1d6"></i>Ещё</div></div>
+  <div id="shsc"><div class="grp"><div class="row">Скопировать${ico.copy}</div><div class="row">Добавить в Список для чтения${ico.glasses}</div><div class="row">Добавить в закладки${ico.book}</div><div class="row">Добавить в избранное${ico.star}</div><div class="row">Найти на странице${ico.search}</div><div class="row" id="row-home">На экран «Домой»${ico.plus}</div><div class="row">Разметка${ico.pen}</div></div></div></div></div>
+ <div id="add"><div class="ah"><span class="bl">Отменить</span><b>На экран «Домой»</b><span id="add-btn">Добавить</span></div>
+  <div class="acard"><img src="${IMG.icon}"><div style="flex:1"><div class="in">Handyman</div><div class="u">https://handyman-grozny.ru/</div></div></div>
+  <div class="atxt">Значок будет добавлен на экран «Домой» для быстрого доступа к этому веб-сайту.</div>
+  <div class="atog">Открыть как веб-приложение<span class="sw"></span></div></div>
+ <div class="L" id="home">${sb(false,'9:41')}<div class="isl"></div>${homeHTML()}</div>
+ <div class="L" id="open"><img class="siteimg" src="${IMG.site}" style="top:64px">${sb(true,'9:41')}<div class="isl"></div></div>`;
+}else{
+ scr.classList.add('and');
+ scr.innerHTML=`
+ <div class="L start" id="start" style="background:#fff"><div class="tiles" style="top:330px">${'<i style="border-radius:50%"></i>'.repeat(8)}</div></div>
+ <div class="L" id="site" style="background:var(--paper)"><img class="siteimg" src="${IMG.site}" style="top:168px"></div>
+ ${sb(true,'12:30')}
+ <div class="abar"><span class="home">${ico.house}</span><div id="ab-pill"><span id="lk">${ico.lock}</span><span id="url"></span><div class="prog" id="prog" style="bottom:-16px"></div></div><span class="tabs">1</span><div id="ab-more"><b></b></div></div>
+ <div id="amenu"><div class="aic">${ico.fwd}${ico.astar}${ico.dl}${ico.info}${ico.rel}</div>
+  ${['Новая вкладка','Новая вкладка инкогнито','История','Загрузки','Закладки','Недавние вкладки','Поделиться…','Найти на странице','Перевести…'].map(x=>`<div class="am">${x}</div>`).join('')}
+  <div class="am" id="am-add">Добавить на главный экран</div><div class="am">Версия для ПК</div><div class="am">Настройки</div></div>
+ <div class="L" id="adim"></div>
+ <div id="adlg"><h4>Добавить на главный экран</h4><div class="adr"><img src="${IMG.icon}"><div class="in">Handyman</div></div><div class="adb"><span>Отмена</span><span id="ad-add">Добавить</span></div></div>
+ <div class="L" id="home">${sb(false,'12:30')}${homeHTML()}</div>
+ <div class="L" id="open"><img class="siteimg" src="${IMG.site}" style="top:64px">${sb(true,'12:30')}</div>
+ <div class="gest"></div>`;
+}
+/* ---------- script ---------- */
+const URL_T='handyman-grozny.ru';
+const S = OS==='ios' ? {
+ dur:27, intro:3.2, outroAt:23.6,
+ steps:[[3.2,'ШАГ 1 / 6','Откройте сайт <em>в Safari</em>','Впишите адрес: handyman-grozny.ru'],
+  [6.5,'ШАГ 2 / 6','Нажмите <em>«•••»</em> внизу справа','На старых iPhone сразу нажмите «Поделиться» — квадрат со стрелкой внизу'],
+  [9.5,'ШАГ 3 / 6','Выберите <em>«Поделиться»</em>',''],
+  [12,'ШАГ 4 / 6','Нажмите <em>«На экран „Домой“»</em>','Пролистайте список чуть вниз'],
+  [16,'ШАГ 5 / 6','Нажмите <em>«Добавить»</em>','Кнопка вверху справа'],
+  [19.5,'ШАГ 6 / 6','Готово! Handyman <em>на экране</em>','Открывается как приложение — без адресной строки']],
+ type:[3.6,4.7], load:[4.7,5.2],
+ moves:[[6.8,7.8,'#ib-more'],[9.9,10.8,'#mi-share'],[13.5,14.4,'#row-home'],[16.6,17.9,'#add-btn'],[21.4,22.3,'#hm-icon']],
+ taps:[8.0,11.0,14.6,18.2,22.5], fingerOff:[23.0,23.4]
+}:{
+ dur:24, intro:3.2, outroAt:20.6,
+ steps:[[3.2,'ШАГ 1 / 5','Откройте сайт <em>в Chrome</em>','Впишите адрес: handyman-grozny.ru'],
+  [6.5,'ШАГ 2 / 5','Нажмите <em>⋮</em> вверху справа','Три точки рядом с адресом сайта'],
+  [9.5,'ШАГ 3 / 5','Выберите <em>«Добавить на главный экран»</em>','Может называться «Установить приложение»'],
+  [13,'ШАГ 4 / 5','Нажмите <em>«Добавить»</em>','Если телефон спросит ещё раз — снова «Добавить»'],
+  [16.5,'ШАГ 5 / 5','Готово! Handyman <em>на экране</em>','Открывается как приложение — в один тап']],
+ type:[3.6,4.7], load:[4.7,5.2],
+ moves:[[6.8,7.8,'#ab-more'],[10,11.4,'#am-add'],[13.4,14.6,'#ad-add'],[18.2,19.0,'#hm-icon']],
+ taps:[8.0,11.8,15.0,19.2], fingerOff:[19.7,20.1]
+};
+// intro / outro content
+$('#intro').innerHTML=`<div class="k">Инструкция · 20 секунд</div><h1><span><b>Как добавить</b></span><span><b>Handyman</b></span><span class="r"><b>на экран</b></span><span class="r"><b>телефона</b></span></h1><div class="chipb">${OS==='ios'?'iPhone <em>·</em> Safari':'Android <em>·</em> Chrome'}</div><div class="sub">Значок на экране — и мастер всегда под рукой: заявка, цены, звонок в один тап.</div>`;
+$('#outro').innerHTML=`<img src="${IMG.logo}"><h2>Готово!</h2><p>Теперь Handyman открывается<br>с экрана, как приложение</p><div class="url">handyman-grozny.ru</div><div class="tel">8 963 599-36-01</div>`;
+const center=sel=>{const r=$(sel).getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]};
+const show=(el,o,tf)=>{el=typeof el==='string'?$(el):el;el.style.opacity=o;el.style.visibility=o<=0.001?'hidden':'visible';if(tf!==undefined)el.style.transform=tf};
+let lastStep=-1;
+window.frame=t=>{
+ // intro
+ const io=$('#intro');const ia=seg(t,2.7,3.2);
+ show(io,1-ia,`translateY(${-80*eio(ia)}px)`);
+ io.querySelectorAll('h1 span b').forEach((b,i)=>b.style.transform=`translateY(${(1-eout(seg(t,.15+i*.12,.75+i*.12)))*105}%)`);
+ [io.querySelector('.k'),io.querySelector('.chipb'),io.querySelector('.sub')].forEach((e,i)=>e.style.opacity=seg(t,.6+i*.25,1.0+i*.25));
+ // outro
+ const oa=seg(t,S.outroAt,S.outroAt+.5);const oo=$('#outro');show(oo,oa,`scale(${1.04-.04*eout(oa)})`);
+ oo.querySelectorAll('img,h2,p,.url,.tel').forEach((e,i)=>{const k=eout(seg(t,S.outroAt+.2+i*.15,S.outroAt+.7+i*.15));e.style.opacity=k;e.style.transform=`translateY(${(1-k)*40}px)`});
+ // caption
+ let si=-1;S.steps.forEach((s,i)=>{if(t>=s[0])si=i});
+ if(si!==lastStep){lastStep=si;if(si>=0){const s=S.steps[si];$('#badge').textContent=s[1];$('#cap').innerHTML=s[2];$('#note').textContent=s[3];$('#note').style.display=s[3]?'':'none'}}
+ const lt=si>=0?t-S.steps[si][0]:0;const ck=eout(seg(lt,0,.45));show('#top',si<0?0:ck,`translateY(${(1-ck)*30}px)`);
+ // phone entrance
+ const pk=eout(seg(t,3.0,3.6));show('#phone',1,`translateY(${(1-pk)*120}px)`);
+ // url typing + load
+ const ty=seg(t,S.type[0],S.type[1]);const n=Math.round(ty*URL_T.length);
+ $('#url').innerHTML=n?URL_T.slice(0,n)+(ty<1&&Math.floor(t*4)%2?'|':''):`<span class="ph">${OS==='ios'?'Поиск или имя сайта':'Введите запрос или URL'}</span>`;
+ const lp=seg(t,S.load[0],S.load[1]);$('#prog').style.width=(lp*100)+'%';$('#prog').style.opacity=lp>0&&lp<1?1:0;
+ show('#site',eout(seg(t,S.load[1]-.2,S.load[1]+.25)));
+ if(OS!=='ios')$('#lk').style.display=t>S.load[1]?'':'none';
+ const T=S.taps;
+ if(OS==='ios'){
+  const m=back(seg(t,T[0]+.15,T[0]+.5))*(1-seg(t,T[1]+.2,T[1]+.4));show('#imenu',clamp(m*1.5),`scale(${.3+.7*m})`);
+  $('#mi-share').classList.toggle('hl',t>T[1]-.1&&t<T[1]+.4);
+  const sk=eio(seg(t,T[1]+.2,T[1]+.75));show('#sheet',sk>0?1:0,`translateY(${(1-sk)*100}%)`);
+  $('#shbody').style.transform=`translateY(${-170*eio(seg(t,12.5,13.3))}px)`;
+  $('#row-home').classList.toggle('hl',t>T[2]-.1&&t<T[2]+.6);
+  const ak=eio(seg(t,T[2]+.35,T[2]+.95));show('#add',ak>0?1:0,`translateY(${(1-ak)*100}%)`);
+  $('#add-btn').style.opacity=t>T[3]-.1&&t<T[3]+.25?.4:1;
+  const hk=eio(seg(t,T[3]+.45,T[3]+1.05));show('#home',hk,`scale(${1.12-.12*hk})`);
+  const sheetOff=t>T[3]+1.05;if(sheetOff){$('#sheet').style.visibility='hidden';$('#add').style.visibility='hidden'}
+  homeAnim(t,T[3]+1.5,T[4]);
+ }else{
+  const m=eout(seg(t,T[0]+.15,T[0]+.45))*(1-seg(t,T[1]+.2,T[1]+.4));show('#amenu',clamp(m*1.4),`scale(${.6+.4*m})`);
+  $('#am-add').classList.toggle('hl',t>T[1]-.1&&t<T[1]+.4);
+  const dk=eout(seg(t,T[1]+.35,T[1]+.7))*(1-seg(t,T[2]+.2,T[2]+.45));show('#adim',dk);show('#adlg',dk,`scale(${.9+.1*dk})`);
+  $('#ad-add').classList.toggle('hl',t>T[2]-.1&&t<T[2]+.3);
+  const hk=eio(seg(t,T[2]+.6,T[2]+1.2));show('#home',hk,`scale(${1.12-.12*hk})`);
+  homeAnim(t,T[2]+1.5,T[3]);
+ }
+ // finger
+ const f=$('#finger');let pos=[1150,2100],started=false;
+ for(const [a,b,sel] of S.moves){if(t<a)break;started=true;const tg=center(sel);if(t>=b)pos=tg;else{const k=eio(seg(t,a,b));pos=[lerp(pos[0],tg[0],k),lerp(pos[1],tg[1],k)];}}
+ // offset finger slightly so it doesn't hide label: aim at center
+ let ts=1;T.forEach(x=>{const d=t-x;if(d>-.12&&d<.25)ts=Math.min(ts,1-.22*Math.sin(Math.PI*clamp((d+.12)/.37)))});
+ const fo=started?seg(t,S.moves[0][0]-.3,S.moves[0][0])*(1-seg(t,S.fingerOff[0],S.fingerOff[1])):0;
+ f.style.left=pos[0]+'px';f.style.top=pos[1]+'px';f.style.opacity=fo;f.style.transform=`scale(${ts})`;
+ // ripple
+ const r=$('#rip');let ro=0;for(const x of T){const d=t-x;if(d>=0&&d<.6){const k=eout(d/.6);const s=96+130*k;r.style.width=r.style.height=s+'px';r.style.left=pos[0]-s/2+'px';r.style.top=pos[1]-s/2+'px';ro=(1-k)*fo;}}
+ r.style.opacity=ro;
+};
+function homeAnim(t,popAt,tapAt){
+ const pk=seg(t,popAt,popAt+.55);const ic=$('#hm-app');ic.style.opacity=pk>0?1:0;ic.style.transform=`scale(${pk>0?back(pk):0})`;
+ const g=$('#glow');const icr=$('#hm-icon').getBoundingClientRect(),sr=$('#screen').getBoundingClientRect();
+ const gk=seg(t,popAt+.5,popAt+1.6);const pad=10+28*eout(gk);
+ g.style.left=(icr.left-sr.left-pad)+'px';g.style.top=(icr.top-sr.top-pad)+'px';g.style.width=g.style.height=(118+pad*2)+'px';g.style.opacity=gk>0?(1-gk)*1:0;
+ // open app
+ const ok=eio(seg(t,tapAt+.15,tapAt+.7));const o=$('#open');
+ if(ok<=0){show(o,0)}else{const cx=icr.left-sr.left+59,cy=icr.top-sr.top+59;o.style.transformOrigin=`${cx}px ${cy}px`;show(o,clamp(ok*2),`scale(${.18+.82*ok})`);o.style.borderRadius=(80*(1-ok))+'px'}
+}
+window.frame(0);
+</script></body></html>

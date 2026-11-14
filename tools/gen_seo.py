@@ -126,7 +126,7 @@ def page(pg):
 <link rel="canonical" href="{url}">
 <meta property="og:type" content="website"><meta property="og:locale" content="ru_RU"><meta property="og:site_name" content="Handyman Грозный">
 <meta property="og:title" content="{esc(pg["h1"])}"><meta property="og:description" content="{esc(pg["desc"])}"><meta property="og:url" content="{url}">
-<meta property="og:image" content="{SITE}/img/og.jpg"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="{SITE}/img/og/{pg["slug"]}.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#ece8df">
 <link rel="icon" href="/icons/site-192.png"><link rel="apple-touch-icon" href="/icons/site-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -164,7 +164,8 @@ def hub():
 <title>Услуги мастера по дому в Грозном | Handyman</title>
 <meta name="description" content="Все услуги мастера по дому в Грозном: электрика, сантехника, сборка мебели, ламинат, двери, интернет-кабель, муж на час. Цены от 280 ₽.">
 <link rel="canonical" href="{SITE}/uslugi/">
-<meta property="og:image" content="{SITE}/img/og.jpg"><meta name="theme-color" content="#ece8df">
+<meta property="og:type" content="website"><meta property="og:locale" content="ru_RU"><meta property="og:site_name" content="Handyman Грозный"><meta property="og:title" content="Услуги мастера по дому в Грозном"><meta property="og:description" content="Электрика, сантехника, сборка мебели, ламинат, двери, интернет-кабель, муж на час. Цена — до начала работ."><meta property="og:url" content="{SITE}/uslugi/">
+<meta property="og:image" content="{SITE}/img/og/uslugi.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#ece8df">
 <link rel="icon" href="/icons/site-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{CSS}"></head>
@@ -183,7 +184,7 @@ os.makedirs(os.path.join(ROOT, "uslugi"), exist_ok=True)
 for pg in PAGES:
     open(os.path.join(ROOT, "uslugi", pg["slug"] + ".html"), "w").write(page(pg))
 open(os.path.join(ROOT, "uslugi", "index.html"), "w").write(hub())
-urls = [(SITE + "/", "1.0", "weekly"), (SITE + "/uslugi/", "0.8", "monthly")] + [(f"{SITE}/uslugi/{p['slug']}.html", "0.8", "monthly") for p in PAGES] + [(SITE + "/privacy.html", "0.2", "yearly")]
+urls = [(SITE + "/", "1.0", "weekly"), (SITE + "/uslugi/", "0.8", "monthly")] + [(f"{SITE}/uslugi/{p['slug']}.html", "0.8", "monthly") for p in PAGES] + [(SITE + "/app/", "0.5", "monthly"), (SITE + "/privacy.html", "0.2", "yearly")]
 open(os.path.join(ROOT, "sitemap.xml"), "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{u}</loc><lastmod>{TODAY}</lastmod><changefreq>{f}</changefreq><priority>{p}</priority></url>\n" for u, p, f in urls) + "</urlset>\n")
 json.dump([{"cat": p["cat"], "slug": p["slug"], "short": p["short"]} for p in PAGES], open(os.path.join(ROOT, "tools", "pages.json"), "w"), ensure_ascii=False, indent=1)
 print("pages:", len(PAGES) + 1)
