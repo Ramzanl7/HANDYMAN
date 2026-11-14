@@ -60,13 +60,35 @@
   "redirects": [
     {
       "source": "/QR",
-      "destination": "/?utm_source=qr&utm_medium=sticker",
+      "destination": "https://handyman-grozny.ru/?utm_source=qr&utm_medium=sticker",
       "permanent": false
     },
     {
       "source": "/qr",
-      "destination": "/?utm_source=qr&utm_medium=sticker",
+      "destination": "https://handyman-grozny.ru/?utm_source=qr&utm_medium=sticker",
       "permanent": false
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "handyman-grozny.vercel.app"
+        }
+      ],
+      "destination": "https://handyman-grozny.ru/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "rovno-grozny.vercel.app"
+        }
+      ],
+      "destination": "https://handyman-grozny.ru/:path*",
+      "permanent": true
     }
   ]
 }
